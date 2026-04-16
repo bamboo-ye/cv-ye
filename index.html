@@ -175,6 +175,7 @@
                     <i class="fas fa-project-diagram"></i> 项目经历
                 </h2>
                 <div class="section-content">
+                    <!-- 项目1：趣斗图 -->
                     <div class="project-item">
                         <div class="project-header">
                             <h3>趣斗图—网络社交表情包合成系统</h3>
@@ -186,6 +187,100 @@
                                 <li><strong>Kafka 消息队列 + 动态降级方案：</strong>将生成任务存储至Kafka，算法生成模块根据负载决策生成任务的消费，算法生成模块消费者生成结果后推送至用户端，成功降低算法服务过载率，保障高峰期服务可用性。</li>
                                 <li><strong>基于 Redis Cluster 设计实现混合推送架构：</strong>利用 Pub/Sub 机制实现实时推送，结合消息队列保证离线用户也能收到生成结果，实现消息的可靠投递。</li>
                             </ul>
+                            <p class="achievement"><i class="fas fa-trophy"></i> <strong>项目成果：</strong>系统高峰期可用性达 99%+，用户从提交请求到接收结果的端到端延迟从原 2.5 秒降至 500ms 内，离线用户消息接收平均等待时间从 5 分钟缩短至 10 秒。</p>
+                            <div class="project-image">
+                                <img src="images/image3.png" alt="趣斗图项目" class="content-image">
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 项目2：GoChat -->
+                    <div class="project-item">
+                        <div class="project-header">
+                            <h3>GoChat—基于Golang的聊天系统</h3>
+                            <span class="project-date">2024.11 - 2025.6</span>
+                        </div>
+                        <div class="project-detail">
+                            <p><strong>项目职责：</strong>主要负责 GoChat 聊天系统后端架构设计与开发，基于 Golang 技术栈构建实时通信核心服务，结合 Redis 与 MySQL 支撑高并发场景，后续主导 AI 功能迭代，实现智能聊天与自动应答。</p>
+                            <ul>
+                                <li><strong>核心架构实现：</strong>用 Golang 搭建后端服务，基于 WebSocket 实现实时消息交互。设计 "Redis+MySQL" 存储架构，用 Redis 缓存在线状态、消息队列，MySQL 持久化聊天记录，支撑高并发场景。</li>
+                                <li><strong>AI 功能迭代：</strong>接入大模型 API 实现 "用户 - 机器人" 聊天及自动应答，优化存储策略缓存热门 AI 回复，提升响应效率，丰富系统交互场景。</li>
+                            </ul>
+                            <p class="achievement"><i class="fas fa-trophy"></i> <strong>项目成果：</strong>系统日均处理 10 万 + 消息，送达率 100%，服务可用性 99.9%；AI 功能上线后用户日活提升 25%，被 3 家企业采用，验证了架构扩展性。</p>
+                        </div>
+                    </div>
+
+                    <!-- 项目3：清音便携式智能钢琴 -->
+                    <div class="project-item">
+                        <div class="project-header">
+                            <h3>清音便携式智能钢琴辅导系统——基于物联网的智能教师</h3>
+                        </div>
+                        <div class="project-detail">
+                            <p><strong>项目简介：</strong>致力于解决非适龄钢琴学习者的钢琴学习困难的问题，将曲谱中的节奏、时长、音色、强度等信息用提示灯组件直观的展现出来，实现清音便携式智能钢琴辅导系统。</p>
+                            <p><strong>个人工作：</strong>本人参与并完成了清音教师设备端的设计及实现。将 Midi 音频格式转化为硬件控制参数，使用 Arduino 开发板实现多线程并发电平控制，利用 WS2812B 灯带实现可视化提示。</p>
+                            <p class="achievement"><i class="fas fa-trophy"></i> <strong>自我评价：</strong>能不断创新，在有限的资源条件下，在问题驱动下不断与团队一起得出有效的创新性解决完善方案，对遇到的硬件状态可视化交互等问题提出解决办法。</p>
+                            <div class="project-images">
+                                <img src="images/image5.png" alt="清音钢琴项目1" class="content-image">
+                                <img src="images/image7.png" alt="清音钢琴项目2" class="content-image">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 科研与学术项目 -->
+            <section class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-flask"></i> 科研与学术项目
+                </h2>
+                <div class="section-content">
+                    <div class="project-item">
+                        <div class="project-header">
+                            <h3>通用双阶段多阶超图对比协同学习框架</h3>
+                        </div>
+                        <div class="project-detail">
+                            <p><strong>主要创新点：</strong></p>
+                            <ul>
+                                <li><strong>异构超图建模：</strong>在异构图的表示学习中，常用的方法是基于元路径进行消息聚合。但是现有的方法只聚合了本地低阶的表示信息，而丢失了全局高阶的结构信息。因此，本文引入超图建模全局高阶结构信息。</li>
+                                <li><strong>Embedding 以及信息聚合策略：</strong>现有的基于元路径的消息聚合策略存在参数冗余、只可用于特定元路径、关系信息挖掘不充分、忽略其他类型节点特征等问题。因此，本文提出新的聚合策略。</li>
+                            </ul>
+                            
+                            <div class="research-section">
+                                <h4>问题域定义</h4>
+                                <ul>
+                                    <li>Task: classify the labels of nodes of T1 type</li>
+                                    <li>Node types: T1, T2, T3, ..., Tn</li>
+                                    <li>Meta-paths: T1TbTc...TkTqTk...TcTbT1</li>
+                                </ul>
+                            </div>
+
+                            <div class="research-section">
+                                <h4>数据集概览</h4>
+                                <div class="project-images">
+                                    <img src="images/image9.png" alt="数据集1" class="content-image">
+                                    <img src="images/image10.png" alt="数据集2" class="content-image">
+                                </div>
+                            </div>
+
+                            <div class="research-section">
+                                <h4>方法概览</h4>
+                                <div class="project-image">
+                                    <img src="images/image11.png" alt="方法概览" class="content-image">
+                                </div>
+                            </div>
+
+                            <div class="research-section">
+                                <h4>Embedding</h4>
+                                <p>Define E(T1)∈R^nT1×d to represent the embeddings corresponding to the nodes of type T1. Since the number and category of feature dimensions of nodes of different types are different, we can just transform the feature space with a matrix.</p>
+                                <div class="project-image">
+                                    <img src="images/image12.png" alt="Embedding公式" class="content-image">
+                                </div>
+                            </div>
+
+                            <div class="research-section">
+                                <h4>Local Low-stage Heterogeneous Relation Learning</h4>
+                                <p>Define Ai,j∈R^nTi×nTj to represent the adjacency matrix between nodes of type Ti and nodes of type Tj.</p>
+                            </div>
                         </div>
                     </div>
                 </div>
