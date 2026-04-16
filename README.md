@@ -20,19 +20,10 @@
 
 2. **推送代码**
    ```bash
-   # 初始化 Git 仓库（如果尚未初始化）
    git init
-
-   # 添加远程仓库
    git remote add origin https://github.com/username/repository.git
-
-   # 添加文件
    git add .
-
-   # 提交代码
    git commit -m "Initial commit"
-
-   # 推送到 GitHub
    git push -u origin main
    ```
 
@@ -44,8 +35,7 @@
    - 等待几分钟，GitHub Pages 会自动构建并部署你的网站
 
 4. **访问网站**
-   - 网站地址为：`https://username.github.io`（如果使用 username.github.io 仓库）
-   - 或者 `https://username.github.io/repository`（如果使用其他名称的仓库）
+   - 网站地址为：`https://bamboo-ye.github.io/cv-ye`（仓库名称为 cv-ye）
 
 ## 如何修改内容
 
@@ -92,5 +82,4 @@
 ## 联系信息
 
 - 邮箱：[your-email@example.com]
-- GitHub：[https://github.com/username]
-- LinkedIn：[https://linkedin.com/in/username]
+- GitHub：[https://github.com/bamboo-ye]
