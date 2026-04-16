@@ -517,6 +517,23 @@ body {
     font-weight: bold;
 }
 
+/* 公式图片布局 */
+.formula-images {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 20px;
+    justify-content: center;
+}
+
+.formula-image {
+    max-width: 200px;
+    height: auto;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+}
+
 /* 竞赛荣誉样式 */
 .awards-list {
     display: flex;
