@@ -266,6 +266,10 @@
                                 <li><strong>异构超图建模：</strong>在异构图的表示学习中，常用的方法是基于元路径进行消息聚合。但是现有的方法只聚合了本地低阶的表示信息，而丢失了全局高阶的结构信息。因此，本文引入超图建模全局高阶结构信息。</li>
                                 <li><strong>Embedding 以及信息聚合策略：</strong>现有的基于元路径的消息聚合策略存在参数冗余、只可用于特定元路径、关系信息挖掘不充分、忽略其他类型节点特征等问题。因此，本文提出新的聚合策略。</li>
                             </ul>
+                            <div class="project-images">
+                                <img src="images/image11.png" alt="方法概览" class="content-image">
+                                <img src="images/image14.png" alt="双尺度自监督学习" class="content-image">
+                            </div>
                         </div>
                     </div>
 
@@ -313,6 +317,12 @@
                         <div class="project-detail">
                             <p><strong>项目简介：</strong>本项目是为业余音乐爱好者打造的一个创作自己音乐作品的有效工具。用户只需打出节拍，工具将自动为节拍填入音高，生成一段动人的旋律。</p>
                             <p><strong>个人工作：</strong>本人从原本 MAESTRO 数据集数据集中的 MIDI 文件中分别提取出节拍和音高作为模型输入和输出，并对其进行随机切片，将数据划分为训练集、验证集和测试集三部分。基于 RNN、LSTM、transformer 等主流模型架构使用 pytorch 搭建模型，使用时长为 159.2 小时的 1139 条序列数据进行训练并用 126 条序列数据进行模型验证，对不同模型进行对比实验选择效果最好的作为生成模型，实现最终效果比基线提高了 27.15%。</p>
+                            <div class="project-images">
+                                <img src="images/image34.png" alt="RNN模型架构" class="content-image">
+                                <img src="images/image36.png" alt="LSTM with Attention架构" class="content-image">
+                                <img src="images/image38.png" alt="LSTM with Local Attention架构" class="content-image">
+                                <img src="images/image40.png" alt="Transformer架构" class="content-image">
+                            </div>
                         </div>
                     </div>
                 </div>
