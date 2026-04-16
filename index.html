@@ -8,6 +8,28 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
+    <!-- 导航栏 -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <span class="nav-name">叶晓艺</span>
+                <span class="nav-title">个人简历</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="#education" class="nav-link">教育经历</a></li>
+                <li><a href="#skills" class="nav-link">专业技能</a></li>
+                <li><a href="#internship" class="nav-link">实习经历</a></li>
+                <li><a href="#projects" class="nav-link">项目经历</a></li>
+                <li><a href="#research" class="nav-link">科研项目</a></li>
+                <li><a href="#awards" class="nav-link">竞赛荣誉</a></li>
+                <li><a href="#campus" class="nav-link">校园经历</a></li>
+            </ul>
+            <div class="nav-toggle">
+                <i class="fas fa-bars"></i>
+            </div>
+        </div>
+    </nav>
+
     <header class="header">
         <div class="container">
             <div class="header-content">
@@ -41,7 +63,7 @@
     <main class="main">
         <div class="container">
             <!-- 教育经历 -->
-            <section class="section">
+            <section id="education" class="section">
                 <h2 class="section-title">
                     <i class="fas fa-graduation-cap"></i> 教育经历
                 </h2>
@@ -75,7 +97,7 @@
             </section>
 
             <!-- 专业技能 -->
-            <section class="section">
+            <section id="skills" class="section">
                 <h2 class="section-title">
                     <i class="fas fa-code"></i> 专业技能
                 </h2>
@@ -143,7 +165,7 @@
             </section>
 
             <!-- 实习经历 -->
-            <section class="section">
+            <section id="internship" class="section">
                 <h2 class="section-title">
                     <i class="fas fa-briefcase"></i> 实习经历
                 </h2>
@@ -170,7 +192,7 @@
             </section>
 
             <!-- 项目经历 -->
-            <section class="section">
+            <section id="projects" class="section">
                 <h2 class="section-title">
                     <i class="fas fa-project-diagram"></i> 项目经历
                 </h2>
@@ -229,7 +251,7 @@
             </section>
 
             <!-- 科研与学术项目 -->
-            <section class="section">
+            <section id="research" class="section">
                 <h2 class="section-title">
                     <i class="fas fa-flask"></i> 科研与学术项目
                 </h2>
@@ -283,11 +305,58 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- 项目2：基于异构原子-基序图卷积的分子表征研究 -->
+                    <div class="project-item">
+                        <div class="project-header">
+                            <h3>基于异构原子-基序图卷积的分子表征研究</h3>
+                        </div>
+                        <div class="project-detail">
+                            <p><strong>主要创新点：</strong></p>
+                            <ul>
+                                <li><strong>异构原子-基序图：</strong>提出一种新的基于原分子结构与分子基序分解的分子表示——异构原子-基序图。基序可以认为是分子序列中由一些原子组成的子序列。这些原子相互作用，以基序为整体作用在分子性质上。同时，这种基序整体对组成它的原子的特性产生影响。与此同时，如同分子中的组成原子与原子之间存在性质上的相互影响，分子中基序与基序之间也存在着相互影响。为了在分子表征中引入基序这一模态，并符合化学原理地充分利用新增的基序模态信息，有必要设计一种新的分子表示方法，而本文提出的异构原子-基序图对此进行了实现。</li>
+                                <li><strong>异构原子-基序图卷积：</strong>受基序整体以及分子内部原子之间的相互作用启发，在异构原子-基序图基础上设计一种更符合分子内部作用机制的信息传递策略——异构原子-基序图卷积，以更充分直接地捕捉与表示分子特征，解决分子表征领域由分子的复杂性引发的特征提取不充分等问题，并提高分子表征算法的泛化能力。</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- 项目3：基于邻域图卷积的城域交通出行规划系统 -->
+                    <div class="project-item">
+                        <div class="project-header">
+                            <h3>基于邻域图卷积的城域交通出行规划系统</h3>
+                        </div>
+                        <div class="project-detail">
+                            <p><strong>项目简介：</strong>随着当今交通领域技术日益发展壮大、形势更加多元化，不同地区在不同季节常常涌现出丰富多变的地域路线网络结构。在众多智慧城市建设项目中，出行预测是其主要工作内容。本项目在历史观测数据的基础上对整个路网对象进行车流量及行人流量的预测，进一步为出行提供更多的便利，能够极大地促进智慧城市建设。</p>
+                            <p><strong>个人工作：</strong>本人阅读了大量文献，提出了一种新的深度学习算法，该算法对历史的路网对象观测数据进行分析，采用拓扑图分析技术将路网抽象为典型的时空图，此后融合了基于邻域图卷积模块对行车流量与行人流量进行预测，并基于 Pytorch 框架对模型进行了构建。</p>
+                        </div>
+                    </div>
+
+                    <!-- 项目4：一种基于 U-Net 模型的结构化病虫害诊断方法 -->
+                    <div class="project-item">
+                        <div class="project-header">
+                            <h3>一种基于 U-Net 模型的结构化病虫害诊断方法</h3>
+                        </div>
+                        <div class="project-detail">
+                            <p><strong>项目简介：</strong>在实际生产过程中，加入无人机侦测的方式以机器视觉为主进行农作物病虫害识别，使工作人员在仅需控制无人机路线的情况下对大片农作物区域全覆盖式的质量把控，从而提升产出效率。</p>
+                            <p><strong>个人工作：</strong>本人收集了部分农业数据集，并对其进行了预处理与数据清洗。此外提出了一种基于 U-Net 的深度学习模型实现了农作物虫害识别，并基于 Pytorch 构建了模型并进行训练，最终的实验结果超越了目前所有的农作物虫害识别模型，在测试集上的正确率达到了 100%。</p>
+                        </div>
+                    </div>
+
+                    <!-- 项目5：Everybody Compose 音乐生成工具 -->
+                    <div class="project-item">
+                        <div class="project-header">
+                            <h3>Everybody Compose 音乐生成工具</h3>
+                        </div>
+                        <div class="project-detail">
+                            <p><strong>项目简介：</strong>本项目是为业余音乐爱好者打造的一个创作自己音乐作品的有效工具。用户只需打出节拍，工具将自动为节拍填入音高，生成一段动人的旋律。</p>
+                            <p><strong>个人工作：</strong>本人从原本 MAESTRO 数据集数据集中的 MIDI 文件中分别提取出节拍和音高作为模型输入和输出，并对其进行随机切片，将数据划分为训练集、验证集和测试集三部分。基于 RNN、LSTM、transformer 等主流模型架构使用 pytorch 搭建模型，使用时长为 159.2 小时的 1139 条序列数据进行训练并用 126 条序列数据进行模型验证，对不同模型进行对比实验选择效果最好的作为生成模型，实现最终效果比基线提高了 27.15%。</p>
+                        </div>
+                    </div>
                 </div>
             </section>
 
             <!-- 竞赛荣誉 -->
-            <section class="section">
+            <section id="awards" class="section">
                 <h2 class="section-title">
                     <i class="fas fa-award"></i> 竞赛荣誉
                 </h2>
@@ -333,7 +402,7 @@
             </section>
 
             <!-- 校园经历 -->
-            <section class="section">
+            <section id="campus" class="section">
                 <h2 class="section-title">
                     <i class="fas fa-university"></i> 校园经历
                 </h2>
@@ -415,5 +484,32 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // 导航栏移动端切换
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+        });
+
+        // 点击导航链接后关闭菜单
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
+
+        // 滚动时添加导航栏阴影效果
+        window.addEventListener('scroll', () => {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.15)';
+            } else {
+                navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
+            }
+        });
+    </script>
 </body>
 </html>
