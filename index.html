@@ -13,10 +13,13 @@
             <div class="header-content">
                 <div class="header-left">
                     <h1 class="name">叶晓艺</h1>
-                    <p class="title">求职意向：[职位]</p>
-                    <p class="location"><i class="fas fa-map-marker-alt"></i> 所在地：[城市]</p>
-                    <p class="email"><i class="fas fa-envelope"></i> 邮箱：[邮箱地址]</p>
-                    <p class="phone"><i class="fas fa-phone"></i> 电话：[电话号码]</p>
+                    <p class="title">求职意向：Golang服务端研发</p>
+                    <div class="contact-info">
+                        <p><i class="fas fa-phone"></i> 13003139690</p>
+                        <p><i class="fas fa-envelope"></i> 13003139690@163.com</p>
+                        <p><i class="fas fa-birthday-cake"></i> 24岁</p>
+                        <p><i class="fas fa-venus"></i> 女</p>
+                    </div>
                 </div>
                 <div class="header-right">
                     <div class="photo-placeholder">
@@ -34,109 +37,267 @@
 
     <main class="main">
         <div class="container">
+            <!-- 教育经历 -->
             <section class="section">
                 <h2 class="section-title">
-                    <i class="fas fa-user-circle"></i> 个人简介
-                </h2>
-                <p class="section-content">
-                    [个人简介内容，简要介绍自己的专业背景、技能特长和职业目标]
-                </p>
-            </section>
-
-            <section class="section">
-                <h2 class="section-title">
-                    <i class="fas fa-graduation-cap"></i> 教育背景
+                    <i class="fas fa-graduation-cap"></i> 教育经历
                 </h2>
                 <div class="section-content">
                     <div class="timeline-item">
-                        <div class="timeline-date">[开始日期] - [结束日期]</div>
+                        <div class="timeline-date">2026.8 - 2027.6</div>
                         <div class="timeline-content">
-                            <h3>[学校名称]</h3>
-                            <p>[专业名称] - [学位]</p>
-                            <p>[GPA/成绩/荣誉等]</p>
+                            <h3>香港城市大学 <span class="badge">QS世界排名：63</span></h3>
+                            <p class="major">人工智能 硕士 | 计算机学院</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2022.8 - 2024.6</div>
+                        <div class="timeline-content">
+                            <h3>云南大学 <span class="badge">双一流/211</span></h3>
+                            <p class="major">软件工程 硕士（因职业规划调整主动退学）| 国家示范性软件学院</p>
+                            <p class="gpa">GPA：3.41/4.0（排名：33）</p>
+                            <p class="courses">主修：人工智能(93)、高级软件工程(90)、软件开发方法与技术(92)、工程数学(92)等</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2018.8 - 2022.6</div>
+                        <div class="timeline-content">
+                            <h3>云南大学 <span class="badge">双一流/211</span></h3>
+                            <p class="major">软件工程 本科 | 国家示范性软件学院</p>
+                            <p class="gpa">GPA 3.53/4 (排名：12/128)</p>
+                            <p class="courses">主修：数据库概论(94)、软件工程(92)、数字与数据通信(94)、计算机网络(95)、操作系统原理(93)等</p>
                         </div>
                     </div>
                 </div>
             </section>
 
+            <!-- 专业技能 -->
             <section class="section">
                 <h2 class="section-title">
-                    <i class="fas fa-briefcase"></i> 工作经历
+                    <i class="fas fa-code"></i> 专业技能
+                </h2>
+                <div class="section-content">
+                    <div class="skills-container">
+                        <div class="skill-category">
+                            <h3><i class="fas fa-laptop-code"></i> 编程语言</h3>
+                            <div class="skill-list">
+                                <span class="skill-tag highlight">精通 Golang</span>
+                                <span class="skill-tag highlight">精通 Python</span>
+                                <span class="skill-tag">熟悉 C/C++</span>
+                            </div>
+                        </div>
+                        <div class="skill-category">
+                            <h3><i class="fas fa-server"></i> 后端开发</h3>
+                            <div class="skill-list">
+                                <span class="skill-tag">Gin 框架</span>
+                                <span class="skill-tag">GORM</span>
+                                <span class="skill-tag">RESTful API</span>
+                                <span class="skill-tag">微服务架构</span>
+                                <span class="skill-tag">高并发设计</span>
+                            </div>
+                        </div>
+                        <div class="skill-category">
+                            <h3><i class="fas fa-database"></i> 数据库</h3>
+                            <div class="skill-list">
+                                <span class="skill-tag">MySQL 高可用架构</span>
+                                <span class="skill-tag">索引优化</span>
+                                <span class="skill-tag">Redis 集群</span>
+                                <span class="skill-tag">性能调优</span>
+                            </div>
+                        </div>
+                        <div class="skill-category">
+                            <h3><i class="fas fa-network-wired"></i> 中间件与架构</h3>
+                            <div class="skill-list">
+                                <span class="skill-tag">gRPC</span>
+                                <span class="skill-tag">Kafka</span>
+                                <span class="skill-tag">WebSocket</span>
+                                <span class="skill-tag">消息队列</span>
+                                <span class="skill-tag">异步解耦</span>
+                            </div>
+                        </div>
+                        <div class="skill-category">
+                            <h3><i class="fas fa-cloud"></i> 云计算与运维</h3>
+                            <div class="skill-list">
+                                <span class="skill-tag">Kubernetes</span>
+                                <span class="skill-tag">Docker</span>
+                                <span class="skill-tag">容器编排</span>
+                                <span class="skill-tag">容器化部署</span>
+                            </div>
+                        </div>
+                        <div class="skill-category">
+                            <h3><i class="fas fa-brain"></i> 人工智能/数据科学</h3>
+                            <div class="skill-list">
+                                <span class="skill-tag">PyTorch</span>
+                                <span class="skill-tag">Pandas</span>
+                                <span class="skill-tag">NumPy</span>
+                                <span class="skill-tag">图神经网络</span>
+                                <span class="skill-tag">知识蒸馏</span>
+                                <span class="skill-tag">时空图预测</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 实习经历 -->
+            <section class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-briefcase"></i> 实习经历
                 </h2>
                 <div class="section-content">
                     <div class="timeline-item">
-                        <div class="timeline-date">[开始日期] - [结束日期]</div>
+                        <div class="timeline-date">2021.8 - 2022.3</div>
                         <div class="timeline-content">
-                            <h3>[公司名称]</h3>
-                            <p>[职位名称]</p>
+                            <h3>云南省软件工程重点实验室 <span class="location">云南 昆明</span></h3>
+                            <p class="position">CVPR近年论文大数据展示舱（软件著作权）</p>
+                            <div class="project-detail">
+                                <p><strong>项目职责：</strong>负责 CVPR 论文数据挖掘与 Web 展示项目全流程开发，作为全栈工程师聚焦解决学术数据实时处理与高效展示的核心需求，构建 "爬虫 - Kafka-Flink - 存储 - Web" 全链路架构，最终交付准实时更新的学术领域分析平台。</p>
+                                <ul>
+                                    <li><strong>数据链路设计与实现：</strong>用 Golang 编写定向爬虫获取 2018-2022 年 CVPR 论文（7391 篇）及作者数据（12068 条），并开发 Kafka 生产者客户端，实现爬虫与处理层解耦；同步搭建 Flink 流处理引擎，消费 Kafka 数据后通过状态编程完成实时清洗（如 DOI 去重、作者姓名标准化）、特征提取（用 Flink SQL 解析论文摘要提取关键词），最终将结构化数据写入 MySQL，端到端数据处理延迟控制在 30 秒内。</li>
+                                    <li><strong>后端服务与可视化支撑：</strong>基于 Golang Gin 框架开发 RESTful API，直接读取 Flink 处理后写入 MySQL 的结构化数据，利用 Go Routine并发特性优化查询性能并监听MySQL变更；并将数据通过 echarts 以动态词云、折线图等呈现，同时使用WebSocket同步推送数据。</li>
+                                </ul>
+                                <p class="achievement"><i class="fas fa-trophy"></i> <strong>项目成果：</strong>全链路数据准确率超过 90%，相比传统批处理模式，数据更新时效提升超过20倍，平台服务多个实验室，帮助学术用户 "追踪领域动态" 的时间从 2 天缩短至 10 分钟。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 项目经历 -->
+            <section class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-project-diagram"></i> 项目经历
+                </h2>
+                <div class="section-content">
+                    <div class="project-item">
+                        <div class="project-header">
+                            <h3>趣斗图—网络社交表情包合成系统</h3>
+                            <span class="project-date">2023.8 - 2024.6</span>
+                        </div>
+                        <div class="project-detail">
+                            <p><strong>项目职责：</strong>负责表情包合成平台后端架构设计与落地，针对算法服务耗时高、资源有限（易因突发流量过载不可用）、用户离线无法接收结果的核心痛点，主导突破高可用与消息可靠性难题，最终实现系统稳定支撑全业务场景。</p>
                             <ul>
-                                <li>[工作内容和成就 1]</li>
-                                <li>[工作内容和成就 2]</li>
-                                <li>[工作内容和成就 3]</li>
+                                <li><strong>Kafka 消息队列 + 动态降级方案：</strong>将生成任务存储至Kafka，算法生成模块根据负载决策生成任务的消费，算法生成模块消费者生成结果后推送至用户端，成功降低算法服务过载率，保障高峰期服务可用性。</li>
+                                <li><strong>基于 Redis Cluster 设计实现混合推送架构：</strong>利用 Pub/Sub 机制实现...</li>
                             </ul>
                         </div>
                     </div>
                 </div>
             </section>
 
+            <!-- 竞赛荣誉 -->
             <section class="section">
                 <h2 class="section-title">
-                    <i class="fas fa-tools"></i> 技能与证书
+                    <i class="fas fa-award"></i> 竞赛荣誉
                 </h2>
                 <div class="section-content">
-                    <div class="skills-container">
-                        <div class="skill-category">
-                            <h3>专业技能</h3>
-                            <div class="skill-list">
-                                <span class="skill-tag">[技能 1]</span>
-                                <span class="skill-tag">[技能 2]</span>
-                                <span class="skill-tag">[技能 3]</span>
-                                <span class="skill-tag">[技能 4]</span>
-                                <span class="skill-tag">[技能 5]</span>
-                            </div>
+                    <div class="awards-list">
+                        <div class="award-item">
+                            <span class="award-date">2019-11</span>
+                            <span class="award-name">第二届"全国高校绿色计算大赛"</span>
+                            <span class="award-level">二等奖（队长）</span>
                         </div>
-                        <div class="skill-category">
-                            <h3>证书</h3>
-                            <div class="skill-list">
-                                <span class="skill-tag">[证书 1]</span>
-                                <span class="skill-tag">[证书 2]</span>
-                                <span class="skill-tag">[证书 3]</span>
-                            </div>
+                        <div class="award-item">
+                            <span class="award-date">2019~2023</span>
+                            <span class="award-name">第六届"互联网+"大学生创新创业大赛</span>
+                            <span class="award-level">省级立项一项，校级一项</span>
+                        </div>
+                        <div class="award-item">
+                            <span class="award-date">2020-09</span>
+                            <span class="award-name">第九届"挑战杯"大学生创业计划竞赛</span>
+                            <span class="award-level">省级银奖</span>
+                        </div>
+                        <div class="award-item">
+                            <span class="award-date">2020-11</span>
+                            <span class="award-name">第三届"全国高校绿色计算大赛"</span>
+                            <span class="award-level">三等奖</span>
+                        </div>
+                        <div class="award-item">
+                            <span class="award-date">2020-11</span>
+                            <span class="award-name">"外研社·国才杯" 全国英语大赛</span>
+                            <span class="award-level">校级初赛一等奖两项（写作、阅读）</span>
+                        </div>
+                        <div class="award-item">
+                            <span class="award-date">2020-12</span>
+                            <span class="award-name">云南大学第十一届全国大学生电子商务"创新、创意及创业"挑战赛</span>
+                            <span class="award-level">三等奖</span>
+                        </div>
+                        <div class="award-item">
+                            <span class="award-date">2018~2024</span>
+                            <span class="award-name">云南大学校级奖学金</span>
+                            <span class="award-level">二等奖一项，三等奖一项</span>
                         </div>
                     </div>
                 </div>
             </section>
 
+            <!-- 校园经历 -->
             <section class="section">
                 <h2 class="section-title">
-                    <i class="fas fa-language"></i> 语言能力
+                    <i class="fas fa-university"></i> 校园经历
                 </h2>
                 <div class="section-content">
-                    <div class="language-item">
-                        <span class="language-name">英语</span>
-                        <div class="language-level">
-                            <div class="language-bar" style="width: [百分比]%"></div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2019-2020</div>
+                        <div class="timeline-content">
+                            <h3>极客协会创新创业部 <span class="position">副部长</span></h3>
                         </div>
-                        <span class="language-description">[水平描述]</span>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2020-2021</div>
+                        <div class="timeline-content">
+                            <h3>极客协会 <span class="position">副社长</span></h3>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2020-2021</div>
+                        <div class="timeline-content">
+                            <h3>书香雅社 <span class="position">副社长</span></h3>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2021-06</div>
+                        <div class="timeline-content">
+                            <h3>云南大学图书馆书香雅社 <span class="position">优秀社团</span></h3>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-date">2023年度</div>
+                        <div class="timeline-content">
+                            <h3>优秀团员</h3>
+                        </div>
                     </div>
                 </div>
             </section>
 
+            <!-- 其他技能 -->
             <section class="section">
                 <h2 class="section-title">
-                    <i class="fas fa-star"></i> 项目经验
+                    <i class="fas fa-language"></i> 其他技能
                 </h2>
                 <div class="section-content">
-                    <div class="project-item">
-                        <h3>[项目名称]</h3>
-                        <p class="project-date">[项目时间]</p>
-                        <p class="project-description">[项目描述]</p>
-                        <ul class="project-features">
-                            <li>[项目特点 1]</li>
-                            <li>[项目特点 2]</li>
-                            <li>[项目特点 3]</li>
-                        </ul>
+                    <div class="other-skills">
+                        <div class="skill-item">
+                            <span class="skill-name">英语 CET4</span>
+                            <span class="skill-score">504分</span>
+                        </div>
+                        <div class="skill-item">
+                            <span class="skill-name">英语 CET6</span>
+                            <span class="skill-score">473分</span>
+                        </div>
                     </div>
+                </div>
+            </section>
+
+            <!-- 个人评价 -->
+            <section class="section">
+                <h2 class="section-title">
+                    <i class="fas fa-user-circle"></i> 个人评价
+                </h2>
+                <div class="section-content">
+                    <p class="evaluation">
+                        具备扎实的软件工程理论基础和丰富的全栈开发实践经验，尤其在构建高并发、高可用分布式系统方面有深入理解。具备相关实习经历，参与完成了两个国家项目、一个省级项目并取得不错成绩，能够理解需求并实现相关功能。拥有强烈的技术研究兴趣与创新能力，在人工智能（图神经网络、CV、NLP）、数据科学领域主导完成多个研究型项目，展现出独立解决问题和推进项目的能力。综合素质全面，具备优秀的团队协作能力、快速学习能力和抗压能力，致力于在计算机科学前沿领域进行更深入的学习与实践。
+                    </p>
                 </div>
             </section>
         </div>
@@ -147,8 +308,8 @@
             <div class="footer-content">
                 <p>© 2024 叶晓艺. 保留所有权利.</p>
                 <div class="social-links">
-                    <a href="[GitHub 链接]" target="_blank"><i class="fab fa-github"></i></a>
-                    <a href="[LinkedIn 链接]" target="_blank"><i class="fab fa-linkedin"></i></a>
+                    <a href="mailto:13003139690@163.com"><i class="fas fa-envelope"></i></a>
+                    <a href="tel:13003139690"><i class="fas fa-phone"></i></a>
                 </div>
             </div>
         </div>
