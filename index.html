@@ -266,43 +266,6 @@
                                 <li><strong>异构超图建模：</strong>在异构图的表示学习中，常用的方法是基于元路径进行消息聚合。但是现有的方法只聚合了本地低阶的表示信息，而丢失了全局高阶的结构信息。因此，本文引入超图建模全局高阶结构信息。</li>
                                 <li><strong>Embedding 以及信息聚合策略：</strong>现有的基于元路径的消息聚合策略存在参数冗余、只可用于特定元路径、关系信息挖掘不充分、忽略其他类型节点特征等问题。因此，本文提出新的聚合策略。</li>
                             </ul>
-                            
-                            <div class="research-section">
-                                <h4>问题域定义</h4>
-                                <ul>
-                                    <li>Task: classify the labels of nodes of T1 type</li>
-                                    <li>Node types: T1, T2, T3, ..., Tn</li>
-                                    <li>Meta-paths: T1TbTc...TkTqTk...TcTbT1</li>
-                                </ul>
-                            </div>
-
-                            <div class="research-section">
-                                <h4>数据集概览</h4>
-                                <div class="project-images">
-                                    <img src="images/image9.png" alt="数据集1" class="content-image">
-                                    <img src="images/image10.png" alt="数据集2" class="content-image">
-                                </div>
-                            </div>
-
-                            <div class="research-section">
-                                <h4>方法概览</h4>
-                                <div class="project-image">
-                                    <img src="images/image11.png" alt="方法概览" class="content-image">
-                                </div>
-                            </div>
-
-                            <div class="research-section">
-                                <h4>Embedding</h4>
-                                <p>Define E(T1)∈R^nT1×d to represent the embeddings corresponding to the nodes of type T1. Since the number and category of feature dimensions of nodes of different types are different, we can just transform the feature space with a matrix.</p>
-                                <div class="project-image">
-                                    <img src="images/image12.png" alt="Embedding公式" class="content-image">
-                                </div>
-                            </div>
-
-                            <div class="research-section">
-                                <h4>Local Low-stage Heterogeneous Relation Learning</h4>
-                                <p>Define Ai,j∈R^nTi×nTj to represent the adjacency matrix between nodes of type Ti and nodes of type Tj.</p>
-                            </div>
                         </div>
                     </div>
 
