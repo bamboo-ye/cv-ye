@@ -3,494 +3,484 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>叶晓艺 - 个人简历</title>
+    <title>叶晓艺 / Xiaoyi Ye</title>
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <!-- 导航栏 -->
     <nav class="navbar">
-        <div class="container">
-            <div class="nav-brand">
-                <span class="nav-name">叶晓艺</span>
-                <span class="nav-title">个人简历</span>
-            </div>
+        <div class="nav-container">
+            <a href="#" class="nav-logo">Xiaoyi Ye</a>
             <ul class="nav-menu">
-                <li><a href="#education" class="nav-link">教育经历</a></li>
-                <li><a href="#skills" class="nav-link">专业技能</a></li>
-                <li><a href="#internship" class="nav-link">实习经历</a></li>
-                <li><a href="#projects" class="nav-link">项目经历</a></li>
-                <li><a href="#research" class="nav-link">科研项目</a></li>
-                <li><a href="#awards" class="nav-link">竞赛荣誉</a></li>
-                <li><a href="#campus" class="nav-link">校园经历</a></li>
+                <li><a href="#about" class="nav-link">关于</a></li>
+                <li><a href="#education" class="nav-link">教育</a></li>
+                <li><a href="#experience" class="nav-link">经历</a></li>
+                <li><a href="#projects" class="nav-link">项目</a></li>
+                <li><a href="#research" class="nav-link">科研</a></li>
+                <li><a href="#awards" class="nav-link">荣誉</a></li>
             </ul>
             <div class="nav-toggle">
-                <i class="fas fa-bars"></i>
+                <span></span>
+                <span></span>
+                <span></span>
             </div>
         </div>
     </nav>
 
-    <header class="header">
-        <div class="container">
-            <div class="header-content">
-                <div class="header-left">
-                    <h1 class="name">叶晓艺</h1>
-                    <p class="title">求职意向：Golang服务端研发</p>
-                    <div class="contact-info">
-                        <p><i class="fas fa-phone"></i> 13003139690</p>
-                        <p><i class="fas fa-envelope"></i> 13003139690@163.com</p>
-                        <p><i class="fas fa-birthday-cake"></i> 24岁</p>
-                        <p><i class="fas fa-venus"></i> 女</p>
-                    </div>
+    <!-- Hero Section -->
+    <section class="hero" id="about">
+        <div class="hero-container">
+            <div class="hero-content">
+                <p class="hero-greeting">Hey there <span class="wave">👋</span></p>
+                <h1 class="hero-title">I'm 叶晓艺</h1>
+                <p class="hero-subtitle">Xiaoyi Ye</p>
+                <p class="hero-description">
+                    专注于 <span class="highlight">Golang服务端研发</span> 与 <span class="highlight">人工智能</span> 的开发者
+                </p>
+                <p class="hero-bio">
+                    具备扎实的后端开发基础与AI算法研究经验，致力于构建高性能、高可用的分布式系统。
+                    目前在香港城市大学攻读人工智能硕士学位，积极寻找后端开发工程师的实习与全职机会。
+                </p>
+                <div class="hero-tags">
+                    <span class="tag">Golang</span>
+                    <span class="tag">分布式系统</span>
+                    <span class="tag">微服务</span>
+                    <span class="tag">AI/ML</span>
+                    <span class="tag">图神经网络</span>
                 </div>
-                <div class="header-right">
-                    <div class="photo-container">
-                        <img src="images/image1.jpeg" alt="叶晓艺" class="profile-photo">
-                    </div>
+                <div class="hero-contact">
+                    <a href="mailto:13003139690@163.com" class="contact-link">
+                        <i class="fas fa-envelope"></i>
+                    </a>
+                    <a href="tel:13003139690" class="contact-link">
+                        <i class="fas fa-phone"></i>
+                    </a>
+                    <a href="#" class="contact-link">
+                        <i class="fab fa-github"></i>
+                    </a>
+                </div>
+                <div class="hero-actions">
+                    <a href="叶晓艺简历.pdf" download class="btn btn-primary">
+                        <i class="fas fa-download"></i> 下载简历
+                    </a>
                 </div>
             </div>
-            <div class="resume-download">
-                <a href="叶晓艺简历.pdf" download="叶晓艺简历.pdf" class="download-btn">
-                    <i class="fas fa-download"></i> 下载简历 PDF
-                </a>
-                <a href="叶晓艺简历.docx" download="叶晓艺简历.docx" class="download-btn secondary">
-                    <i class="fas fa-file-word"></i> 下载简历 Word
-                </a>
+            <div class="hero-image">
+                <div class="image-wrapper">
+                    <img src="images/image1.jpeg" alt="叶晓艺" class="profile-img">
+                </div>
             </div>
         </div>
-    </header>
+    </section>
 
-    <main class="main">
+    <!-- News Section -->
+    <section class="news-section">
         <div class="container">
-            <!-- 教育经历 -->
-            <section id="education" class="section">
-                <h2 class="section-title">
-                    <i class="fas fa-graduation-cap"></i> 教育经历
-                </h2>
-                <div class="section-content">
-                    <div class="timeline-item">
-                        <div class="timeline-date">2026.8 - 2027.6</div>
-                        <div class="timeline-content">
-                            <h3>香港城市大学 <span class="badge">QS世界排名：63</span></h3>
-                            <p class="major">人工智能 硕士 | 计算机学院</p>
-                        </div>
+            <h2 class="section-title-small">News</h2>
+            <div class="news-list">
+                <div class="news-item">
+                    <span class="news-date">2026.08</span>
+                    <span class="news-badge">New</span>
+                    <span class="news-text">入读香港城市大学人工智能硕士项目</span>
+                </div>
+                <div class="news-item">
+                    <span class="news-date">2024.06</span>
+                    <span class="news-text">从云南大学软件工程硕士项目结业</span>
+                </div>
+                <div class="news-item">
+                    <span class="news-date">2022.06</span>
+                    <span class="news-text">本科毕业于云南大学软件工程专业，GPA 3.53/4.0</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section class="section" id="education">
+        <div class="container">
+            <h2 class="section-title">教育经历 <span class="section-subtitle">Education</span></h2>
+            <div class="education-grid">
+                <div class="edu-card">
+                    <div class="edu-header">
+                        <div class="edu-school">香港城市大学</div>
+                        <div class="edu-badge">QS 63</div>
                     </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2022.8 - 2024.6</div>
-                        <div class="timeline-content">
-                            <h3>云南大学 <span class="badge">双一流/211</span></h3>
-                            <p class="major">软件工程 硕士（因职业规划调整主动退学）| 国家示范性软件学院</p>
-                            <p class="gpa">GPA：3.41/4.0（排名：33）</p>
-                            <p class="courses">主修：人工智能(93)、高级软件工程(90)、软件开发方法与技术(92)、工程数学(92)等</p>
-                        </div>
+                    <div class="edu-degree">人工智能 硕士</div>
+                    <div class="edu-time">2026.8 - 2027.6</div>
+                    <div class="edu-major">计算机学院</div>
+                </div>
+                <div class="edu-card">
+                    <div class="edu-header">
+                        <div class="edu-school">云南大学</div>
+                        <div class="edu-badge">双一流/211</div>
                     </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2018.8 - 2022.6</div>
-                        <div class="timeline-content">
-                            <h3>云南大学 <span class="badge">双一流/211</span></h3>
-                            <p class="major">软件工程 本科 | 国家示范性软件学院</p>
-                            <p class="gpa">GPA 3.53/4 (排名：12/128)</p>
-                            <p class="courses">主修：数据库概论(94)、软件工程(92)、数字与数据通信(94)、计算机网络(95)、操作系统原理(93)等</p>
-                        </div>
+                    <div class="edu-degree">软件工程 硕士</div>
+                    <div class="edu-time">2022.8 - 2024.6</div>
+                    <div class="edu-major">国家示范性软件学院 | GPA: 3.41/4.0</div>
+                    <div class="edu-note">因职业规划调整主动退学</div>
+                </div>
+                <div class="edu-card">
+                    <div class="edu-header">
+                        <div class="edu-school">云南大学</div>
+                        <div class="edu-badge">双一流/211</div>
+                    </div>
+                    <div class="edu-degree">软件工程 本科</div>
+                    <div class="edu-time">2018.8 - 2022.6</div>
+                    <div class="edu-major">国家示范性软件学院 | GPA: 3.53/4.0 (排名: 12/128)</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section class="section section-alt" id="skills">
+        <div class="container">
+            <h2 class="section-title">专业技能 <span class="section-subtitle">Skills</span></h2>
+            <div class="skills-grid">
+                <div class="skill-category">
+                    <h3 class="skill-title"><i class="fas fa-code"></i> 编程语言</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag expert">Golang</span>
+                        <span class="skill-tag">Python</span>
+                        <span class="skill-tag">C/C++</span>
+                        <span class="skill-tag">Java</span>
                     </div>
                 </div>
-            </section>
-
-            <!-- 专业技能 -->
-            <section id="skills" class="section">
-                <h2 class="section-title">
-                    <i class="fas fa-code"></i> 专业技能
-                </h2>
-                <div class="section-content">
-                    <div class="skills-container">
-                        <div class="skill-category">
-                            <h3><i class="fas fa-laptop-code"></i> 编程语言</h3>
-                            <div class="skill-list">
-                                <span class="skill-tag highlight">精通 Golang</span>
-                                <span class="skill-tag highlight">精通 Python</span>
-                                <span class="skill-tag">熟悉 C/C++</span>
-                            </div>
-                        </div>
-                        <div class="skill-category">
-                            <h3><i class="fas fa-server"></i> 后端开发</h3>
-                            <div class="skill-list">
-                                <span class="skill-tag">Gin 框架</span>
-                                <span class="skill-tag">GORM</span>
-                                <span class="skill-tag">RESTful API</span>
-                                <span class="skill-tag">微服务架构</span>
-                                <span class="skill-tag">高并发设计</span>
-                            </div>
-                        </div>
-                        <div class="skill-category">
-                            <h3><i class="fas fa-database"></i> 数据库</h3>
-                            <div class="skill-list">
-                                <span class="skill-tag">MySQL 高可用架构</span>
-                                <span class="skill-tag">索引优化</span>
-                                <span class="skill-tag">Redis 集群</span>
-                                <span class="skill-tag">性能调优</span>
-                            </div>
-                        </div>
-                        <div class="skill-category">
-                            <h3><i class="fas fa-network-wired"></i> 中间件与架构</h3>
-                            <div class="skill-list">
-                                <span class="skill-tag">gRPC</span>
-                                <span class="skill-tag">Kafka</span>
-                                <span class="skill-tag">WebSocket</span>
-                                <span class="skill-tag">消息队列</span>
-                                <span class="skill-tag">异步解耦</span>
-                            </div>
-                        </div>
-                        <div class="skill-category">
-                            <h3><i class="fas fa-cloud"></i> 云计算与运维</h3>
-                            <div class="skill-list">
-                                <span class="skill-tag">Kubernetes</span>
-                                <span class="skill-tag">Docker</span>
-                                <span class="skill-tag">容器编排</span>
-                                <span class="skill-tag">容器化部署</span>
-                            </div>
-                        </div>
-                        <div class="skill-category">
-                            <h3><i class="fas fa-brain"></i> 人工智能/数据科学</h3>
-                            <div class="skill-list">
-                                <span class="skill-tag">PyTorch</span>
-                                <span class="skill-tag">Pandas</span>
-                                <span class="skill-tag">NumPy</span>
-                                <span class="skill-tag">图神经网络</span>
-                                <span class="skill-tag">知识蒸馏</span>
-                                <span class="skill-tag">时空图预测</span>
-                            </div>
-                        </div>
+                <div class="skill-category">
+                    <h3 class="skill-title"><i class="fas fa-server"></i> 后端技术</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Gin</span>
+                        <span class="skill-tag">gRPC</span>
+                        <span class="skill-tag">RESTful API</span>
+                        <span class="skill-tag">WebSocket</span>
                     </div>
                 </div>
-            </section>
-
-            <!-- 实习经历 -->
-            <section id="internship" class="section">
-                <h2 class="section-title">
-                    <i class="fas fa-briefcase"></i> 实习经历
-                </h2>
-                <div class="section-content">
-                    <div class="timeline-item">
-                        <div class="timeline-date">2021.8 - 2022.3</div>
-                        <div class="timeline-content">
-                            <h3>云南省软件工程重点实验室 <span class="location">云南 昆明</span></h3>
-                            <p class="position">CVPR近年论文大数据展示舱（软件著作权）</p>
-                            <div class="project-detail">
-                                <p><strong>项目职责：</strong>负责 CVPR 论文数据挖掘与 Web 展示项目全流程开发，作为全栈工程师聚焦解决学术数据实时处理与高效展示的核心需求，构建 "爬虫 - Kafka-Flink - 存储 - Web" 全链路架构，最终交付准实时更新的学术领域分析平台。</p>
-                                <ul>
-                                    <li><strong>数据链路设计与实现：</strong>用 Golang 编写定向爬虫获取 2018-2022 年 CVPR 论文（7391 篇）及作者数据（12068 条），并开发 Kafka 生产者客户端，实现爬虫与处理层解耦；同步搭建 Flink 流处理引擎，消费 Kafka 数据后通过状态编程完成实时清洗（如 DOI 去重、作者姓名标准化）、特征提取（用 Flink SQL 解析论文摘要提取关键词），最终将结构化数据写入 MySQL，端到端数据处理延迟控制在 30 秒内。</li>
-                                    <li><strong>后端服务与可视化支撑：</strong>基于 Golang Gin 框架开发 RESTful API，直接读取 Flink 处理后写入 MySQL 的结构化数据，利用 Go Routine并发特性优化查询性能并监听MySQL变更；并将数据通过 echarts 以动态词云、折线图等呈现，同时使用WebSocket同步推送数据。</li>
-                                </ul>
-                                <p class="achievement"><i class="fas fa-trophy"></i> <strong>项目成果：</strong>全链路数据准确率超过 90%，相比传统批处理模式，数据更新时效提升超过20倍，平台服务多个实验室，帮助学术用户 "追踪领域动态" 的时间从 2 天缩短至 10 分钟。</p>
-                                <div class="project-image">
-                                    <img src="images/image2.png" alt="CVPR项目展示" class="content-image">
-                                </div>
-                            </div>
-                        </div>
+                <div class="skill-category">
+                    <h3 class="skill-title"><i class="fas fa-database"></i> 数据库与中间件</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">MySQL</span>
+                        <span class="skill-tag">Redis</span>
+                        <span class="skill-tag">MongoDB</span>
+                        <span class="skill-tag">Kafka</span>
+                        <span class="skill-tag">Flink</span>
                     </div>
                 </div>
-            </section>
+                <div class="skill-category">
+                    <h3 class="skill-title"><i class="fas fa-brain"></i> AI/ML</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">PyTorch</span>
+                        <span class="skill-tag">图神经网络</span>
+                        <span class="skill-tag">深度学习</span>
+                        <span class="skill-tag">超图学习</span>
+                    </div>
+                </div>
+                <div class="skill-category">
+                    <h3 class="skill-title"><i class="fas fa-tools"></i> 开发工具</h3>
+                    <div class="skill-tags">
+                        <span class="skill-tag">Git</span>
+                        <span class="skill-tag">Docker</span>
+                        <span class="skill-tag">Linux</span>
+                        <span class="skill-tag">Kubernetes</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-            <!-- 项目经历 -->
-            <section id="projects" class="section">
-                <h2 class="section-title">
-                    <i class="fas fa-project-diagram"></i> 项目经历
-                </h2>
-                <div class="section-content">
-                    <!-- 项目1：趣斗图 -->
-                    <div class="project-item">
-                        <div class="project-header">
-                            <h3>趣斗图—网络社交表情包合成系统</h3>
+    <!-- Experience Section -->
+    <section class="section" id="experience">
+        <div class="container">
+            <h2 class="section-title">实习经历 <span class="section-subtitle">Experience</span></h2>
+            <div class="experience-list">
+                <div class="exp-card">
+                    <div class="exp-header">
+                        <div class="exp-company">CVPR近年论文大数据展示舱</div>
+                        <div class="exp-time">2022.10 - 2023.3</div>
+                    </div>
+                    <div class="exp-role">后端开发工程师</div>
+                    <div class="exp-desc">
+                        <p>负责基于 Golang + Kafka + Flink 构建实时论文数据处理链路，搭建流处理引擎实现数据实时清洗与特征提取。</p>
+                    </div>
+                    <div class="exp-image">
+                        <img src="images/image2.png" alt="CVPR项目">
+                    </div>
+                    <div class="exp-tags">
+                        <span class="exp-tag">Golang</span>
+                        <span class="exp-tag">Kafka</span>
+                        <span class="exp-tag">Flink</span>
+                        <span class="exp-tag">MySQL</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section class="section section-alt" id="projects">
+        <div class="container">
+            <h2 class="section-title">项目经历 <span class="section-subtitle">Projects</span></h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <div class="project-image-wrapper">
+                        <img src="images/image3.png" alt="趣斗图" class="project-img">
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-name">趣斗图</h3>
+                        <p class="project-subtitle">网络社交表情包合成系统</p>
+                        <p class="project-desc">基于 Golang + Kafka + Redis 的高可用表情包合成平台，实现动态降级与混合推送架构。</p>
+                        <div class="project-meta">
                             <span class="project-date">2023.8 - 2024.6</span>
+                            <span class="project-highlight">可用性 99%+</span>
                         </div>
-                        <div class="project-detail">
-                            <p><strong>项目职责：</strong>负责表情包合成平台后端架构设计与落地，针对算法服务耗时高、资源有限（易因突发流量过载不可用）、用户离线无法接收结果的核心痛点，主导突破高可用与消息可靠性难题，最终实现系统稳定支撑全业务场景。</p>
-                            <ul>
-                                <li><strong>Kafka 消息队列 + 动态降级方案：</strong>将生成任务存储至Kafka，算法生成模块根据负载决策生成任务的消费，算法生成模块消费者生成结果后推送至用户端，成功降低算法服务过载率，保障高峰期服务可用性。</li>
-                                <li><strong>基于 Redis Cluster 设计实现混合推送架构：</strong>利用 Pub/Sub 机制实现实时推送，结合消息队列保证离线用户也能收到生成结果，实现消息的可靠投递。</li>
-                            </ul>
-                            <p class="achievement"><i class="fas fa-trophy"></i> <strong>项目成果：</strong>系统高峰期可用性达 99%+，用户从提交请求到接收结果的端到端延迟从原 2.5 秒降至 500ms 内，离线用户消息接收平均等待时间从 5 分钟缩短至 10 秒。</p>
-                            <div class="project-image">
-                                <img src="images/image3.png" alt="趣斗图项目" class="content-image">
-                            </div>
+                        <div class="project-tags">
+                            <span>Golang</span>
+                            <span>Kafka</span>
+                            <span>Redis</span>
                         </div>
                     </div>
-
-                    <!-- 项目2：GoChat -->
-                    <div class="project-item">
-                        <div class="project-header">
-                            <h3>GoChat—基于Golang的聊天系统</h3>
+                </div>
+                <div class="project-card">
+                    <div class="project-content">
+                        <h3 class="project-name">GoChat</h3>
+                        <p class="project-subtitle">基于Golang的聊天系统</p>
+                        <p class="project-desc">基于 WebSocket 的实时通信系统，接入大模型 API 实现智能聊天功能，日均处理 10 万+ 消息。</p>
+                        <div class="project-meta">
                             <span class="project-date">2024.11 - 2025.6</span>
+                            <span class="project-highlight">送达率 100%</span>
                         </div>
-                        <div class="project-detail">
-                            <p><strong>项目职责：</strong>主要负责 GoChat 聊天系统后端架构设计与开发，基于 Golang 技术栈构建实时通信核心服务，结合 Redis 与 MySQL 支撑高并发场景，后续主导 AI 功能迭代，实现智能聊天与自动应答。</p>
-                            <ul>
-                                <li><strong>核心架构实现：</strong>用 Golang 搭建后端服务，基于 WebSocket 实现实时消息交互。设计 "Redis+MySQL" 存储架构，用 Redis 缓存在线状态、消息队列，MySQL 持久化聊天记录，支撑高并发场景。</li>
-                                <li><strong>AI 功能迭代：</strong>接入大模型 API 实现 "用户 - 机器人" 聊天及自动应答，优化存储策略缓存热门 AI 回复，提升响应效率，丰富系统交互场景。</li>
-                            </ul>
-                            <p class="achievement"><i class="fas fa-trophy"></i> <strong>项目成果：</strong>系统日均处理 10 万 + 消息，送达率 100%，服务可用性 99.9%；AI 功能上线后用户日活提升 25%，被 3 家企业采用，验证了架构扩展性。</p>
-                        </div>
-                    </div>
-
-                    <!-- 项目3：清音便携式智能钢琴 -->
-                    <div class="project-item">
-                        <div class="project-header">
-                            <h3>清音便携式智能钢琴辅导系统——基于物联网的智能教师</h3>
-                        </div>
-                        <div class="project-detail">
-                            <p><strong>项目简介：</strong>致力于解决非适龄钢琴学习者的钢琴学习困难的问题，将曲谱中的节奏、时长、音色、强度等信息用提示灯组件直观的展现出来，实现清音便携式智能钢琴辅导系统。</p>
-                            <p><strong>个人工作：</strong>本人参与并完成了清音教师设备端的设计及实现。将 Midi 音频格式转化为硬件控制参数，使用 Arduino 开发板实现多线程并发电平控制，利用 WS2812B 灯带实现可视化提示。</p>
-                            <p class="achievement"><i class="fas fa-trophy"></i> <strong>自我评价：</strong>能不断创新，在有限的资源条件下，在问题驱动下不断与团队一起得出有效的创新性解决完善方案，对遇到的硬件状态可视化交互等问题提出解决办法。</p>
-                            <div class="project-images">
-                                <img src="images/image5.png" alt="清音钢琴项目1" class="content-image">
-                                <img src="images/image7.png" alt="清音钢琴项目2" class="content-image">
-                            </div>
+                        <div class="project-tags">
+                            <span>Golang</span>
+                            <span>WebSocket</span>
+                            <span>AI</span>
                         </div>
                     </div>
                 </div>
-            </section>
-
-            <!-- 科研与学术项目 -->
-            <section id="research" class="section">
-                <h2 class="section-title">
-                    <i class="fas fa-flask"></i> 科研与学术项目
-                </h2>
-                <div class="section-content">
-                    <div class="project-item">
-                        <div class="project-header">
-                            <h3>通用双阶段多阶超图对比协同学习框架</h3>
-                        </div>
-                        <div class="project-detail">
-                            <p><strong>主要创新点：</strong></p>
-                            <ul>
-                                <li><strong>异构超图建模：</strong>在异构图的表示学习中，常用的方法是基于元路径进行消息聚合。但是现有的方法只聚合了本地低阶的表示信息，而丢失了全局高阶的结构信息。因此，本文引入超图建模全局高阶结构信息。</li>
-                                <li><strong>Embedding 以及信息聚合策略：</strong>现有的基于元路径的消息聚合策略存在参数冗余、只可用于特定元路径、关系信息挖掘不充分、忽略其他类型节点特征等问题。因此，本文提出新的聚合策略。</li>
-                            </ul>
-                            <div class="project-images">
-                                <img src="images/image11.png" alt="方法概览" class="content-image">
-                                <img src="images/image14.png" alt="双尺度自监督学习" class="content-image">
-                            </div>
-                            <div class="formula-images">
-                                <img src="images/image12.png" alt="Embedding公式" class="formula-image">
-                                <img src="images/image13.png" alt="超图公式" class="formula-image">
-                                <img src="images/image15.png" alt="平均表示公式" class="formula-image">
-                                <img src="images/image16.png" alt="距离公式" class="formula-image">
-                                <img src="images/image17.png" alt="对比损失公式" class="formula-image">
-                                <img src="images/image18.png" alt="自监督损失公式" class="formula-image">
-                                <img src="images/image19.png" alt="超图卷积公式" class="formula-image">
-                            </div>
-                        </div>
+                <div class="project-card">
+                    <div class="project-image-wrapper">
+                        <img src="images/image5.png" alt="清音钢琴" class="project-img">
                     </div>
-
-                    <!-- 项目2：基于异构原子-基序图卷积的分子表征研究 -->
-                    <div class="project-item">
-                        <div class="project-header">
-                            <h3>基于异构原子-基序图卷积的分子表征研究</h3>
+                    <div class="project-content">
+                        <h3 class="project-name">清音便携式智能钢琴</h3>
+                        <p class="project-subtitle">基于物联网的智能教师</p>
+                        <p class="project-desc">基于 Arduino 的钢琴学习辅助系统，将 MIDI 转化为硬件控制参数，实现可视化提示。</p>
+                        <div class="project-meta">
+                            <span class="project-date">2020.6 - 2020.9</span>
+                            <span class="project-highlight">省级银奖</span>
                         </div>
-                        <div class="project-detail">
-                            <p><strong>主要创新点：</strong></p>
-                            <ul>
-                                <li><strong>异构原子-基序图：</strong>提出一种新的基于原分子结构与分子基序分解的分子表示——异构原子-基序图。基序可以认为是分子序列中由一些原子组成的子序列。这些原子相互作用，以基序为整体作用在分子性质上。同时，这种基序整体对组成它的原子的特性产生影响。与此同时，如同分子中的组成原子与原子之间存在性质上的相互影响，分子中基序与基序之间也存在着相互影响。为了在分子表征中引入基序这一模态，并符合化学原理地充分利用新增的基序模态信息，有必要设计一种新的分子表示方法，而本文提出的异构原子-基序图对此进行了实现。</li>
-                                <li><strong>异构原子-基序图卷积：</strong>受基序整体以及分子内部原子之间的相互作用启发，在异构原子-基序图基础上设计一种更符合分子内部作用机制的信息传递策略——异构原子-基序图卷积，以更充分直接地捕捉与表示分子特征，解决分子表征领域由分子的复杂性引发的特征提取不充分等问题，并提高分子表征算法的泛化能力。</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <!-- 项目3：基于邻域图卷积的城域交通出行规划系统 -->
-                    <div class="project-item">
-                        <div class="project-header">
-                            <h3>基于邻域图卷积的城域交通出行规划系统</h3>
-                        </div>
-                        <div class="project-detail">
-                            <p><strong>项目简介：</strong>随着当今交通领域技术日益发展壮大、形势更加多元化，不同地区在不同季节常常涌现出丰富多变的地域路线网络结构。在众多智慧城市建设项目中，出行预测是其主要工作内容。本项目在历史观测数据的基础上对整个路网对象进行车流量及行人流量的预测，进一步为出行提供更多的便利，能够极大地促进智慧城市建设。</p>
-                            <p><strong>个人工作：</strong>本人阅读了大量文献，提出了一种新的深度学习算法，该算法对历史的路网对象观测数据进行分析，采用拓扑图分析技术将路网抽象为典型的时空图，此后融合了基于邻域图卷积模块对行车流量与行人流量进行预测，并基于 Pytorch 框架对模型进行了构建。</p>
-                        </div>
-                    </div>
-
-                    <!-- 项目4：一种基于 U-Net 模型的结构化病虫害诊断方法 -->
-                    <div class="project-item">
-                        <div class="project-header">
-                            <h3>一种基于 U-Net 模型的结构化病虫害诊断方法</h3>
-                        </div>
-                        <div class="project-detail">
-                            <p><strong>项目简介：</strong>在实际生产过程中，加入无人机侦测的方式以机器视觉为主进行农作物病虫害识别，使工作人员在仅需控制无人机路线的情况下对大片农作物区域全覆盖式的质量把控，从而提升产出效率。</p>
-                            <p><strong>个人工作：</strong>本人收集了部分农业数据集，并对其进行了预处理与数据清洗。此外提出了一种基于 U-Net 的深度学习模型实现了农作物虫害识别，并基于 Pytorch 构建了模型并进行训练，最终的实验结果超越了目前所有的农作物虫害识别模型，在测试集上的正确率达到了 100%。</p>
-                        </div>
-                    </div>
-
-                    <!-- 项目5：Everybody Compose 音乐生成工具 -->
-                    <div class="project-item">
-                        <div class="project-header">
-                            <h3>Everybody Compose 音乐生成工具</h3>
-                        </div>
-                        <div class="project-detail">
-                            <p><strong>项目简介：</strong>本项目是为业余音乐爱好者打造的一个创作自己音乐作品的有效工具。用户只需打出节拍，工具将自动为节拍填入音高，生成一段动人的旋律。</p>
-                            <p><strong>个人工作：</strong>本人从原本 MAESTRO 数据集数据集中的 MIDI 文件中分别提取出节拍和音高作为模型输入和输出，并对其进行随机切片，将数据划分为训练集、验证集和测试集三部分。基于 RNN、LSTM、transformer 等主流模型架构使用 pytorch 搭建模型，使用时长为 159.2 小时的 1139 条序列数据进行训练并用 126 条序列数据进行模型验证，对不同模型进行对比实验选择效果最好的作为生成模型，实现最终效果比基线提高了 27.15%。</p>
-                            <div class="project-images">
-                                <img src="images/image34.png" alt="RNN模型架构" class="content-image">
-                                <img src="images/image36.png" alt="LSTM with Attention架构" class="content-image">
-                                <img src="images/image38.png" alt="LSTM with Local Attention架构" class="content-image">
-                                <img src="images/image40.png" alt="Transformer架构" class="content-image">
-                            </div>
+                        <div class="project-tags">
+                            <span>Arduino</span>
+                            <span>物联网</span>
+                            <span>硬件</span>
                         </div>
                     </div>
                 </div>
-            </section>
-
-            <!-- 竞赛荣誉 -->
-            <section id="awards" class="section">
-                <h2 class="section-title">
-                    <i class="fas fa-award"></i> 竞赛荣誉
-                </h2>
-                <div class="section-content">
-                    <div class="awards-list">
-                        <div class="award-item">
-                            <span class="award-date">2019-11</span>
-                            <span class="award-name">第二届"全国高校绿色计算大赛"</span>
-                            <span class="award-level">二等奖（队长）</span>
-                        </div>
-                        <div class="award-item">
-                            <span class="award-date">2019~2023</span>
-                            <span class="award-name">第六届"互联网+"大学生创新创业大赛</span>
-                            <span class="award-level">省级立项一项，校级一项</span>
-                        </div>
-                        <div class="award-item">
-                            <span class="award-date">2020-09</span>
-                            <span class="award-name">第九届"挑战杯"大学生创业计划竞赛</span>
-                            <span class="award-level">省级银奖</span>
-                        </div>
-                        <div class="award-item">
-                            <span class="award-date">2020-11</span>
-                            <span class="award-name">第三届"全国高校绿色计算大赛"</span>
-                            <span class="award-level">三等奖</span>
-                        </div>
-                        <div class="award-item">
-                            <span class="award-date">2020-11</span>
-                            <span class="award-name">"外研社·国才杯" 全国英语大赛</span>
-                            <span class="award-level">校级初赛一等奖两项（写作、阅读）</span>
-                        </div>
-                        <div class="award-item">
-                            <span class="award-date">2020-12</span>
-                            <span class="award-name">云南大学第十一届全国大学生电子商务"创新、创意及创业"挑战赛</span>
-                            <span class="award-level">三等奖</span>
-                        </div>
-                        <div class="award-item">
-                            <span class="award-date">2018~2024</span>
-                            <span class="award-name">云南大学校级奖学金</span>
-                            <span class="award-level">二等奖一项，三等奖一项</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 校园经历 -->
-            <section id="campus" class="section">
-                <h2 class="section-title">
-                    <i class="fas fa-university"></i> 校园经历
-                </h2>
-                <div class="section-content">
-                    <div class="timeline-item">
-                        <div class="timeline-date">2019-2020</div>
-                        <div class="timeline-content">
-                            <h3>极客协会创新创业部 <span class="position">副部长</span></h3>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2020-2021</div>
-                        <div class="timeline-content">
-                            <h3>极客协会 <span class="position">副社长</span></h3>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2020-2021</div>
-                        <div class="timeline-content">
-                            <h3>书香雅社 <span class="position">副社长</span></h3>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2021-06</div>
-                        <div class="timeline-content">
-                            <h3>云南大学图书馆书香雅社 <span class="position">优秀社团</span></h3>
-                        </div>
-                    </div>
-                    <div class="timeline-item">
-                        <div class="timeline-date">2023年度</div>
-                        <div class="timeline-content">
-                            <h3>优秀团员</h3>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 其他技能 -->
-            <section class="section">
-                <h2 class="section-title">
-                    <i class="fas fa-language"></i> 其他技能
-                </h2>
-                <div class="section-content">
-                    <div class="other-skills">
-                        <div class="skill-item">
-                            <span class="skill-name">英语 CET4</span>
-                            <span class="skill-score">504分</span>
-                        </div>
-                        <div class="skill-item">
-                            <span class="skill-name">英语 CET6</span>
-                            <span class="skill-score">473分</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- 个人评价 -->
-            <section class="section">
-                <h2 class="section-title">
-                    <i class="fas fa-user-circle"></i> 个人评价
-                </h2>
-                <div class="section-content">
-                    <p class="evaluation">
-                        具备扎实的软件工程理论基础和丰富的全栈开发实践经验，尤其在构建高并发、高可用分布式系统方面有深入理解。具备相关实习经历，参与完成了两个国家项目、一个省级项目并取得不错成绩，能够理解需求并实现相关功能。拥有强烈的技术研究兴趣与创新能力，在人工智能（图神经网络、CV、NLP）、数据科学领域主导完成多个研究型项目，展现出独立解决问题和推进项目的能力。综合素质全面，具备优秀的团队协作能力、快速学习能力和抗压能力，致力于在计算机科学前沿领域进行更深入的学习与实践。
-                    </p>
-                </div>
-            </section>
+            </div>
         </div>
-    </main>
+    </section>
 
+    <!-- Research Section -->
+    <section class="section" id="research">
+        <div class="container">
+            <h2 class="section-title">科研与学术项目 <span class="section-subtitle">Research</span></h2>
+            <div class="research-list">
+                <div class="research-card">
+                    <div class="research-header">
+                        <h3 class="research-title">通用双阶段多阶超图对比协同学习框架</h3>
+                        <div class="research-type">异构图神经网络</div>
+                    </div>
+                    <div class="research-content">
+                        <p class="research-desc">提出异构超图建模方法，解决传统方法只聚合本地低阶信息而丢失全局高阶结构信息的问题。</p>
+                        <div class="research-images">
+                            <img src="images/image11.png" alt="方法概览">
+                            <img src="images/image14.png" alt="双尺度学习">
+                        </div>
+                        <div class="research-formulas">
+                            <img src="images/image12.png" alt="公式1">
+                            <img src="images/image13.png" alt="公式2">
+                            <img src="images/image15.png" alt="公式3">
+                            <img src="images/image16.png" alt="公式4">
+                        </div>
+                    </div>
+                    <div class="research-tags">
+                        <span>超图学习</span>
+                        <span>对比学习</span>
+                        <span>异构图</span>
+                    </div>
+                </div>
+
+                <div class="research-card">
+                    <div class="research-header">
+                        <h3 class="research-title">基于异构原子-基序图卷积的分子表征研究</h3>
+                        <div class="research-type">分子表示学习</div>
+                    </div>
+                    <div class="research-content">
+                        <p class="research-desc">提出异构原子-基序图表示方法，设计符合分子内部作用机制的信息传递策略，提高分子表征算法的泛化能力。</p>
+                    </div>
+                    <div class="research-tags">
+                        <span>图卷积</span>
+                        <span>分子表征</span>
+                        <span>深度学习</span>
+                    </div>
+                </div>
+
+                <div class="research-card">
+                    <div class="research-header">
+                        <h3 class="research-title">基于邻域图卷积的城域交通出行规划系统</h3>
+                        <div class="research-type">时空图预测</div>
+                    </div>
+                    <div class="research-content">
+                        <p class="research-desc">基于时空图分析技术预测车流量与行人流量，将路网抽象为时空图，融合邻域图卷积模块进行预测。</p>
+                    </div>
+                    <div class="research-tags">
+                        <span>时空图</span>
+                        <span>交通预测</span>
+                        <span>PyTorch</span>
+                    </div>
+                </div>
+
+                <div class="research-card">
+                    <div class="research-header">
+                        <h3 class="research-title">一种基于 U-Net 模型的结构化病虫害诊断方法</h3>
+                        <div class="research-type">计算机视觉</div>
+                    </div>
+                    <div class="research-content">
+                        <p class="research-desc">基于 U-Net 深度学习模型实现农作物虫害识别，测试集正确率达到 100%。</p>
+                    </div>
+                    <div class="research-tags">
+                        <span>U-Net</span>
+                        <span>图像分割</span>
+                        <span>农业AI</span>
+                    </div>
+                </div>
+
+                <div class="research-card">
+                    <div class="research-header">
+                        <h3 class="research-title">Everybody Compose 音乐生成工具</h3>
+                        <div class="research-type">音乐生成</div>
+                    </div>
+                    <div class="research-content">
+                        <p class="research-desc">基于 RNN、LSTM、Transformer 等模型架构的音乐生成系统，效果比基线提高 27.15%。</p>
+                        <div class="research-images">
+                            <img src="images/image34.png" alt="RNN架构">
+                            <img src="images/image36.png" alt="LSTM架构">
+                            <img src="images/image38.png" alt="Local Attention">
+                            <img src="images/image40.png" alt="Transformer">
+                        </div>
+                    </div>
+                    <div class="research-tags">
+                        <span>RNN</span>
+                        <span>LSTM</span>
+                        <span>Transformer</span>
+                        <span>音乐生成</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Awards Section -->
+    <section class="section section-alt" id="awards">
+        <div class="container">
+            <h2 class="section-title">竞赛荣誉 <span class="section-subtitle">Awards</span></h2>
+            <div class="awards-timeline">
+                <div class="award-item">
+                    <div class="award-date">2019.11</div>
+                    <div class="award-content">
+                        <h4>第二届"全国高校绿色计算大赛"</h4>
+                        <p>全国二等奖（队长）</p>
+                    </div>
+                </div>
+                <div class="award-item">
+                    <div class="award-date">2020.09</div>
+                    <div class="award-content">
+                        <h4>第九届"挑战杯"大学生创业计划竞赛</h4>
+                        <p>省级银奖</p>
+                    </div>
+                </div>
+                <div class="award-item">
+                    <div class="award-date">2020.11</div>
+                    <div class="award-content">
+                        <h4>第三届"全国高校绿色计算大赛"</h4>
+                        <p>全国三等奖</p>
+                    </div>
+                </div>
+                <div class="award-item">
+                    <div class="award-date">2019-2023</div>
+                    <div class="award-content">
+                        <h4>第六届"互联网+"大学生创新创业大赛</h4>
+                        <p>省级立项一项，校级一项</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <div class="footer-content">
-                <p>© 2024 叶晓艺. 保留所有权利.</p>
-                <div class="social-links">
-                    <a href="mailto:13003139690@163.com"><i class="fas fa-envelope"></i></a>
-                    <a href="tel:13003139690"><i class="fas fa-phone"></i></a>
-                </div>
-            </div>
+            <p class="footer-text">© 2025 叶晓艺 Xiaoyi Ye. All rights reserved.</p>
+            <p class="footer-contact">
+                <i class="fas fa-envelope"></i> 13003139690@163.com
+                <span class="divider">|</span>
+                <i class="fas fa-phone"></i> 13003139690
+            </p>
         </div>
     </footer>
 
     <script>
-        // 导航栏移动端切换
-        const navToggle = document.querySelector('.nav-toggle');
-        const navMenu = document.querySelector('.nav-menu');
-
-        navToggle.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
+        // 导航栏滚动效果
+        const navbar = document.querySelector('.navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
         });
 
-        // 点击导航链接后关闭菜单
-        document.querySelectorAll('.nav-link').forEach(link => {
-            link.addEventListener('click', () => {
-                navMenu.classList.remove('active');
+        // 移动端菜单切换
+        const navToggle = document.querySelector('.nav-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        navToggle.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            navToggle.classList.toggle('active');
+        });
+
+        // 平滑滚动
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    navMenu.classList.remove('active');
+                    navToggle.classList.remove('active');
+                }
             });
         });
 
-        // 滚动时添加导航栏阴影效果
-        window.addEventListener('scroll', () => {
-            const navbar = document.querySelector('.navbar');
-            if (window.scrollY > 50) {
-                navbar.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.15)';
-            } else {
-                navbar.style.boxShadow = '0 2px 10px rgba(0, 0, 0, 0.1)';
-            }
+        // 滚动动画
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('animate-in');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.edu-card, .project-card, .research-card, .award-item').forEach(el => {
+            el.classList.add('animate-on-scroll');
+            observer.observe(el);
         });
     </script>
 </body>
