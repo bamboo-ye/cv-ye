@@ -22,14 +22,17 @@
                     </div>
                 </div>
                 <div class="header-right">
-                    <div class="photo-placeholder">
-                        <i class="fas fa-user"></i>
+                    <div class="photo-container">
+                        <img src="images/image1.jpeg" alt="叶晓艺" class="profile-photo">
                     </div>
                 </div>
             </div>
             <div class="resume-download">
                 <a href="叶晓艺简历.pdf" download="叶晓艺简历.pdf" class="download-btn">
                     <i class="fas fa-download"></i> 下载简历 PDF
+                </a>
+                <a href="叶晓艺简历.docx" download="叶晓艺简历.docx" class="download-btn secondary">
+                    <i class="fas fa-file-word"></i> 下载简历 Word
                 </a>
             </div>
         </div>
@@ -157,6 +160,9 @@
                                     <li><strong>后端服务与可视化支撑：</strong>基于 Golang Gin 框架开发 RESTful API，直接读取 Flink 处理后写入 MySQL 的结构化数据，利用 Go Routine并发特性优化查询性能并监听MySQL变更；并将数据通过 echarts 以动态词云、折线图等呈现，同时使用WebSocket同步推送数据。</li>
                                 </ul>
                                 <p class="achievement"><i class="fas fa-trophy"></i> <strong>项目成果：</strong>全链路数据准确率超过 90%，相比传统批处理模式，数据更新时效提升超过20倍，平台服务多个实验室，帮助学术用户 "追踪领域动态" 的时间从 2 天缩短至 10 分钟。</p>
+                                <div class="project-image">
+                                    <img src="images/image2.png" alt="CVPR项目展示" class="content-image">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -178,7 +184,7 @@
                             <p><strong>项目职责：</strong>负责表情包合成平台后端架构设计与落地，针对算法服务耗时高、资源有限（易因突发流量过载不可用）、用户离线无法接收结果的核心痛点，主导突破高可用与消息可靠性难题，最终实现系统稳定支撑全业务场景。</p>
                             <ul>
                                 <li><strong>Kafka 消息队列 + 动态降级方案：</strong>将生成任务存储至Kafka，算法生成模块根据负载决策生成任务的消费，算法生成模块消费者生成结果后推送至用户端，成功降低算法服务过载率，保障高峰期服务可用性。</li>
-                                <li><strong>基于 Redis Cluster 设计实现混合推送架构：</strong>利用 Pub/Sub 机制实现...</li>
+                                <li><strong>基于 Redis Cluster 设计实现混合推送架构：</strong>利用 Pub/Sub 机制实现实时推送，结合消息队列保证离线用户也能收到生成结果，实现消息的可靠投递。</li>
                             </ul>
                         </div>
                     </div>
