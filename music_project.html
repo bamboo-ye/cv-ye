@@ -1,0 +1,1317 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Everybody Compose 音乐生成工具</title>
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #8B5CF6;
+            --secondary: #A78BFA;
+            --accent: #EC4899;
+            --bg-gradient-start: #F5F3FF;
+            --bg-gradient-end: #FDF2F8;
+            --card-bg: #FFFFFF;
+            --text-primary: #1F2937;
+            --text-secondary: #6B7280;
+            --text-muted: #9CA3AF;
+            --border: #E5E7EB;
+            --shadow: rgba(139, 92, 246, 0.15);
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-start) 0%, var(--bg-gradient-end) 100%);
+            color: var(--text-primary);
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* Background Decorations */
+        .bg-decorations {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .music-note {
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0.18;
+            color: var(--primary);
+            animation: float 15s ease-in-out infinite;
+        }
+
+        .music-note:nth-child(1) { top: 8%; left: 5%; animation-delay: 0s; }
+        .music-note:nth-child(2) { top: 25%; right: 8%; animation-delay: -4s; }
+        .music-note:nth-child(3) { top: 55%; left: 10%; animation-delay: -8s; }
+        .music-note:nth-child(4) { top: 75%; right: 5%; animation-delay: -12s; }
+        .music-note:nth-child(5) { top: 40%; left: 50%; animation-delay: -6s; font-size: 4rem; }
+        .music-note:nth-child(6) { top: 90%; left: 30%; animation-delay: -10s; }
+        .music-note:nth-child(7) { top: 15%; right: 40%; animation-delay: -2s; }
+
+        /* Scholar Symbols */
+        .scholar-symbol {
+            position: absolute;
+            font-size: 2.5rem;
+            opacity: 0.2;
+            color: var(--accent);
+            animation: scholarFloat 12s ease-in-out infinite;
+        }
+
+        .scholar-symbol:nth-child(8) { top: 18%; right: 22%; animation-delay: -2s; }
+        .scholar-symbol:nth-child(9) { top: 65%; left: 18%; animation-delay: -7s; }
+        .scholar-symbol:nth-child(10) { top: 12%; left: 30%; animation-delay: -10s; }
+        .scholar-symbol:nth-child(11) { top: 82%; right: 18%; animation-delay: -5s; }
+        .scholar-symbol:nth-child(12) { top: 45%; right: 30%; animation-delay: -8s; }
+        .scholar-symbol:nth-child(13) { top: 70%; left: 45%; animation-delay: -4s; }
+
+        /* Gradient Background Layer */
+        .bg-gradient-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 20% 20%, rgba(139, 92, 246, 0.08) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 80%, rgba(236, 72, 153, 0.08) 0%, transparent 50%),
+                        radial-gradient(ellipse at 50% 50%, rgba(167, 139, 250, 0.06) 0%, transparent 60%);
+            pointer-events: none;
+            z-index: 1;
+            animation: bgPulse 8s ease-in-out infinite;
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        /* Header / Hero Section */
+        header {
+            position: relative;
+            z-index: 10;
+            padding: 6rem 2rem 4rem;
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            display: inline-block;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(5deg); }
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            font-weight: 400;
+        }
+
+        .author {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 2rem;
+        }
+
+        .hero-badges {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+            margin-top: 1.5rem;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            box-shadow: 0 4px 15px var(--shadow);
+            transition: all 0.3s ease;
+        }
+
+        .badge:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px var(--shadow);
+            border-color: var(--primary);
+        }
+
+        .badge i {
+            color: var(--primary);
+        }
+
+        /* Navigation */
+        nav {
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+            background: var(--bg-gradient-start);
+        }
+
+        /* Main Content */
+        .container {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+
+        section {
+            margin-bottom: 4rem;
+        }
+
+        h2 {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        h2 i {
+            font-size: 1.7rem;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            box-shadow: 0 4px 20px var(--shadow);
+            border: 1px solid var(--border);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px var(--shadow);
+        }
+
+        .card h3 {
+            font-size: 1.4rem;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .card h3 i {
+            color: var(--primary);
+            font-size: 1.3rem;
+            animation: iconSpin 3s ease-in-out infinite;
+        }
+
+        @keyframes iconSpin {
+            0%, 100% { transform: rotate(0deg) scale(1); }
+            50% { transform: rotate(10deg) scale(1.1); }
+        }
+
+        .card p {
+            color: var(--text-secondary);
+            line-height: 2;
+        }
+
+        /* Features Grid */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem;
+            text-align: center;
+            box-shadow: 0 4px 20px var(--shadow);
+            border: 1px solid var(--border);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 20px 50px var(--shadow);
+        }
+
+        .feature-icon {
+            width: 90px;
+            height: 90px;
+            margin: 0 auto 1.5rem;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            color: white;
+            animation: iconPulse 3s ease-in-out infinite;
+        }
+
+        @keyframes iconPulse {
+            0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
+            50% { transform: scale(1.05); box-shadow: 0 0 0 15px rgba(139, 92, 246, 0); }
+        }
+
+        .feature-card h4 {
+            font-size: 1.2rem;
+            color: var(--text-primary);
+            margin-bottom: 0.8rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        /* Stats Cards */
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 2rem 1.5rem;
+            text-align: center;
+            box-shadow: 0 4px 20px var(--shadow);
+            border: 1px solid var(--border);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px var(--shadow);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        .highlight {
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        /* Results Table */
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1.5rem;
+            background: var(--card-bg);
+            border-radius: 1rem;
+            overflow: hidden;
+            box-shadow: 0 4px 15px var(--shadow);
+            table-layout: fixed;
+        }
+
+        .results-table th,
+        .results-table td {
+            padding: 0.8rem 0.5rem;
+            text-align: center;
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+            font-size: 0.85rem;
+        }
+
+        /* Enhanced animations */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg) scale(1); }
+            25% { transform: translateY(-30px) rotate(10deg) scale(1.1); }
+            50% { transform: translateY(0) rotate(0deg) scale(1); }
+            75% { transform: translateY(30px) rotate(-10deg) scale(0.9); }
+        }
+
+        @keyframes bgPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.7; transform: scale(1.02); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            25% { transform: translateY(-20px) rotate(10deg); }
+            50% { transform: translateY(0) rotate(0deg); }
+            75% { transform: translateY(-10px) rotate(-5deg); }
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 5px rgba(139, 92, 246, 0.3); }
+            50% { box-shadow: 0 0 20px rgba(139, 92, 246, 0.6), 0 0 30px rgba(236, 72, 153, 0.4); }
+        }
+
+        .card:hover,
+        .feature-card:hover,
+        .stat-card:hover {
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        h2 {
+            animation: slideIn 0.8s ease-out;
+        }
+
+        .results-table thead {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+            color: white;
+        }
+
+        .results-table tbody tr {
+            transition: background 0.3s ease;
+        }
+
+        .results-table tbody tr:hover {
+            background: var(--bg-gradient-start);
+        }
+
+        .results-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Scroll Down Button */
+        .scroll-down-btn {
+            position: absolute;
+            bottom: 3rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            z-index: 20;
+            transition: all 0.3s ease;
+        }
+
+        .scroll-down-btn i {
+            font-size: 2.5rem;
+            color: var(--primary);
+            animation: scrollBounce 2s ease-in-out infinite;
+        }
+
+        .scroll-down-text {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            font-weight: 500;
+            letter-spacing: 0.1rem;
+            text-transform: uppercase;
+        }
+
+        .scroll-down-btn:hover {
+            transform: translateX(-50%) scale(1.1);
+        }
+
+        .scroll-down-btn:hover i {
+            color: var(--accent);
+        }
+
+        @keyframes scrollBounce {
+            0%, 100% { transform: translateY(0); opacity: 1; }
+            50% { transform: translateY(10px); opacity: 0.7; }
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            z-index: 10;
+            padding: 3rem 2rem;
+            margin-top: 4rem;
+            background: linear-gradient(135deg, rgba(139, 92, 246, 0.1) 0%, rgba(236, 72, 153, 0.1) 100%);
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-section {
+            text-align: center;
+        }
+
+        .footer-section h3 {
+            font-size: 1.3rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .footer-subtitle {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .footer-author {
+            color: var(--text-primary);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .footer-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .footer-tag {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            padding: 0.4rem 1rem;
+            border-radius: 2rem;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            transition: all 0.3s ease;
+        }
+
+        .footer-tag:hover {
+            border-color: var(--primary);
+            color: var(--primary);
+            transform: translateY(-2px);
+        }
+
+        .footer-features p {
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .footer-features i {
+            color: var(--primary);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .footer-bottom p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin: 0;
+        }
+
+        .footer-divider {
+            color: var(--text-muted);
+        }
+
+        footer a {
+            color: var(--primary);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--accent);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .logo {
+                font-size: 3.5rem;
+            }
+
+            .container {
+                padding: 2rem 1rem;
+            }
+
+            .nav-container {
+                gap: 1rem;
+            }
+
+            .nav-link {
+                font-size: 0.9rem;
+                padding: 0.4rem 0.8rem;
+            }
+        }
+
+        /* Intersection Observer animations */
+        .card,
+        .feature-card,
+        .stat-card {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+    </style>
+</head>
+<body>
+    <!-- Background Decorations -->
+    <div class="bg-decorations">
+        <div class="music-note"><i class="fas fa-music"></i></div>
+        <div class="music-note"><i class="fas fa-guitar"></i></div>
+        <div class="music-note"><i class="fas fa-drum"></i></div>
+        <div class="music-note"><i class="fas fa-headphones"></i></div>
+        <div class="music-note"><i class="fas fa-compact-disc"></i></div>
+        <div class="music-note"><i class="fas fa-star"></i></div>
+        <div class="music-note"><i class="fas fa-heart"></i></div>
+        <div class="scholar-symbol">𝄞</div>
+        <div class="scholar-symbol">𝅘𝅥</div>
+        <div class="scholar-symbol">𝅗𝅥</div>
+        <div class="scholar-symbol">𝄢</div>
+        <div class="scholar-symbol">♪</div>
+        <div class="scholar-symbol">♫</div>
+    </div>
+    <div class="bg-gradient-layer"></div>
+
+    <!-- Header -->
+    <header style="min-height: 100vh; display: flex; align-items: center; justify-content: center;">
+        <div class="hero-content">
+            <div class="logo">
+                <i class="fas fa-music"></i>
+            </div>
+            <h1>Everybody Compose</h1>
+            <p class="subtitle">基于深度学习的音乐生成工具</p>
+            <p class="author">作者：叶晓艺</p>
+            <div class="hero-badges">
+                <span class="badge">
+                    <i class="fas fa-project-diagram"></i> RNN/LSTM
+                </span>
+                <span class="badge">
+                    <i class="fas fa-brain"></i> Transformer
+                </span>
+                <span class="badge">
+                    <i class="fas fa-search"></i> 注意力机制
+                </span>
+                <span class="badge">
+                    <i class="fas fa-file-audio"></i> 旋律生成
+                </span>
+            </div>
+
+            <!-- Scroll Down Button -->
+            <div class="scroll-down-btn" id="scrollDownBtn">
+                <i class="fas fa-chevron-down"></i>
+                <div class="scroll-down-text">探索更多</div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#innovation" class="nav-link">主要贡献</a>
+            <a href="#background" class="nav-link">研究背景</a>
+            <a href="#related" class="nav-link">相关工作</a>
+            <a href="#overview" class="nav-link">方法概述</a>
+            <a href="#results" class="nav-link">实验结果</a>
+            <a href="#features" class="nav-link">核心特性</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <section id="innovation">
+            <h2 class="section-title"><i class="fas fa-lightbulb"></i>主要贡献与创新</h2>
+            
+            <div class="card">
+                <h3><i class="fas fa-file-audio"></i>数据处理与构建</h3>
+                <p>从MAESTRO数据集中的MIDI文件分别提取节拍和音高作为模型输入和输出，进行随机切片并划分为训练集、验证集和测试集。</p>
+            </div>
+            
+            <div class="card" style="margin-top: 1.5rem;">
+                <h3><i class="fas fa-layer-group"></i>多模型对比实验</h3>
+                <p>基于RNN、LSTM、Transformer等主流模型架构使用PyTorch搭建模型，使用1139条序列数据（159.2小时）进行训练，126条序列数据进行验证，对比选择效果最好的生成模型。</p>
+            </div>
+
+            <div class="stat-grid">
+                <div class="stat-card">
+                    <div class="stat-number">1139</div>
+                    <div class="stat-label">训练序列数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">159.2h</div>
+                    <div class="stat-label">训练时长</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">126</div>
+                    <div class="stat-label">验证序列数</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number">+27.15%</div>
+                    <div class="stat-label">效果提升</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="background">
+            <h2 class="section-title"><i class="fas fa-city"></i>研究背景</h2>
+            
+            <div class="card">
+                <h3><i class="fas fa-heart"></i>业余音乐爱好者需求</h3>
+                <p>随着数字音乐的普及，越来越多的业余音乐爱好者希望创作自己的音乐作品，但往往缺乏专业的音乐理论知识和作曲能力。</p>
+            </div>
+            
+            <div class="card" style="margin-top: 1.5rem;">
+                <h3><i class="fas fa-robot"></i>AI音乐生成技术</h3>
+                <p>深度学习在音乐生成领域的快速发展，使得通过AI辅助音乐创作成为可能。基于序列模型的旋律生成技术为业余爱好者提供了新的创作途径。</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <h4>降低门槛</h4>
+                    <p>让无专业音乐知识的用户也能创作旋律</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-palette"></i>
+                    </div>
+                    <h4>创作自由</h4>
+                    <p>用户只需输入节拍，AI自动生成旋律</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h4>动人旋律</h4>
+                    <p>基于大量音乐数据学习生成动听的旋律</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="related">
+            <h2 class="section-title"><i class="fas fa-book"></i>相关工作</h2>
+            
+            <div class="card">
+                <h3><i class="fas fa-project-diagram"></i>循环神经网络 (RNN/LSTM)</h3>
+                <p>RNN和LSTM在序列建模任务中表现出色，被广泛应用于音乐生成，能够捕获音乐序列中的长期依赖关系。</p>
+            </div>
+            
+            <div class="card" style="margin-top: 1.5rem;">
+                <h3><i class="fas fa-brain"></i>Transformer架构</h3>
+                <p>基于自注意力机制的Transformer在自然语言处理和音乐生成领域取得突破，能够更好地建模长距离依赖关系。</p>
+            </div>
+
+            <div class="card" style="margin-top: 1.5rem;">
+                <h3><i class="fas fa-database"></i>MAESTRO数据集</h3>
+                <p>MAESTRO数据集包含大量高质量钢琴MIDI文件，为音乐生成模型训练提供了丰富的数据资源。</p>
+            </div>
+        </section>
+
+        <section id="overview">
+            <h2 class="section-title"><i class="fas fa-sitemap"></i>方法概述</h2>
+            
+            <div class="card">
+                <h3><i class="fas fa-project-diagram"></i>1. Baseline: Decoder Only Vanilla RNN</h3>
+                <ul style="color: var(--text-secondary); margin-left: 1.5rem; line-height: 2; margin-top: 1rem;">
+                    <li>存在梯度消失问题</li>
+                    <li>不能访问未来的节拍信息</li>
+                    <li>无法有效捕获音乐中的长期依赖关系</li>
+                </ul>
+                <div style="margin-top: 1.5rem; text-align: center;">
+                    <img src="images/research/rnn_vanilla.png" alt="Vanilla RNN Architecture" style="max-width: 100%; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                </div>
+            </div>
+            
+            <div class="card" style="margin-top: 1.5rem;">
+                <h3><i class="fas fa-brain"></i>2. LSTM with Full Attention</h3>
+                <ul style="color: var(--text-secondary); margin-left: 1.5rem; line-height: 2; margin-top: 1rem;">
+                    <li>缓解RNN中的梯度消失问题</li>
+                    <li>以Bi-LSTM作为编码器</li>
+                    <li>以单向LSTM作为解码器</li>
+                    <li>添加注意力机制，允许解码器更有效利用编码器输出中最相关的信息</li>
+                </ul>
+                <div style="margin-top: 1.5rem; text-align: center;">
+                    <img src="images/research/lstm_attention.png" alt="LSTM with Full Attention" style="max-width: 100%; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 1.5rem;">
+                <h3><i class="fas fa-search"></i>3. LSTM with Local Attention</h3>
+                <ul style="color: var(--text-secondary); margin-left: 1.5rem; line-height: 2; margin-top: 1rem;">
+                    <li>表现更好，更容易训练</li>
+                    <li>在时间t处的注意机制是局部的，而不是取整个上下文序列的加权平均值</li>
+                    <li>节拍和音高有一个强大的一对一的关系，所以使用同一时间t的隐藏状态就提供了足够的信息来推断节拍</li>
+                    <li>第二个LSTM只取ht，受到编码器-解码器的启发</li>
+                    <li>将第二个LSTM的初始状态设置为第一个双向LSTM的最终隐藏状态，使得解码器对整体节拍结构有更好的认识</li>
+                </ul>
+                <div style="margin-top: 1.5rem; text-align: center;">
+                    <img src="images/research/lstm_local.png" alt="LSTM with Local Attention" style="max-width: 100%; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 1.5rem;">
+                <h3><i class="fas fa-layer-group"></i>4. Transformer with Relative Position Representation</h3>
+                <ul style="color: var(--text-secondary); margin-left: 1.5rem; line-height: 2; margin-top: 1rem;">
+                    <li>避免对递归架构的依赖</li>
+                    <li>利用attention来捕捉输入和输出之间的全局依赖关系</li>
+                </ul>
+                <div style="margin-top: 1.5rem; text-align: center;">
+                    <img src="images/research/transformer_relative.png" alt="Transformer with Relative Position Representation" style="max-width: 100%; border-radius: 0.5rem; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+                </div>
+            </div>
+        </section>
+
+        <section id="results">
+            <h2 class="section-title"><i class="fas fa-chart-bar"></i>实验结果</h2>
+            
+            <div class="card">
+                <h3><i class="fas fa-sliders-h"></i>LSTM with Full Attention 超参数调优</h3>
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>lr</th>
+                            <th>Seq_len</th>
+                            <th>Embed_dim</th>
+                            <th>Encoder_hidden_dim</th>
+                            <th>Decoder_hidden_dim</th>
+                            <th>Train Accuracy</th>
+                            <th>Validation Accuracy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1e-3</td>
+                            <td>64</td>
+                            <td>32</td>
+                            <td>256</td>
+                            <td>512</td>
+                            <td>0.4058</td>
+                            <td>0.3750</td>
+                        </tr>
+                        <tr>
+                            <td>1e-3</td>
+                            <td>64</td>
+                            <td>32</td>
+                            <td>512</td>
+                            <td>512</td>
+                            <td>0.3927</td>
+                            <td>0.3620</td>
+                        </tr>
+                        <tr>
+                            <td>1e-3</td>
+                            <td>64</td>
+                            <td>32</td>
+                            <td>512</td>
+                            <td>1024</td>
+                            <td><span class="highlight">0.7234</span></td>
+                            <td><span class="highlight">0.4100</span></td>
+                        </tr>
+                        <tr>
+                            <td>1e-3</td>
+                            <td>64</td>
+                            <td>128</td>
+                            <td>512</td>
+                            <td>1024</td>
+                            <td>0.5546</td>
+                            <td>0.4095</td>
+                        </tr>
+                        <tr>
+                            <td>5e-3</td>
+                            <td>64</td>
+                            <td>32</td>
+                            <td>512</td>
+                            <td>1024</td>
+                            <td>0.3978</td>
+                            <td>0.3506</td>
+                        </tr>
+                        <tr>
+                            <td>1e-4</td>
+                            <td>64</td>
+                            <td>32</td>
+                            <td>512</td>
+                            <td>1024</td>
+                            <td>0.3397</td>
+                            <td>0.3350</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card" style="margin-top: 1.5rem;">
+                <h3><i class="fas fa-search"></i>LSTM with Local Attention 超参数调优 (400 epochs)</h3>
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>lr</th>
+                            <th>Seq_len</th>
+                            <th>Embed_dim</th>
+                            <th>hidden_dim</th>
+                            <th>Train Accuracy</th>
+                            <th>Validation Accuracy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1e-4</td>
+                            <td>64</td>
+                            <td>32</td>
+                            <td>1024</td>
+                            <td>0.5046</td>
+                            <td>0.3820</td>
+                        </tr>
+                        <tr>
+                            <td>1e-3</td>
+                            <td>64</td>
+                            <td>32</td>
+                            <td>1024</td>
+                            <td>0.6023</td>
+                            <td>0.3748</td>
+                        </tr>
+                        <tr>
+                            <td>5e-3</td>
+                            <td>64</td>
+                            <td>32</td>
+                            <td>1024</td>
+                            <td>0.5028</td>
+                            <td>0.3864</td>
+                        </tr>
+                        <tr>
+                            <td>1e-3</td>
+                            <td>64</td>
+                            <td>128</td>
+                            <td>1024</td>
+                            <td>0.4841</td>
+                            <td>0.3860</td>
+                        </tr>
+                        <tr>
+                            <td>1e-3</td>
+                            <td>64</td>
+                            <td>32</td>
+                            <td>1024</td>
+                            <td><span class="highlight">0.6068</span></td>
+                            <td><span class="highlight">0.4515</span></td>
+                        </tr>
+                        <tr>
+                            <td>1e-4</td>
+                            <td>64</td>
+                            <td>32</td>
+                            <td>1024</td>
+                            <td>0.5904</td>
+                            <td>0.3984</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card" style="margin-top: 1.5rem;">
+                <h3><i class="fas fa-layer-group"></i>Transformer with Relative Position Representation 超参数调优</h3>
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>lr</th>
+                            <th>(encoder_layer,decoder_layer)</th>
+                            <th>head</th>
+                            <th>Encoder_dim</th>
+                            <th>hidden_dim</th>
+                            <th>Train Accuracy</th>
+                            <th>Validation Accuracy</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1e-3</td>
+                            <td>(3,3)</td>
+                            <td>8</td>
+                            <td>64</td>
+                            <td>1024</td>
+                            <td>0.3920</td>
+                            <td>0.3877</td>
+                        </tr>
+                        <tr>
+                            <td>1e-3</td>
+                            <td>(3,3)</td>
+                            <td>8</td>
+                            <td>128</td>
+                            <td>512</td>
+                            <td>0.4280</td>
+                            <td>0.4070</td>
+                        </tr>
+                        <tr>
+                            <td>1e-3</td>
+                            <td>(3,3)</td>
+                            <td>4</td>
+                            <td>128</td>
+                            <td>1024</td>
+                            <td>0.4105</td>
+                            <td>0.3898</td>
+                        </tr>
+                        <tr>
+                            <td>1e-3</td>
+                            <td>(3,6)</td>
+                            <td>8</td>
+                            <td>128</td>
+                            <td>1024</td>
+                            <td>0.4106</td>
+                            <td>0.3908</td>
+                        </tr>
+                        <tr>
+                            <td>1e-3</td>
+                            <td>(3,3)</td>
+                            <td>8</td>
+                            <td>128</td>
+                            <td>1024</td>
+                            <td><span class="highlight">0.4591</span></td>
+                            <td><span class="highlight">0.4348</span></td>
+                        </tr>
+                        <tr>
+                            <td>5e-4</td>
+                            <td>(3,3)</td>
+                            <td>8</td>
+                            <td>128</td>
+                            <td>1024</td>
+                            <td>0.4480</td>
+                            <td>0.4262</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card" style="margin-top: 1.5rem;">
+                <h3><i class="fas fa-trophy"></i>模型对比 - Train/Validation Accuracy</h3>
+                <table class="results-table">
+                    <thead>
+                        <tr>
+                            <th>model</th>
+                            <th>Train Accuracy</th>
+                            <th>Validation Accuracy</th>
+                            <th>improve</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Baseline (Decoder Only Vanilla RNN)</td>
+                            <td>0.4405</td>
+                            <td>0.3551</td>
+                            <td>/</td>
+                        </tr>
+                        <tr>
+                            <td>LSTM with Full Attention</td>
+                            <td><span class="highlight">0.7234</span></td>
+                            <td>0.4100</td>
+                            <td>9.96%</td>
+                        </tr>
+                        <tr>
+                            <td><strong>LSTM with Local Attention</strong></td>
+                            <td>0.6068</td>
+                            <td><span class="highlight">0.4515</span></td>
+                            <td><span class="highlight">27.15%</span></td>
+                        </tr>
+                        <tr>
+                            <td>Transformer with Relative Position Representation</td>
+                            <td>0.4591</td>
+                            <td>0.4348</td>
+                            <td>22.44%</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section id="features">
+            <h2 class="section-title"><i class="fas fa-star"></i>核心特性</h2>
+            
+            <div class="features-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-hand-pointer"></i>
+                    </div>
+                    <h4>简单交互</h4>
+                    <p>用户只需输入节拍，无需专业音乐知识</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h4>智能音高</h4>
+                    <p>AI自动为节拍填入合适的音高</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-sparkles"></i>
+                    </div>
+                    <h4>动人旋律</h4>
+                    <p>生成富有音乐性和感染力的旋律片段</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h4>多模型架构</h4>
+                    <p>包含RNN、LSTM、Transformer等多种模型</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h4>注意力机制</h4>
+                    <p>支持Full Attention和Local Attention两种机制</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-trophy"></i>
+                    </div>
+                    <h4>性能优异</h4>
+                    <p>相比基线方法效果提升27.15%</p>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 3rem;">
+                <h3><i class="fas fa-rocket"></i>应用前景</h3>
+                <p style="margin-bottom: 1rem;">
+                    本系统可广泛应用于以下场景：
+                </p>
+                <ul style="color: var(--text-secondary); margin-left: 1.5rem; line-height: 2;">
+                    <li><strong>音乐创作助手</strong>：为业余爱好者提供灵感和创作起点</li>
+                    <li><strong>音乐教育工具</strong>：辅助音乐教学，展示旋律生成原理</li>
+                    <li><strong>短视频配乐</strong>：快速生成适合视频的背景音乐片段</li>
+                    <li><strong>游戏音效设计</strong>：为游戏动态生成个性化背景音乐</li>
+                    <li><strong>创意内容生产</strong>：为播客、广播剧等创作原创音乐</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3><i class="fas fa-music"></i> Everybody Compose</h3>
+                <p class="footer-subtitle">基于深度学习的音乐生成工具</p>
+                <p class="footer-author">作者：叶晓艺</p>
+            </div>
+
+            <div class="footer-section">
+                <h3><i class="fas fa-cubes"></i> 技术栈</h3>
+                <div class="footer-tags">
+                    <span class="footer-tag">RNN/LSTM</span>
+                    <span class="footer-tag">Transformer</span>
+                    <span class="footer-tag">注意力机制</span>
+                    <span class="footer-tag">PyTorch</span>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h3><i class="fas fa-chart-line"></i> 成果亮点</h3>
+                <div class="footer-features">
+                    <p><i class="fas fa-check-circle"></i> 使用 1139 条序列数据训练</p>
+                    <p><i class="fas fa-check-circle"></i> 训练时长达 159.2 小时</p>
+                    <p><i class="fas fa-check-circle"></i> 相比基线方法提升 27.15%</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 Everybody Compose. All rights reserved.</p>
+            <p class="footer-divider">|</p>
+            <p>采用深度学习技术 · 让音乐创作更简单</p>
+        </div>
+    </footer>
+
+    <script>
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.animationPlayState = 'running';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.card, .feature-card, .stat-card').forEach(el => {
+            el.style.animationPlayState = 'paused';
+            observer.observe(el);
+        });
+
+        // Smooth scroll for navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                scrollToSection(targetId);
+            });
+        });
+
+        // 滚动到指定元素，考虑导航栏高度
+        function scrollToSection(elementId) {
+            const element = document.getElementById(elementId);
+            const nav = document.querySelector('nav');
+            const navHeight = nav.offsetHeight || 60;
+            const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+            const offsetPosition = elementPosition - navHeight - 20;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
+
+        // Scroll Down Button
+        document.getElementById('scrollDownBtn').addEventListener('click', () => {
+            scrollToSection('innovation');
+        });
+    </script>
+</body>
+</html>

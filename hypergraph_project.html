@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>通用双阶段多阶超图对比协同学习框架 | 科研项目介绍</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2c5282;
+            --secondary: #2b6cb0;
+            --accent: #1a365d;
+            --bg-light: #f8f9fa;
+            --bg-card: rgba(255, 255, 255, 0.95);
+            --text-primary: #2c3e50;
+            --text-muted: #5a6c7d;
+            --purple-light: #e8f0fe;
+            --blue-light: #dbeafe;
+        }
+
+        body {
+            font-family: 'Times New Roman', 'Segoe UI', 'Microsoft YaHei', serif;
+            background: #f8f9fa;
+            color: #2c3e50;
+            line-height: 1.8;
+            overflow-x: hidden;
+        }
+
+        /* 首行缩进 */
+        .card p,
+        .feature-card p,
+        .innovation-item p {
+            text-indent: 2em;
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 2rem;
+            background: linear-gradient(135deg, #1e3a5f 0%, #2d4a6f 30%, #3d5a80 60%, #5d7a9f 100%);
+            color: white;
+            overflow: hidden;
+        }
+
+        .graph-decoration {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.2;
+        }
+
+        .graph-node {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.6);
+        }
+
+        .graph-edge {
+            position: absolute;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.3);
+            transform-origin: left center;
+        }
+
+        .hyperedge {
+            position: absolute;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+        }
+
+        .author-info {
+            margin-top: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            opacity: 0.95;
+        }
+
+        .author-info i {
+            margin-right: 0.5rem;
+        }
+
+        .hero-content {
+            animation: fadeInUp 1s ease-out 0.3s both;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .project-icon {
+            font-size: 6rem;
+            margin-bottom: 1.5rem;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-20px); }
+        }
+
+        @keyframes bounceScroll {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(20px, -15px) rotate(5deg); }
+            50% { transform: translate(-10px, -30px) rotate(-5deg); }
+            75% { transform: translate(-25px, -10px) rotate(3deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 0.2; }
+            50% { transform: scale(1.2); opacity: 0.3; }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes twinkle {
+            0%, 100% { opacity: 0.1; transform: scale(0.8); }
+            50% { opacity: 0.4; transform: scale(1.2); }
+        }
+
+        .project-title {
+            font-size: 3rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .project-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.95;
+            margin-bottom: 2rem;
+        }
+
+        .hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(8px);
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .badge:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: auto;
+            text-align: center;
+            animation: fadeInUp 1s ease-out 1.5s both, bounceScroll 2s ease-in-out infinite 1.8s;
+            cursor: pointer;
+        }
+
+        .scroll-indicator i {
+            font-size: 2rem;
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            padding: 0.8rem 2rem;
+            z-index: 1000;
+            border-bottom: 2px solid #e2e8f0;
+            transform: translateY(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        nav.visible {
+            transform: translateY(0);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 0.4rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: white;
+            background: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        section {
+            margin-bottom: 5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-primary);
+        }
+
+        .section-title::before {
+            content: '';
+            width: 6px;
+            height: 3.5rem;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 4px;
+        }
+
+        .card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(44, 82, 130, 0.08);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 8px 24px rgba(44, 82, 130, 0.12);
+        }
+
+        .card h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card h3 i {
+            color: var(--primary);
+            font-size: 1.6rem;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.9;
+            text-align: justify;
+        }
+
+        .innovation-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .innovation-item {
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #f0f4f8 0%, #e8f0fe 100%);
+            border-left: 4px solid var(--primary);
+            border-radius: 0 12px 12px 0;
+            transition: all 0.3s;
+        }
+
+        .innovation-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 16px rgba(44, 82, 130, 0.12);
+        }
+
+        .innovation-item strong {
+            color: var(--primary);
+            font-size: 1.15rem;
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .image-container {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(44, 82, 130, 0.08);
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .image-caption {
+            margin-top: 1rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: linear-gradient(135deg, #f0f4f8 0%, #e8f0fe 100%);
+            border: 2px solid #c9d8eb;
+            border-radius: 16px;
+            padding: 1.8rem;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 8px 24px rgba(44, 82, 130, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .feature-card h4 {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            text-align: justify;
+        }
+
+        footer {
+            background: linear-gradient(180deg, white 0%, #f8f9fa 100%);
+            text-align: center;
+            padding: 2.5rem 2rem;
+            color: var(--text-muted);
+            border-top: 2px solid #e2e8f0;
+        }
+
+        footer p {
+            font-weight: 500;
+            margin: 0.3rem 0;
+        }
+
+        @media (max-width: 768px) {
+            .project-title {
+                font-size: 2rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="hero" id="hero">
+        <!-- Graph Decoration Elements -->
+        <div class="graph-decoration" style="top: 10%; left: 5%; animation: float 8s ease-in-out infinite;">
+            <div class="graph-node" style="left: 0; top: 0; width: 30px; height: 30px;"></div>
+            <div class="graph-node" style="left: 60px; top: 40px; width: 25px; height: 25px; animation: twinkle 3s ease-in-out infinite 0.5s;"></div>
+            <div class="graph-node" style="left: 100px; top: -10px; width: 35px; height: 35px; animation: twinkle 2.5s ease-in-out infinite 1s;"></div>
+            <div class="graph-edge" style="left: 15px; top: 15px; width: 50px; transform: rotate(35deg);"></div>
+            <div class="graph-edge" style="left: 72px; top: 32px; width: 45px; transform: rotate(-70deg);"></div>
+        </div>
+
+        <div class="graph-decoration" style="top: 20%; right: 8%; animation: float 9s ease-in-out infinite 1s;">
+            <div class="graph-node" style="left: 0; top: 0; width: 35px; height: 35px;"></div>
+            <div class="graph-node" style="left: -50px; top: 30px; width: 28px; height: 28px; animation: twinkle 3.2s ease-in-out infinite 0.8s;"></div>
+            <div class="graph-node" style="left: -20px; top: 80px; width: 32px; height: 32px; animation: twinkle 2.8s ease-in-out infinite 1.2s;"></div>
+            <div class="graph-edge" style="left: 17px; top: 17px; width: 45px; transform: rotate(120deg);"></div>
+            <div class="graph-edge" style="left: -5px; top: 55px; width: 40px; transform: rotate(40deg);"></div>
+        </div>
+
+        <div class="graph-decoration" style="bottom: 25%; left: 10%; animation: float 7s ease-in-out infinite 2s;">
+            <div class="hyperedge" style="left: -30px; top: -30px; width: 120px; height: 120px; animation: pulse 4s ease-in-out infinite;"></div>
+            <div class="graph-node" style="left: 0; top: 0; width: 25px; height: 25px;"></div>
+            <div class="graph-node" style="left: 70px; top: 10px; width: 28px; height: 28px; animation: twinkle 2.5s ease-in-out infinite 0.3s;"></div>
+            <div class="graph-node" style="left: 35px; top: 70px; width: 30px; height: 30px; animation: twinkle 2.7s ease-in-out infinite 0.6s;"></div>
+        </div>
+
+        <div class="graph-decoration" style="bottom: 15%; right: 15%; animation: float 10s ease-in-out infinite 1.5s;">
+            <div class="hyperedge" style="left: -40px; top: -40px; width: 150px; height: 150px; animation: rotate 25s linear infinite; border-style: solid;"></div>
+            <div class="graph-node" style="left: 0; top: 0; width: 32px; height: 32px;"></div>
+            <div class="graph-node" style="left: 90px; top: 20px; width: 26px; height: 26px; animation: twinkle 3s ease-in-out infinite 0.5s;"></div>
+            <div class="graph-node" style="left: 20px; top: 90px; width: 30px; height: 30px; animation: twinkle 2.6s ease-in-out infinite 1s;"></div>
+            <div class="graph-node" style="left: 80px; top: 80px; width: 24px; height: 24px; animation: twinkle 3.3s ease-in-out infinite 1.5s;"></div>
+        </div>
+
+        <div class="graph-decoration" style="top: 50%; left: 3%; animation: float 8.5s ease-in-out infinite 0.8s;">
+            <div class="graph-node" style="left: 0; top: 0; width: 20px; height: 20px; animation: twinkle 2.2s ease-in-out infinite;"></div>
+        </div>
+
+        <div class="graph-decoration" style="top: 35%; right: 3%; animation: float 7.5s ease-in-out infinite 1.2s;">
+            <div class="graph-node" style="left: 0; top: 0; width: 22px; height: 22px; animation: twinkle 2.4s ease-in-out infinite 0.4s;"></div>
+        </div>
+
+        <div class="graph-decoration" style="bottom: 40%; right: 5%; animation: float 9.5s ease-in-out infinite 1.8s;">
+            <div class="graph-node" style="left: 0; top: 0; width: 18px; height: 18px; animation: twinkle 2.1s ease-in-out infinite 0.7s;"></div>
+        </div>
+
+        <div class="hero-content">
+            <div class="project-icon">
+                <!-- Hypergraph SVG Icon -->
+                <svg width="120" height="120" viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Nodes -->
+                    <circle cx="35" cy="30" r="12" fill="white" opacity="0.9"/>
+                    <circle cx="70" cy="25" r="10" fill="white" opacity="0.85"/>
+                    <circle cx="90" cy="55" r="11" fill="white" opacity="0.9"/>
+                    <circle cx="60" cy="80" r="13" fill="white" opacity="0.95"/>
+                    <circle cx="25" cy="65" r="9" fill="white" opacity="0.8"/>
+                    <circle cx="50" cy="50" r="8" fill="white" opacity="0.85"/>
+                    
+                    <!-- Hyperedges -->
+                    <ellipse cx="60" cy="45" rx="45" ry="35" stroke="white" stroke-width="3" fill="none" stroke-dasharray="6,4" opacity="0.5"/>
+                    <ellipse cx="45" cy="65" rx="35" ry="30" stroke="white" stroke-width="2.5" fill="none" opacity="0.4"/>
+                    <ellipse cx="70" cy="55" rx="30" ry="28" stroke="white" stroke-width="2" fill="none" stroke-dasharray="4,3" opacity="0.45"/>
+                    
+                    <!-- Node Labels -->
+                    <text x="35" y="34" text-anchor="middle" fill="#1e3a5f" font-size="12" font-weight="bold">v₁</text>
+                    <text x="70" y="29" text-anchor="middle" fill="#1e3a5f" font-size="10" font-weight="bold">v₂</text>
+                    <text x="90" y="59" text-anchor="middle" fill="#1e3a5f" font-size="11" font-weight="bold">v₃</text>
+                    <text x="60" y="85" text-anchor="middle" fill="#1e3a5f" font-size="12" font-weight="bold">v₄</text>
+                    <text x="25" y="69" text-anchor="middle" fill="#1e3a5f" font-size="9" font-weight="bold">v₅</text>
+                </svg>
+            </div>
+            <h1 class="project-title">通用双阶段多阶超图对比协同学习框架</h1>
+            <p class="project-subtitle">A Unified dual-stage Multi-order hypergraph based Contrastive Collaborative Learning for Heterogeneous Graph</p>
+            <div class="hero-badges">
+                <span class="badge">
+                    <i class="fas fa-database"></i> 异构图表示学习
+                </span>
+                <span class="badge">
+                    <i class="fas fa-project-diagram"></i> 多阶超图建模
+                </span>
+                <span class="badge">
+                    <i class="fas fa-code-branch"></i> 对比学习
+                </span>
+                <span class="badge">
+                    <i class="fas fa-brain"></i> 图神经网络
+                </span>
+            </div>
+            <div class="author-info">
+                <i class="fas fa-user"></i> 作者：叶晓艺
+            </div>
+        </div>
+        <div class="scroll-indicator" onclick="scrollToSection('overview')">
+            <i class="fas fa-chevron-down"></i>
+            <span style="font-weight: 600;">查看详情</span>
+        </div>
+    </div>
+
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#overview" class="nav-link">项目概述</a>
+            <a href="#innovation" class="nav-link">主要创新点</a>
+            <a href="#methodology" class="nav-link">方法概览</a>
+            <a href="#formulation" class="nav-link">公式推导</a>
+            <a href="#datasets" class="nav-link">数据集概览</a>
+            <a href="#features" class="nav-link">核心特性</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section id="overview">
+            <h2 class="section-title">项目概述</h2>
+            <div class="card">
+                <h3><i class="fas fa-lightbulb"></i> 研究背景</h3>
+                <p>
+                    在异构图表示学习领域，现有的方法主要基于元路径进行消息聚合，但这些方法仅关注本地低阶的表示信息，忽略了全局高阶的结构信息。针对这一问题，本项目提出了一个通用的双阶段多阶超图对比协同学习框架，通过引入超图来捕获全局高阶结构信息，并设计了相应的异构超图卷积和信息聚合策略。
+                </p>
+            </div>
+            
+            <div class="card">
+                <h3><i class="fas fa-bullseye"></i> 问题域定义</h3>
+                <div style="margin-top: 1rem;">
+                    <p><strong>Task:</strong> classify the labels of nodes of \( T_1 \) type</p>
+                    <p style="margin-top: 0.8rem;"><strong>node types:</strong> \( T_1, T_2, T_3, \dots, T_n \)</p>
+                    <p style="margin-top: 0.8rem;"><strong>meta-paths:</strong> \( T_1 T_b T_c \dots T_k T_q T_k \dots T_c T_b T_1 \)</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="innovation">
+            <h2 class="section-title">主要创新点</h2>
+            
+            <ul class="innovation-list">
+                <li class="innovation-item">
+                    <strong>1. 异构超图建模</strong>
+                    <p>在异构图的表示学习中，常用的方法是基于元路径进行消息聚合。但是现有的方法只聚合了本地低阶的表示信息，而丢失了全局高阶的结构信息。因此，本文引入超图来捕获全局高阶的结构信息。本文挖掘了超图和异构图的潜在关联，提出了一种通用的将异构图建模成多级超图的方法，并针对此提出了相应的信息聚合策略（异构超图卷积）。因此，本文提出了一种将本地低阶的表示信息与全局高阶的结构信息进行对比协同以捕获更具有标示性的节点特征。</p>
+                </li>
+                
+                <li class="innovation-item">
+                    <strong>2. Embedding 以及信息聚合策略</strong>
+                    <p>现有的基于元路径的消息聚合策略存在参数冗余、只可用于特定元路径、关系信息挖掘不充分、忽略其他类型节点特征等问题。因此，本文提出了一种通用的 embedding 以及信息聚合策略，以原异构图结构为基础，挖掘节点特征。</p>
+                </li>
+            </ul>
+        </section>
+
+        <section id="methodology">
+            <h2 class="section-title">方法概览</h2>
+            
+            <div class="card">
+                
+                <!-- Architecture Diagram (Vertical) -->
+                <div style="background: linear-gradient(135deg, #f8f9fa 0%, #e9f0f7 100%); padding: 2rem 1.5rem; border-radius: 16px; margin: 1.5rem 0;">
+                    
+                    <!-- 1. Embedding Start -->
+                    <div style="text-align: center; margin-bottom: 2rem;">
+                        <div style="display: inline-flex; align-items: center; gap: 0.6rem; background: var(--primary); color: white; padding: 0.8rem 2rem; border-radius: 12px; font-weight: 600; box-shadow: 0 4px 12px rgba(44, 82, 130, 0.3);">
+                            <i class="fas fa-cube" style="font-size: 1.1rem;"></i>
+                            <span style="font-size: 1rem;">embedding</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Split Arrow -->
+                    <div style="text-align: center; margin-bottom: 1.5rem;">
+                        <svg width="200" height="70" viewBox="0 0 200 70">
+                            <line x1="100" y1="5" x2="40" y2="45" stroke="#2c5282" stroke-width="2"/>
+                            <line x1="100" y1="5" x2="160" y2="45" stroke="#2b6cb0" stroke-width="2"/>
+                            <polygon points="30,40 40,45 35,55" fill="#2c5282"/>
+                            <polygon points="170,40 160,45 165,55" fill="#2b6cb0"/>
+                        </svg>
+                    </div>
+                    
+                    <!-- 2. Two Main Paths - Same Height -->
+                    <div style="display: flex; gap: 3rem; justify-content: center; margin-bottom: 2rem; flex-wrap: wrap; align-items: stretch;">
+                        
+                        <!-- Left Path: Local Low-order -->
+                        <div style="flex: 1; min-width: 320px; max-width: 450px; display: flex;">
+                            <div style="background: linear-gradient(135deg, #e8f0fe 0%, #d9e8fc 100%); border: 2px solid var(--primary); border-radius: 14px; padding: 1.5rem; box-shadow: 0 4px 12px rgba(44, 82, 130, 0.15); text-align: center; flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+                                <div style="font-size: 1.8rem; margin-bottom: 0.8rem;">
+                                    <i class="fas fa-project-diagram" style="color: var(--primary);"></i>
+                                </div>
+                                <h4 style="color: var(--primary); margin: 0 0 0.3rem 0; font-size: 1rem; font-weight: 600;">Local Low-order</h4>
+                                <h4 style="color: var(--primary); margin: 0 0 0.3rem 0; font-size: 1rem; font-weight: 600;">Heterogeneous</h4>
+                                <h4 style="color: var(--primary); margin: 0; font-size: 1rem; font-weight: 600;">Relation Learning</h4>
+                            </div>
+                        </div>
+                        
+                        <!-- Right Path: Global High-order (Complete Module) -->
+                        <div style="flex: 1; min-width: 320px; max-width: 450px; display: flex;">
+                            <div style="background: linear-gradient(135deg, #ebf4fb 0%, #daecf7 100%); border: 3px solid var(--secondary); border-radius: 14px; padding: 1.5rem; box-shadow: 0 4px 14px rgba(43, 108, 176, 0.2); text-align: center; flex: 1;">
+                                <div style="font-size: 1.8rem; margin-bottom: 0.8rem;">
+                                    <i class="fas fa-object-group" style="color: var(--secondary);"></i>
+                                </div>
+                                <h4 style="color: var(--secondary); margin: 0 0 0.3rem 0; font-size: 1.05rem; font-weight: 600;">Global High-order</h4>
+                                <h4 style="color: var(--secondary); margin: 0 0 1rem 0; font-size: 1.05rem; font-weight: 600;">Hypergraph Dependency Learning</h4>
+                                
+                                <!-- Multi-stage Hypergraphs with Arrows - all inside -->
+                                <div style="background: linear-gradient(135deg, #f0f7ff 0%, #e3f0ff 100%); border: 2px solid #a8c8e8; border-radius: 12px; padding: 1rem; text-align: center;">
+                                    <h5 style="color: var(--secondary); margin: 0 0 0.6rem 0; font-size: 0.9rem; font-weight: 600;">多阶超图</h5>
+                                    
+                                    <!-- Arrows above each item -->
+                                    <div style="display: flex; justify-content: center; gap: 2rem; margin-bottom: 0.4rem;">
+                                        <svg width="26" height="36" viewBox="0 0 26 36">
+                                            <line x1="13" y1="0" x2="13" y2="20" stroke="#2b6cb0" stroke-width="2"/>
+                                            <polygon points="8,16 13,32 18,16" fill="#2b6cb0"/>
+                                        </svg>
+                                        <svg width="26" height="36" viewBox="0 0 26 36">
+                                            <line x1="13" y1="0" x2="13" y2="20" stroke="#2b6cb0" stroke-width="2"/>
+                                            <polygon points="8,16 13,32 18,16" fill="#2b6cb0"/>
+                                        </svg>
+                                        <svg width="26" height="36" viewBox="0 0 26 36">
+                                            <line x1="13" y1="0" x2="13" y2="20" stroke="#2b6cb0" stroke-width="2"/>
+                                            <polygon points="8,16 13,32 18,16" fill="#2b6cb0"/>
+                                        </svg>
+                                    </div>
+                                    
+                                    <!-- The three items -->
+                                    <div style="display: flex; gap: 1.2rem; justify-content: center; align-items: center; flex-wrap: wrap;">
+                                        <div style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; padding: 0.5rem 1.2rem; border-radius: 8px; font-weight: 600; box-shadow: 0 3px 10px rgba(44, 82, 130, 0.2); font-size: 0.9rem; min-width: 85px;">
+                                            One-stage
+                                        </div>
+                                        <div style="background: linear-gradient(135deg, var(--secondary), #4299e1); color: white; padding: 0.5rem 1.2rem; border-radius: 8px; font-weight: 600; box-shadow: 0 3px 10px rgba(43, 108, 176, 0.2); font-size: 0.9rem; min-width: 85px;">
+                                            two-stage
+                                        </div>
+                                        <div style="background: #cbd5e0; color: #4a5568; padding: 0.5rem 1rem; border-radius: 8px; font-weight: 500; font-size: 0.9rem; min-width: 70px;">
+                                            ...
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Arrows below each item pointing to Contrastive Collaborative -->
+                                    <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 0.4rem;">
+                                        <svg width="26" height="44" viewBox="0 0 26 44">
+                                            <line x1="13" y1="0" x2="13" y2="28" stroke="#2b6cb0" stroke-width="2"/>
+                                            <polygon points="8,24 13,40 18,24" fill="#2b6cb0"/>
+                                        </svg>
+                                        <svg width="26" height="44" viewBox="0 0 26 44">
+                                            <line x1="13" y1="0" x2="13" y2="28" stroke="#2b6cb0" stroke-width="2"/>
+                                            <polygon points="8,24 13,40 18,24" fill="#2b6cb0"/>
+                                        </svg>
+                                        <svg width="26" height="44" viewBox="0 0 26 44">
+                                            <line x1="13" y1="0" x2="13" y2="28" stroke="#2b6cb0" stroke-width="2"/>
+                                            <polygon points="8,24 13,40 18,24" fill="#2b6cb0"/>
+                                        </svg>
+                                    </div>
+                                    
+                                    <!-- First Contrastive Collaborative (Now inside) -->
+                                    <div style="display: inline-flex; align-items: center; gap: 0.6rem; background: linear-gradient(135deg, var(--secondary), #4299e1); color: white; padding: 0.7rem 1.6rem; border-radius: 9px; font-weight: 600; box-shadow: 0 3px 12px rgba(43, 108, 176, 0.3); margin-top: 0.5rem;">
+                                        <i class="fas fa-balance-scale" style="font-size: 1rem;"></i>
+                                        <span style="font-size: 0.95rem;">Contrastive Collaborative</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Arrows to Final Contrastive -->
+                    <div style="display: flex; justify-content: center; gap: 10rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+                        <!-- Left Arrow from Local -->
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <svg width="100" height="70" viewBox="0 0 100 70">
+                                <line x1="50" y1="0" x2="50" y2="25" stroke="#2c5282" stroke-width="2"/>
+                                <line x1="50" y1="25" x2="90" y2="55" stroke="#2c5282" stroke-width="2"/>
+                                <polygon points="80,47 90,55 82,63" fill="#2c5282"/>
+                            </svg>
+                        </div>
+                        <!-- Right Arrow from Global -->
+                        <div style="display: flex; flex-direction: column; align-items: center;">
+                            <svg width="100" height="70" viewBox="0 0 100 70">
+                                <line x1="50" y1="0" x2="50" y2="25" stroke="#2b6cb0" stroke-width="2"/>
+                                <line x1="50" y1="25" x2="10" y2="55" stroke="#2b6cb0" stroke-width="2"/>
+                                <polygon points="20,47 10,55 18,63" fill="#2b6cb0"/>
+                            </svg>
+                        </div>
+                    </div>
+                    
+                    <!-- Final Contrastive Collaborative -->
+                    <div style="text-align: center;">
+                        <div style="display: inline-flex; align-items: center; gap: 0.8rem; background: linear-gradient(135deg, var(--primary), var(--secondary), #1a365d); color: white; padding: 1rem 2.8rem; border-radius: 12px; font-weight: 600; box-shadow: 0 4px 18px rgba(44, 82, 130, 0.4);">
+                            <i class="fas fa-balance-scale" style="font-size: 1.4rem;"></i>
+                            <span style="font-size: 1.15rem;">Contrastive Collaborative</span>
+                        </div>
+                    </div>
+                    
+                </div>
+            </div>
+        </section>
+
+        <section id="formulation">
+            <h2 class="section-title">公式推导</h2>
+            
+            <div class="image-container" style="padding: 2rem;">
+                <img src="images/research/hypergraph_formula1.png" alt="公式图1" style="width: 100%; max-width: 100%;">
+            </div>
+
+            <div class="image-container" style="padding: 2rem;">
+                <img src="images/research/hypergraph_formula2.png" alt="公式图2" style="width: 100%; max-width: 100%;">
+            </div>
+
+            <div class="image-container" style="padding: 2rem;">
+                <img src="images/research/hypergraph_formula3.png" alt="公式图3" style="width: 100%; max-width: 100%;">
+            </div>
+        </section>
+
+        <section id="datasets">
+            <h2 class="section-title">数据集概览</h2>
+            
+            <div class="image-container" style="padding: 2rem;">
+                <img src="images/research/hypergraph_data.png" alt="数据集表格" style="width: 100%; max-width: 100%;">
+            </div>
+        </section>
+
+        <section id="features">
+            <h2 class="section-title">核心特性</h2>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-universal-access"></i>
+                    </div>
+                    <h4>通用性</h4>
+                    <p>适用于各种类型的异构图数据，不局限于特定领域</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h4>双阶段学习</h4>
+                    <p>本地与全局特征学习相结合，捕获多层次信息</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h4>对比协同</h4>
+                    <p>通过对比学习增强特征表示的判别能力</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h4>超图建模</h4>
+                    <p>捕获高阶结构信息，超越传统图方法</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-signal"></i>
+                    </div>
+                    <h4>高效性</h4>
+                    <p>参数高效，避免冗余计算，训练和推理快速</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4>强性能</h4>
+                    <p>在节点分类任务上取得显著提升</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>📚 通用双阶段多阶超图对比协同学习框架 | Research Project © 2026</p>
+        <p style="margin-top: 0.75rem; font-size: 1rem;">A Unified dual-stage Multi-order hypergraph based Contrastive Collaborative Learning for Heterogeneous Graph</p>
+        <p style="margin-top: 1rem; font-size: 1.1rem; color: var(--primary); font-weight: 600;">
+            <i class="fas fa-user"></i> 作者：叶晓艺
+        </p>
+    </footer>
+
+    <script>
+        // 滚动时导航栏效果
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('visible');
+            } else {
+                navbar.classList.remove('visible');
+            }
+        });
+
+        // 滚动时激活对应的导航链接
+        const sections = document.querySelectorAll('section[id]');
+        const navLinks = document.querySelectorAll('.nav-link');
+
+        window.addEventListener('scroll', () => {
+            let current = '';
+            sections.forEach(section => {
+                const sectionTop = section.offsetTop;
+                if (scrollY >= sectionTop - 300) {
+                    current = section.getAttribute('id');
+                }
+            });
+
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+                if (link.getAttribute('href') === '#' + current) {
+                    link.classList.add('active');
+                }
+            });
+        });
+
+        // 滚动动画
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section, .card, .feature-card, .innovation-item').forEach(el => {
+            el.classList.add('fade-in');
+            observer.observe(el);
+        });
+
+        // 滚动到指定元素，考虑导航栏高度
+        function scrollToSection(elementId) {
+            const element = document.getElementById(elementId);
+            const navHeight = document.getElementById('navbar').offsetHeight || 60;
+            const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+            const offsetPosition = elementPosition - navHeight - 20;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
+
+        // 导航链接点击平滑滚动
+        navLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                scrollToSection(targetId);
+            });
+        });
+    </script>
+</body>
+</html>

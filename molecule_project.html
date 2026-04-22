@@ -1,0 +1,1182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>异构原子-基序图 - 分子表示学习</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1e53a4;
+            --secondary: #2c7be5;
+            --accent: #4dabf7;
+            --text-primary: #1b263b;
+            --text-muted: #415a77;
+            --bg-light: #f8f9fa;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #f0f7ff 100%);
+            color: var(--text-primary);
+            line-height: 1.8;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(30, 83, 164, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 80% 30%, rgba(44, 123, 229, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 70%, rgba(77, 171, 247, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(30, 83, 164, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+            animation: pulseBg 8s ease-in-out infinite;
+        }
+
+        @keyframes pulseBg {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .academic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .academic-element {
+            position: absolute;
+            opacity: 0.25;
+            color: var(--primary);
+            font-size: 2.5rem;
+            font-family: 'Times New Roman', serif;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(30, 83, 164, 0.5);
+            animation: floatAcademic 15s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+
+        .academic-element:hover {
+            opacity: 0.6;
+            transform: scale(1.3);
+            text-shadow: 0 0 20px rgba(30, 83, 164, 0.8);
+        }
+
+        @keyframes floatAcademic {
+            0% { 
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                opacity: 0.15;
+            }
+            25% { 
+                transform: translate(50px, -40px) rotate(15deg) scale(1.1);
+                opacity: 0.35;
+            }
+            50% { 
+                transform: translate(-30px, -60px) rotate(-10deg) scale(1.05);
+                opacity: 0.25;
+            }
+            75% { 
+                transform: translate(-60px, -20px) rotate(8deg) scale(1.15);
+                opacity: 0.4;
+            }
+            100% { 
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                opacity: 0.15;
+            }
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 2rem;
+            background: linear-gradient(135deg, #0a2463 0%, #1e53a4 30%, #2c7be5 60%, #4dabf7 100%);
+            color: white;
+            overflow: hidden;
+        }
+
+        .molecule-decoration {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.15;
+        }
+
+        .atom {
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            border: 3px solid rgba(255, 255, 255, 0.7);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .bond {
+            position: absolute;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.4);
+            transform-origin: left center;
+        }
+
+        .motif {
+            position: absolute;
+            border: 2px dashed rgba(255, 255, 255, 0.35);
+            border-radius: 50%;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+            25% {
+                transform: translate(15px, -15px) rotate(5deg);
+            }
+            50% {
+                transform: translate(-10px, -20px) rotate(-5deg);
+            }
+            75% {
+                transform: translate(-20px, -10px) rotate(3deg);
+            }
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.3; transform: scale(1); }
+            50% { opacity: 0.6; transform: scale(1.1); }
+        }
+
+        .author-info {
+            margin-top: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            opacity: 0.95;
+        }
+
+        .author-info i {
+            margin-right: 0.5rem;
+        }
+
+        .hero-content {
+            animation: fadeInUp 1s ease-out 0.3s both;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .project-icon {
+            font-size: 6rem;
+            margin-bottom: 1.5rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(10px, -10px) rotate(3deg); }
+            50% { transform: translate(-5px, -20px) rotate(-3deg); }
+            75% { transform: translate(-15px, -8px) rotate(2deg); }
+        }
+
+        .project-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .project-subtitle {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            margin-bottom: 2rem;
+        }
+
+        .hero-badges {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.18);
+            backdrop-filter: blur(8px);
+            padding: 0.5rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            transition: all 0.3s;
+            font-size: 0.95rem;
+        }
+
+        .badge:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            width: auto;
+            text-align: center;
+            animation: fadeInUp 1s ease-out 1.5s both, bounceScroll 2s ease-in-out infinite 1.8s;
+            cursor: pointer;
+        }
+
+        .scroll-indicator i {
+            font-size: 2rem;
+        }
+
+        @keyframes bounceScroll {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(-10px); }
+        }
+
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            padding: 0.8rem 2rem;
+            z-index: 1000;
+            border-bottom: 2px solid #e2e8f0;
+            transform: translateY(-100%);
+            transition: transform 0.5s ease;
+        }
+
+        nav.visible {
+            transform: translateY(0);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 0.4rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            color: white;
+            background: var(--primary);
+            transform: translateY(-1px);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+        }
+
+        section {
+            margin-bottom: 5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        section:nth-child(odd) {
+            animation-delay: 0.1s;
+        }
+
+        section:nth-child(even) {
+            animation-delay: 0.2s;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(26, 71, 42, 0.08);
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--primary);
+            box-shadow: 0 12px 36px rgba(30, 83, 164, 0.2);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .feature-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 12px rgba(26, 71, 42, 0.08);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            border-color: var(--primary);
+            box-shadow: 0 12px 36px rgba(30, 83, 164, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            transition: all 0.4s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.15) rotate(5deg);
+            color: var(--accent);
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-primary);
+        }
+
+        .section-title::before {
+            content: '';
+            width: 6px;
+            height: 3.5rem;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 4px;
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), transparent);
+            border-radius: 2px;
+        }
+
+        .section-title i {
+            transition: transform 0.4s ease;
+        }
+
+        .section-title:hover i {
+            transform: rotate(15deg) scale(1.2);
+        }
+
+
+
+        .card h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card h3 i {
+            color: var(--primary);
+            font-size: 1.6rem;
+        }
+
+        .card p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.9;
+            text-align: justify;
+            text-indent: 2em;
+        }
+
+        .innovation-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .innovation-item {
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(135deg, #f0fdf4 0%, #e6f9ee 100%);
+            border-left: 4px solid var(--primary);
+            border-radius: 0 16px 16px 0;
+            transition: all 0.3s;
+        }
+
+        .innovation-item:hover {
+            transform: translateX(8px);
+            box-shadow: 0 4px 16px rgba(26, 71, 42, 0.12);
+        }
+
+        .innovation-item strong {
+            color: var(--primary);
+            font-size: 1.25rem;
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 700;
+        }
+
+        .innovation-item p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.9;
+            text-align: justify;
+            text-indent: 2em;
+        }
+
+        .image-container {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(26, 71, 42, 0.08);
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            width: 100%;
+        }
+
+        .image-placeholder {
+            background: linear-gradient(135deg, #f0fdf4 0%, #e6f9ee 100%);
+            border: 2px dashed #a7f3d0;
+            border-radius: 12px;
+            padding: 4rem 2rem;
+            text-align: center;
+            color: var(--secondary);
+            min-height: 200px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .image-placeholder i {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.6;
+        }
+
+        .image-placeholder h4 {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .image-placeholder p {
+            font-size: 0.95rem;
+            opacity: 0.7;
+            text-indent: 0;
+        }
+
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.3s;
+            box-shadow: 0 4px 12px rgba(26, 71, 42, 0.08);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 8px 24px rgba(26, 71, 42, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .feature-card h4 {
+            color: var(--primary);
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.7;
+            text-align: center;
+            text-indent: 0;
+        }
+
+        footer {
+            background: linear-gradient(180deg, white 0%, #e3f2fd 100%);
+            text-align: center;
+            padding: 2.5rem 2rem;
+            color: var(--text-muted);
+            border-top: 2px solid #93c5fd;
+            position: relative;
+            z-index: 1;
+        }
+
+        footer p {
+            font-weight: 500;
+            margin: 0.3rem 0;
+        }
+
+        footer .author-footer {
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        footer .author-footer i {
+            margin-right: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .project-title {
+                font-size: 2rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="academic-bg">
+        <span class="academic-element" style="top: 8%; left: 3%; animation-delay: 0s;">Σ</span>
+        <span class="academic-element" style="top: 12%; right: 5%; animation-delay: 1.5s;">∂</span>
+        <span class="academic-element" style="top: 20%; left: 15%; animation-delay: 3s;">∫</span>
+        <span class="academic-element" style="top: 22%; right: 15%; animation-delay: 4.5s;">∇</span>
+        <span class="academic-element" style="top: 32%; left: 8%; animation-delay: 6s;">Δ</span>
+        <span class="academic-element" style="top: 35%; right: 8%; animation-delay: 7.5s;">∞</span>
+        <span class="academic-element" style="top: 45%; left: 20%; animation-delay: 9s;">λ</span>
+        <span class="academic-element" style="top: 48%; right: 18%; animation-delay: 10.5s;">θ</span>
+        <span class="academic-element" style="top: 58%; left: 5%; animation-delay: 12s;">π</span>
+        <span class="academic-element" style="top: 60%; right: 12%; animation-delay: 13.5s;">σ</span>
+        <span class="academic-element" style="top: 70%; left: 18%; animation-delay: 15s;">ψ</span>
+        <span class="academic-element" style="top: 72%; right: 20%; animation-delay: 16.5s;">Ω</span>
+        <span class="academic-element" style="top: 82%; left: 10%; animation-delay: 18s;">Φ</span>
+        <span class="academic-element" style="top: 85%; right: 5%; animation-delay: 19.5s;">Ψ</span>
+        <span class="academic-element" style="top: 15%; left: 28%; animation-delay: 1s;">ρ</span>
+        <span class="academic-element" style="top: 28%; right: 25%; animation-delay: 2.5s;">α</span>
+        <span class="academic-element" style="top: 40%; left: 30%; animation-delay: 4s;">β</span>
+        <span class="academic-element" style="top: 52%; right: 28%; animation-delay: 5.5s;">γ</span>
+        <span class="academic-element" style="top: 65%; left: 25%; animation-delay: 7s;">δ</span>
+        <span class="academic-element" style="top: 78%; right: 22%; animation-delay: 8.5s;">ε</span>
+    </div>
+    <div class="hero" id="hero">
+        <div class="molecule-decoration" style="top: 10%; left: 5%; animation: float 8s ease-in-out infinite;">
+            <div class="atom" style="left: 0; top: 0;"></div>
+            <div class="atom" style="left: 60px; top: 40px; animation: float 2s ease-in-out infinite 0.3s;"></div>
+            <div class="atom" style="left: 100px; top: -10px; animation: float 2.5s ease-in-out infinite 0.8s;"></div>
+            <div class="bond" style="left: 15px; top: 15px; width: 50px; transform: rotate(35deg);"></div>
+            <div class="bond" style="left: 72px; top: 32px; width: 45px; transform: rotate(-70deg);"></div>
+        </div>
+
+        <div class="molecule-decoration" style="top: 20%; right: 8%; animation: float 9s ease-in-out infinite 1s;">
+            <div class="atom" style="left: 0; top: 0;"></div>
+            <div class="atom" style="left: -50px; top: 30px; animation: float 3s ease-in-out infinite 0.5s;"></div>
+            <div class="atom" style="left: -20px; top: 80px; animation: float 3.2s ease-in-out infinite 1s;"></div>
+            <div class="motif" style="left: -40px; top: -40px; width: 150px; height: 150px;"></div>
+            <div class="bond" style="left: 17px; top: 17px; width: 45px; transform: rotate(120deg);"></div>
+            <div class="bond" style="left: -5px; top: 55px; width: 40px; transform: rotate(40deg);"></div>
+        </div>
+
+        <div class="molecule-decoration" style="bottom: 25%; left: 10%; animation: float 7s ease-in-out infinite 2s;">
+            <div class="atom" style="left: 0; top: 0;"></div>
+            <div class="atom" style="left: 70px; top: 10px; animation: float 2.8s ease-in-out infinite 0.4s;"></div>
+            <div class="atom" style="left: 35px; top: 70px; animation: float 3.1s ease-in-out infinite 0.7s;"></div>
+            <div class="motif" style="left: -30px; top: -30px; width: 120px; height: 120px;"></div>
+        </div>
+
+        <div class="molecule-decoration" style="bottom: 15%; right: 15%; animation: float 10s ease-in-out infinite 1.5s;">
+            <div class="atom" style="left: 0; top: 0;"></div>
+            <div class="atom" style="left: 90px; top: 20px; animation: float 2.9s ease-in-out infinite 0.6s;"></div>
+            <div class="atom" style="left: 20px; top: 90px; animation: float 3s ease-in-out infinite 1.2s;"></div>
+            <div class="atom" style="left: 80px; top: 80px; animation: float 3.3s ease-in-out infinite 1.5s;"></div>
+        </div>
+
+        <div class="molecule-decoration" style="top: 50%; left: 3%; animation: float 8.5s ease-in-out infinite 0.8s;">
+            <div class="atom" style="left: 0; top: 0; width: 30px; height: 30px;"></div>
+        </div>
+
+        <div class="molecule-decoration" style="top: 35%; right: 3%; animation: float 7.5s ease-in-out infinite 1.2s;">
+            <div class="atom" style="left: 0; top: 0; width: 35px; height: 35px;"></div>
+        </div>
+
+        <div class="molecule-decoration" style="bottom: 40%; right: 5%; animation: float 9.5s ease-in-out infinite 1.8s;">
+            <div class="atom" style="left: 0; top: 0; width: 25px; height: 25px;"></div>
+        </div>
+
+        <div class="hero-content">
+            <div class="project-icon">
+                <svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+                    <!-- Center atom -->
+                    <circle cx="60" cy="60" r="18" fill="#4dabf7" stroke="white" stroke-width="3"/>
+                    <!-- Hexagonal ring -->
+                    <circle cx="90" cy="40" r="12" fill="#2c7be5" stroke="white" stroke-width="2"/>
+                    <circle cx="90" cy="80" r="12" fill="#2c7be5" stroke="white" stroke-width="2"/>
+                    <circle cx="60" cy="95" r="12" fill="#2c7be5" stroke="white" stroke-width="2"/>
+                    <circle cx="30" cy="80" r="12" fill="#2c7be5" stroke="white" stroke-width="2"/>
+                    <circle cx="30" cy="40" r="12" fill="#2c7be5" stroke="white" stroke-width="2"/>
+                    <circle cx="60" cy="25" r="12" fill="#2c7be5" stroke="white" stroke-width="2"/>
+                    <!-- Bonds -->
+                    <line x1="75" y1="50" x2="85" y2="45" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                    <line x1="75" y1="70" x2="85" y2="75" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                    <line x1="60" y1="42" x2="60" y2="32" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                    <line x1="60" y1="78" x2="60" y2="88" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                    <line x1="45" y1="70" x2="35" y2="75" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                    <line x1="45" y1="50" x2="35" y2="45" stroke="white" stroke-width="3" stroke-linecap="round"/>
+                    <!-- Additional decorations -->
+                    <circle cx="105" cy="30" r="5" fill="#a5d8ff" opacity="0.6">
+                        <animate attributeName="opacity" values="0.3;0.8;0.3" dur="3s" repeatCount="indefinite"/>
+                    </circle>
+                    <circle cx="15" cy="55" r="5" fill="#a5d8ff" opacity="0.6">
+                        <animate attributeName="opacity" values="0.8;0.3;0.8" dur="3s" repeatCount="indefinite"/>
+                    </circle>
+                </svg>
+            </div>
+            <h1 class="project-title">异构原子-基序图</h1>
+            <p class="project-subtitle">Heterogeneous Atom-Motif Graph for Molecular Representation Learning</p>
+            <div class="hero-badges">
+                <span class="badge">
+                    <i class="fas fa-atom"></i> 分子表示学习
+                </span>
+                <span class="badge">
+                    <i class="fas fa-project-diagram"></i> 异构图建模
+                </span>
+                <span class="badge">
+                    <i class="fas fa-code-branch"></i> 图卷积网络
+                </span>
+                <span class="badge">
+                    <i class="fas fa-flask"></i> 化学信息学
+                </span>
+            </div>
+            <div class="author-info">
+                <i class="fas fa-user"></i> 作者：叶晓艺
+            </div>
+        </div>
+        <div class="scroll-indicator" onclick="scrollToSection('innovation')">
+            <i class="fas fa-chevron-down"></i>
+            <span style="font-weight: 600;">查看详情</span>
+        </div>
+    </div>
+
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#innovation" class="nav-link">主要贡献</a>
+            <a href="#background" class="nav-link">研究背景</a>
+            <a href="#related" class="nav-link">相关工作</a>
+            <a href="#methodology" class="nav-link">研究方法</a>
+            <a href="#overview" class="nav-link">方法概述</a>
+            <a href="#results" class="nav-link">实验结果</a>
+            <a href="#features" class="nav-link">核心特性</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section id="innovation">
+            <h2 class="section-title">主要贡献与创新</h2>
+            
+            <div class="features-grid">
+                <div class="card" style="margin: 0;">
+                    <h3><i class="fas fa-sitemap"></i> 异构原子-基序图</h3>
+                    <p>提出一种新的基于原子分子结构与分子基序分解的分子表示——异构原子-基序图。基序可以认为是分子序列中由一些原子组成的子序列。这些原子相互作用，以基序为整体作用在分子性质上。同时，这种基序整体对组成它的原子的特性产生影响。与此同时，如同分子中的组成原子与原子之间存在性质上的相互影响，分子中基序与基序之间也存在着相互影响。为了在分子表征中引入基序这一模态，并符合化学原理地充分利用新增的基序模态信息，有必要设计一种新的分子表示方法，而本文提出的异构原子-基序图对此进行了实现。</p>
+                </div>
+                <div class="card" style="margin: 0;">
+                    <h3><i class="fas fa-wave-square"></i> 异构原子-基序图卷积</h3>
+                    <p>受基序整体以及分子内部原子之间的相互作用启发，在异构原子-基序图基础上设计一种更符合分子内部作用机制的信息传递策略——异构原子-基序图卷积，以更充分直接地捕捉与表示分子特征，解决分子表征领域由分子的复杂性引发的特征提取不充分等问题，并提高分子表征算法的泛化能力。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="background">
+            <h2 class="section-title">研究背景</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2.5rem; font-weight: 900; margin: 0 auto;">01</div>
+                    </div>
+                    <h4>研究需要</h4>
+                    <p>分子设计和药物发现的需要对分子表征研究提出了巨大的需求</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2.5rem; font-weight: 900; margin: 0 auto;">02</div>
+                    </div>
+                    <h4>数据支持</h4>
+                    <p>大规模分子数据的快速增长为分子表征提供了大量数据支持</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <div style="width: 80px; height: 80px; background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-size: 2.5rem; font-weight: 900; margin: 0 auto;">03</div>
+                    </div>
+                    <h4>深度学习方法</h4>
+                    <p>深度学习方法在分子生物学领域的分子表征研究中展现出巨大的潜力</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="related">
+            <h2 class="section-title">相关工作</h2>
+            <div class="card">
+                <h3><i class="fas fa-file-code"></i> 基于SMILES序列输入的序列模型</h3>
+                <p>
+                    将表示分子的SMILES序列看作文本作为输入，借鉴序列模型在语言处理的成功经验，利用RNN等序列模型来建模一维分子描述符并且将RNN的隐藏状态作为分子的表征用于下游任务。
+                </p>
+            </div>
+            <div class="card" style="margin-top: 1.5rem;">
+                <h3><i class="fas fa-project-diagram"></i> 分子图模型</h3>
+                <p>
+                    图是表示分子结构的最直观的方法，任何分子都可用图表示，节点为原子，边为键。将分子图输入GNN中，通过逐步聚合原子自身及其邻域信息来提取特征。
+                </p>
+            </div>
+        </section>
+
+        <section id="methodology">
+            <h2 class="section-title">研究方法</h2>
+            
+            <div class="features-grid">
+                <div class="card" style="margin: 0; transform: rotate(-1deg);">
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                        <i class="fas fa-paperclip" style="color: var(--primary);"></i>
+                        <div style="flex: 1;">
+                            <h3 style="margin-bottom: 0.75rem;"><i class="fas fa-database"></i> 收集数据</h3>
+                            <p>本文初步选用分子表征领域常用数据集BBBP及ESOL。其中，BBBP数据集用于分类任务的训练和测试。ESOL数据集用于回归任务的训练和测试。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="margin: 0; transform: rotate(1deg);">
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                        <i class="fas fa-paperclip" style="color: var(--primary);"></i>
+                        <div style="flex: 1;">
+                            <h3 style="margin-bottom: 0.75rem;"><i class="fas fa-cube"></i> 确定模型结构</h3>
+                            <p>异构原子-基序图表示的分子数据经过初始化后传入异构原子-基序图卷积中得到分子特征图，最后传入下游任务中。</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="card" style="margin: 0; transform: rotate(-0.5deg);">
+                    <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem;">
+                        <i class="fas fa-paperclip" style="color: var(--primary);"></i>
+                        <div style="flex: 1;">
+                            <h3 style="margin-bottom: 0.75rem;"><i class="fas fa-chart-line"></i> 模型训练和评估</h3>
+                            <p>所有基准数据集都被分割为具有0.8/0.1/0.1比率的训练集、验证集和测试集。采用5倍交叉验证并重复5次训练来说明每个实验的结果，以增加我们的模型的可信度。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="overview">
+            <h2 class="section-title">方法概述</h2>
+            
+            <div class="image-container" id="img-define">
+                <img src="images/research/molecule_define.png" alt="异构原子-基序图定义" onerror="showPlaceholder(this, '异构原子-基序图定义', '展示异构原子-基序图的数学定义')">
+                <div class="image-placeholder" style="display: none;">
+                    <i class="fas fa-diagram-project"></i>
+                    <h4>异构原子-基序图定义</h4>
+                    <p>展示异构原子-基序图的数学定义</p>
+                </div>
+            </div>
+            
+            <div class="image-container" id="img-build">
+                <img src="images/research/molecule_build.png" alt="异构原子-基序图的构建" onerror="showPlaceholder(this, '异构原子-基序图的构建', '展示从分子到异构原子-基序图的构建过程')">
+                <div class="image-placeholder" style="display: none;">
+                    <i class="fas fa-sitemap"></i>
+                    <h4>异构原子-基序图的构建</h4>
+                    <p>展示从分子到异构原子-基序图的构建过程</p>
+                </div>
+            </div>
+            
+            <div class="image-container" id="img-arch">
+                <img src="images/research/molecule_architecture.png" alt="异构原子-基序图卷积架构" onerror="showPlaceholder(this, '异构原子-基序图卷积架构', '展示4个Stream的整体架构')">
+                <div class="image-placeholder" style="display: none;">
+                    <i class="fas fa-project-diagram"></i>
+                    <h4>异构原子-基序图卷积架构</h4>
+                    <p>展示4个Stream的整体架构</p>
+                </div>
+            </div>
+            
+            <div class="image-container" id="img-am">
+                <img src="images/research/molecule_am.png" alt="异构原子-基序图卷积A-M流" onerror="showPlaceholder(this, '异构原子-基序图卷积A-M流', '展示原子→基序消息传递公式')">
+                <div class="image-placeholder" style="display: none;">
+                    <i class="fas fa-function"></i>
+                    <h4>异构原子-基序图卷积A-M流</h4>
+                    <p>展示原子→基序消息传递公式</p>
+                </div>
+            </div>
+            
+            <div class="image-container" id="img-mm">
+                <img src="images/research/molecule_mm.png" alt="异构原子-基序图卷积M-M流" onerror="showPlaceholder(this, '异构原子-基序图卷积M-M流', '展示基序→基序消息传递公式')">
+                <div class="image-placeholder" style="display: none;">
+                    <i class="fas fa-formula"></i>
+                    <h4>异构原子-基序图卷积M-M流</h4>
+                    <p>展示基序→基序消息传递公式</p>
+                </div>
+            </div>
+            
+            <div class="image-container" id="img-ma">
+                <img src="images/research/molecule_ma.png" alt="异构原子-基序图卷积M-A流" onerror="showPlaceholder(this, '异构原子-基序图卷积M-A流', '展示基序→原子消息传递公式')">
+                <div class="image-placeholder" style="display: none;">
+                    <i class="fas fa-math"></i>
+                    <h4>异构原子-基序图卷积M-A流</h4>
+                    <p>展示基序→原子消息传递公式</p>
+                </div>
+            </div>
+            
+            <div class="image-container" id="img-aa">
+                <img src="images/research/molecule_aa.png" alt="异构原子-基序图卷积A-A流" onerror="showPlaceholder(this, '异构原子-基序图卷积A-A流', '展示原子→原子消息传递公式')">
+                <div class="image-placeholder" style="display: none;">
+                    <i class="fas fa-calculator"></i>
+                    <h4>异构原子-基序图卷积A-A流</h4>
+                    <p>展示原子→原子消息传递公式</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="results">
+            <h2 class="section-title">实验结果</h2>
+            
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3><i class="fas fa-table"></i> BBBP（分类）实验结果</h3>
+                <div style="overflow-x: auto;">
+                    <table style="width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.95rem;">
+                        <tr>
+                            <th style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 0.75rem 1rem; text-align: left; border-bottom: 2px solid var(--primary);">Method</th>
+                            <th style="background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%); color: white; padding: 0.75rem 1rem; text-align: center; border-bottom: 2px solid var(--primary);">Accuracy</th>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0;">TF_Robust</td>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0; text-align: center;">0.860(0.087)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0;">GraphConv</td>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0; text-align: center;">0.877(0.036)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0;">Weave</td>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0; text-align: center;">0.837(0.065)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0;">SchNet</td>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0; text-align: center;">0.847(0.024)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0;">MPNN</td>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0; text-align: center;">0.913(0.041)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0;">DMPNN</td>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0; text-align: center;">0.919(0.030)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0;">MGCN</td>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0; text-align: center;">0.850(0.064)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0;">AttentiveFP</td>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0; text-align: center;">0.908(0.050)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0;">N-GRAM</td>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0; text-align: center;">0.912(0.013)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0;">HU, et al</td>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0; text-align: center;">0.915(0.040)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0;">GROVERbase</td>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0; text-align: center;">0.936(0.008)</td>
+                        </tr>
+                        <tr>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0;">GROVERlarge</td>
+                            <td style="padding: 0.6rem 1rem; border-bottom: 1px solid #e0e0e0; text-align: center;">0.940(0.019)</td>
+                        </tr>
+                        <tr style="background: linear-gradient(90deg, rgba(64,145,108,0.12) 0%, rgba(26,71,42,0.12) 100%);">
+                            <td style="padding: 0.75rem 1rem; border-bottom: 2px solid var(--primary); font-weight: 600;">Ours</td>
+                            <td style="padding: 0.75rem 1rem; border-bottom: 2px solid var(--primary); text-align: center; font-weight: 700; color: var(--primary);">0.960 (0.012)</td>
+                        </tr>
+                    </table>
+                </div>
+                <div style="margin-top: 1.5rem; padding: 1rem; background: linear-gradient(135deg, rgba(26,71,42,0.03) 0%, rgba(64,145,108,0.03) 100%); border-radius: 8px;">
+                    <p style="margin-bottom: 0.5rem;"><strong>Dataset:</strong> BBBP</p>
+                    <p style="margin: 0;"><strong># Molecules:</strong> 2039</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="features">
+            <h2 class="section-title">核心特性</h2>
+            
+            <div class="features-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-sitemap"></i>
+                    </div>
+                    <h4>双模态建模</h4>
+                    <p>同时建模原子和基序两种模态，充分捕捉不同尺度的分子信息</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-sync-alt"></i>
+                    </div>
+                    <h4>双向信息传播</h4>
+                    <p>原子与基序之间、基序与基序之间实现信息双向流动</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h4>符合化学原理</h4>
+                    <p>信息传递策略符合真实分子内部原子与基序的相互作用机制</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h4>充分特征提取</h4>
+                    <p>解决分子复杂性带来的特征提取不充分问题</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-rocket"></i>
+                    </div>
+                    <h4>强泛化能力</h4>
+                    <p>在多种分子性质预测任务中展现良好的泛化性能</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4>性能优越</h4>
+                    <p>在多项基准测试中取得优异的实验结果</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>🔬 异构原子-基序图 - 分子表示学习 | Research Project © 2026</p>
+        <p style="margin-top: 0.75rem; font-size: 1rem;">Heterogeneous Atom-Motif Graph for Molecular Representation Learning</p>
+        <p class="author-footer">
+            <i class="fas fa-user"></i> 作者：叶晓艺
+        </p>
+    </footer>
+
+    <script>
+        function showPlaceholder(img, title, description) {
+            const container = img.parentElement;
+            const placeholder = container.querySelector('.image-placeholder');
+            if (placeholder) {
+                img.style.display = 'none';
+                placeholder.style.display = 'flex';
+            }
+        }
+
+        // 滚动到指定元素，考虑导航栏高度（全局函数，供HTML onclick调用）
+        function scrollToSection(elementId) {
+            const element = document.getElementById(elementId);
+            const navHeight = document.getElementById('navbar').offsetHeight || 60;
+            const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+            const offsetPosition = elementPosition - navHeight - 20;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const allImages = document.querySelectorAll('.image-container img');
+            allImages.forEach(img => {
+                img.onerror = function() {
+                    const container = this.parentElement;
+                    const placeholder = container.querySelector('.image-placeholder');
+                    if (placeholder) {
+                        this.style.display = 'none';
+                        placeholder.style.display = 'flex';
+                    }
+                };
+            });
+
+            const navbar = document.getElementById('navbar');
+            const sections = document.querySelectorAll('section');
+            const navLinks = document.querySelectorAll('.nav-link');
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+
+            const sectionObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, observerOptions);
+
+            sections.forEach(section => sectionObserver.observe(section));
+
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('visible');
+                } else {
+                    navbar.classList.remove('visible');
+                }
+
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop - 100;
+                    if (window.scrollY >= sectionTop) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === `#${current}`) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('href').substring(1);
+                    scrollToSection(targetId);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
