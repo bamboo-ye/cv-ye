@@ -1,0 +1,1109 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>基于邻域图卷积的城域交通出行规划系统</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #1e3a5f;
+            --secondary: #2d5a87;
+            --accent: #4a90d9;
+            --text-primary: #0f2037;
+            --text-muted: #3a5a7a;
+            --bg-light: #f0f5fa;
+        }
+
+        body {
+            font-family: 'Noto Sans SC', sans-serif;
+            background: linear-gradient(135deg, #e6f0fa 0%, #f5f9fc 100%);
+            color: var(--text-primary);
+            line-height: 1.8;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(30, 58, 95, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 80% 30%, rgba(45, 90, 135, 0.15) 0%, transparent 50%),
+                radial-gradient(circle at 40% 70%, rgba(74, 144, 217, 0.12) 0%, transparent 50%),
+                radial-gradient(circle at 90% 80%, rgba(30, 58, 95, 0.08) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+            animation: pulseBg 8s ease-in-out infinite;
+        }
+
+        @keyframes pulseBg {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        .academic-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .academic-element {
+            position: absolute;
+            opacity: 0.25;
+            color: var(--primary);
+            font-size: 2.5rem;
+            font-family: 'Times New Roman', serif;
+            font-weight: bold;
+            text-shadow: 0 0 10px rgba(30, 58, 95, 0.5);
+            animation: floatAcademic 15s ease-in-out infinite;
+            transition: all 0.3s ease;
+        }
+
+        .academic-element:hover {
+            opacity: 0.6;
+            transform: scale(1.3);
+            text-shadow: 0 0 20px rgba(30, 58, 95, 0.8);
+        }
+
+        @keyframes floatAcademic {
+            0% { 
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                opacity: 0.15;
+            }
+            25% { 
+                transform: translate(50px, -40px) rotate(15deg) scale(1.1);
+                opacity: 0.35;
+            }
+            50% { 
+                transform: translate(-30px, -60px) rotate(-10deg) scale(1.05);
+                opacity: 0.25;
+            }
+            75% { 
+                transform: translate(-60px, -20px) rotate(8deg) scale(1.15);
+                opacity: 0.4;
+            }
+            100% { 
+                transform: translate(0, 0) rotate(0deg) scale(1);
+                opacity: 0.15;
+            }
+        }
+
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            position: relative;
+            padding: 2rem;
+            background: linear-gradient(135deg, #0a1929 0%, #1e3a5f 30%, #2d5a87 60%, #4a90d9 100%);
+            color: white;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                radial-gradient(circle at 20% 30%, rgba(255,255,255,0.1) 0%, transparent 40%),
+                radial-gradient(circle at 80% 70%, rgba(255,255,255,0.08) 0%, transparent 35%);
+        }
+
+        .transport-decoration {
+            position: absolute;
+            pointer-events: none;
+            opacity: 0.2;
+        }
+
+        .road-line {
+            position: absolute;
+            width: 4px;
+            height: 100px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.6), rgba(255,255,255,0.1));
+            border-radius: 2px;
+            animation: roadPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes roadPulse {
+            0%, 100% { opacity: 0.3; transform: scaleY(1); }
+            50% { opacity: 0.7; transform: scaleY(1.2); }
+        }
+
+        .car-icon {
+            position: absolute;
+            font-size: 2rem;
+            animation: carMove 8s linear infinite;
+        }
+
+        @keyframes carMove {
+            0% { transform: translateX(-100px); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateX(100px); opacity: 0; }
+        }
+
+        .project-icon {
+            font-size: 6rem;
+            margin-bottom: 1.5rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) rotate(0deg); }
+            25% { transform: translate(10px, -10px) rotate(3deg); }
+            50% { transform: translate(-5px, -20px) rotate(-3deg); }
+            75% { transform: translate(-15px, -8px) rotate(2deg); }
+        }
+
+        .project-title {
+            font-size: 2.8rem;
+            font-weight: 900;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+        }
+
+        .project-subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+            font-weight: 400;
+        }
+
+        .author-info {
+            margin-top: 1.5rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            opacity: 0.95;
+        }
+
+        .author-info i {
+            margin-right: 0.5rem;
+        }
+
+        .hero-badges {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-bottom: 1.5rem;
+        }
+
+        .badge {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 500;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .badge:hover {
+            background: rgba(255, 255, 255, 0.25);
+            transform: translateY(-3px);
+        }
+
+        .badge i {
+            margin-right: 0.5rem;
+        }
+
+        .hero-content {
+            animation: fadeInUp 1s ease-out 0.3s both;
+            max-width: 900px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateX(-50%) translateY(0); }
+            40% { transform: translateX(-50%) translateY(-10px); }
+            60% { transform: translateX(-50%) translateY(-5px); }
+        }
+
+        .scroll-indicator i {
+            font-size: 2rem;
+            opacity: 0.8;
+        }
+
+        #navbar {
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(30, 58, 95, 0.12);
+            z-index: 100;
+            padding: 1rem 2rem;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            gap: 2rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-link {
+            color: var(--text-primary);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+        }
+
+        .nav-link:hover {
+            color: var(--primary);
+            background: var(--bg-light);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 5rem 2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        section {
+            margin-bottom: 5rem;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s ease;
+            position: relative;
+            z-index: 1;
+        }
+
+        section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        section:nth-child(odd) {
+            animation-delay: 0.1s;
+        }
+
+        section:nth-child(even) {
+            animation-delay: 0.2s;
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .card {
+            background: white;
+            border: 2px solid #d0e0f0;
+            border-radius: 16px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.08);
+        }
+
+        .card:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--primary);
+            box-shadow: 0 12px 36px rgba(30, 58, 95, 0.2);
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), var(--secondary));
+            transform: scaleX(0);
+            transition: transform 0.4s ease;
+        }
+
+        .card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .card h3 {
+            color: var(--primary);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .card h3 i {
+            color: var(--primary);
+            font-size: 1.6rem;
+        }
+
+        .card p {
+            line-height: 1.9;
+            color: var(--text-muted);
+        }
+
+        .feature-card {
+            background: white;
+            border: 2px solid #d0e0f0;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.08);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-8px) scale(1.03);
+            border-color: var(--primary);
+            box-shadow: 0 12px 36px rgba(30, 58, 95, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+            transition: all 0.4s ease;
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.15) rotate(5deg);
+            color: var(--accent);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .features-grid.style {
+            grid-template-columns: repeat(3, 1fr);
+        }
+
+        .feature-card h4 {
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: var(--text-primary);
+        }
+
+        .section-title::before {
+            content: '';
+            width: 6px;
+            height: 3.5rem;
+            background: linear-gradient(180deg, var(--primary) 0%, var(--accent) 100%);
+            border-radius: 4px;
+        }
+
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 3px;
+            background: linear-gradient(90deg, var(--primary), var(--accent), transparent);
+            border-radius: 2px;
+        }
+
+        .section-title i {
+            transition: transform 0.4s ease;
+        }
+
+        .section-title:hover i {
+            transform: rotate(15deg) scale(1.2);
+        }
+
+        .image-container {
+            background: white;
+            border: 2px solid #d0e0f0;
+            border-radius: 16px;
+            padding: 2rem;
+            margin: 2rem 0;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.08);
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .image-placeholder {
+            background: linear-gradient(135deg, var(--bg-light) 0%, #e0edf8 100%);
+            padding: 4rem 2rem;
+            border-radius: 8px;
+            border: 2px dashed #a0c0e0;
+        }
+
+        .image-placeholder i {
+            font-size: 4rem;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .image-placeholder h4 {
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .image-placeholder p {
+            color: var(--text-muted);
+        }
+
+        .method-step {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+            padding: 1.5rem;
+            background: white;
+            border-radius: 12px;
+            border-left: 4px solid var(--primary);
+            box-shadow: 0 2px 8px rgba(30, 58, 95, 0.08);
+            transition: all 0.3s;
+        }
+
+        .method-step:hover {
+            transform: translateX(5px);
+            box-shadow: 0 4px 16px rgba(30, 58, 95, 0.15);
+        }
+
+        .step-number {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .step-content h4 {
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+        }
+
+        .step-content p {
+            color: var(--text-muted);
+        }
+
+        .results-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 2rem;
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(30, 58, 95, 0.08);
+        }
+
+        .results-table thead {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+        }
+
+        .results-table th {
+            padding: 1rem;
+            text-align: left;
+            font-weight: 600;
+        }
+
+        .results-table td {
+            padding: 1rem;
+            border-bottom: 1px solid #d0e0f0;
+        }
+
+        .results-table tbody tr {
+            transition: all 0.3s;
+        }
+
+        .results-table tbody tr:hover {
+            background: var(--bg-light);
+        }
+
+        .results-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, rgba(74, 144, 217, 0.2) 0%, transparent 100%);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        footer {
+            background: linear-gradient(180deg, white 0%, #e6f0fa 100%);
+            text-align: center;
+            padding: 2.5rem 2rem;
+            color: var(--text-muted);
+            border-top: 2px solid #9db9d8;
+            position: relative;
+            z-index: 1;
+        }
+
+        footer p {
+            font-weight: 500;
+            margin: 0.3rem 0;
+        }
+
+        footer .author-footer {
+            margin-top: 1rem;
+            font-size: 1.1rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        footer .author-footer i {
+            margin-right: 0.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .project-title {
+                font-size: 2rem;
+            }
+            .section-title {
+                font-size: 1.8rem;
+            }
+            .card {
+                padding: 1.5rem;
+            }
+            .method-step {
+                flex-direction: column;
+            }
+            .results-table {
+                font-size: 0.9rem;
+            }
+            .results-table th,
+            .results-table td {
+                padding: 0.75rem 0.5rem;
+            }
+        }
+
+        .formula {
+            background: var(--bg-light);
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1rem 0;
+            overflow-x: auto;
+            border-left: 4px solid var(--accent);
+        }
+
+        .method-diagram {
+            background: linear-gradient(135deg, var(--bg-light) 0%, #e0edf8 100%);
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+        }
+
+        .method-diagram h4 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .method-diagram .nodes {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .method-diagram .node {
+            background: white;
+            padding: 1.5rem 2rem;
+            border-radius: 12px;
+            border: 2px solid var(--accent);
+            box-shadow: 0 4px 12px rgba(74, 144, 217, 0.2);
+            text-align: center;
+        }
+
+        .method-diagram .node i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 16px;
+            text-align: center;
+            box-shadow: 0 8px 24px rgba(30, 58, 95, 0.3);
+            transition: all 0.4s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 12px 32px rgba(30, 58, 95, 0.4);
+        }
+
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+    </style>
+</head>
+<body>
+    <div class="academic-bg">
+        <span class="academic-element" style="top: 8%; left: 3%; animation-delay: 0s;">∑</span>
+        <span class="academic-element" style="top: 12%; right: 5%; animation-delay: 1.5s;">∂</span>
+        <span class="academic-element" style="top: 20%; left: 15%; animation-delay: 3s;">∫</span>
+        <span class="academic-element" style="top: 22%; right: 15%; animation-delay: 4.5s;">∇</span>
+        <span class="academic-element" style="top: 32%; left: 8%; animation-delay: 6s;">Δ</span>
+        <span class="academic-element" style="top: 35%; right: 8%; animation-delay: 7.5s;">∞</span>
+        <span class="academic-element" style="top: 45%; left: 20%; animation-delay: 9s;">λ</span>
+        <span class="academic-element" style="top: 48%; right: 18%; animation-delay: 10.5s;">θ</span>
+        <span class="academic-element" style="top: 58%; left: 5%; animation-delay: 12s;">π</span>
+        <span class="academic-element" style="top: 60%; right: 12%; animation-delay: 13.5s;">σ</span>
+        <span class="academic-element" style="top: 70%; left: 18%; animation-delay: 15s;">ψ</span>
+        <span class="academic-element" style="top: 72%; right: 20%; animation-delay: 16.5s;">Ω</span>
+        <span class="academic-element" style="top: 82%; left: 10%; animation-delay: 18s;">Φ</span>
+        <span class="academic-element" style="top: 85%; right: 5%; animation-delay: 19.5s;">Ψ</span>
+        <span class="academic-element" style="top: 15%; left: 28%; animation-delay: 1s;">ρ</span>
+        <span class="academic-element" style="top: 28%; right: 25%; animation-delay: 2.5s;">α</span>
+        <span class="academic-element" style="top: 40%; left: 30%; animation-delay: 4s;">β</span>
+        <span class="academic-element" style="top: 52%; right: 28%; animation-delay: 5.5s;">γ</span>
+        <span class="academic-element" style="top: 65%; left: 25%; animation-delay: 7s;">δ</span>
+        <span class="academic-element" style="top: 78%; right: 22%; animation-delay: 8.5s;">ε</span>
+    </div>
+    
+    <div class="hero" id="hero">
+        <div class="transport-decoration" style="top: 15%; left: 10%;">
+            <div class="road-line" style="transform: rotate(45deg);"></div>
+        </div>
+        <div class="transport-decoration" style="top: 25%; right: 15%;">
+            <div class="road-line" style="transform: rotate(-30deg); animation-delay: 0.5s;"></div>
+        </div>
+        <div class="transport-decoration" style="top: 70%; left: 20%;">
+            <div class="car-icon">🚗</div>
+        </div>
+        <div class="transport-decoration" style="top: 75%; right: 25%;">
+            <div class="car-icon" style="animation-delay: 4s;">🚙</div>
+        </div>
+        
+        <div class="hero-content">
+            <div class="project-icon">
+                <i class="fas fa-route"></i>
+            </div>
+            <h1 class="project-title">基于邻域图卷积的<br>城域交通出行规划系统</h1>
+            <p class="project-subtitle">Neighborhood Graph Convolution based Urban Traffic Route Planning System</p>
+            <div class="hero-badges">
+                <span class="badge">
+                    <i class="fas fa-project-diagram"></i> 图神经网络
+                </span>
+                <span class="badge">
+                    <i class="fas fa-clock"></i> 时空注意力
+                </span>
+            </div>
+            <div class="author-info">
+                <i class="fas fa-user-graduate"></i>
+                <span>叶晓艺</span>
+            </div>
+        </div>
+        
+        <div class="scroll-indicator" onclick="scrollToSection('innovation')">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </div>
+
+    <nav id="navbar">
+        <div class="nav-container">
+            <a href="#innovation" class="nav-link">主要贡献</a>
+            <a href="#related" class="nav-link">相关工作</a>
+            <a href="#overview" class="nav-link">方法概述</a>
+            <a href="#results" class="nav-link">实验结果</a>
+            <a href="#features" class="nav-link">核心特性</a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <section id="innovation">
+            <h2 class="section-title"><i class="fas fa-lightbulb"></i>主要贡献与创新</h2>
+            
+            <div class="card">
+                <h3><i class="fas fa-project-diagram"></i>基于邻域关系矩阵的交通路网关系表达</h3>
+                <p>现有的方法更加注重于对图网络特征提取能力的研究，多数运用GCN直接对时空图数据进行特征建模的研究不仅携带复杂的计算量，同时也带来更多的噪声信息，使得网络性能下降的同时也对算力资源提出了较高的要求。本文针对以上问题，提出关于邻域关系矩阵的时空图网络关系的表达方法。</p>
+            </div>
+            
+            <div class="card" style="margin-top: 1.5rem;">
+                <h3><i class="fas fa-clock"></i>基于动态时空图神经网络的交通流量预测</h3>
+                <p>以往的研究忽略了图关系的表达，更加注重于对静态拓扑结构的利用，这不仅导致网络学习能力变差，也在一定程度上丢失了部分节点直接的隐含关联性，因此在时空图建模的过程中，图的连接关系在流量预测任务中显得尤为重要。本文基于此，设计了基于邻域关系矩阵的动态时空图网络，在捕获节点特征中存在的时序关系的同时动态地调整了节点之间的连接关系，在一定程度上弥补了拓扑结构所定义的静态图的表达。</p>
+            </div>
+        </section>
+
+        <section id="related">
+            <h2 class="section-title"><i class="fas fa-book"></i>相关工作</h2>
+            
+            <div class="card">
+                <h3><i class="fas fa-chart-line"></i>时序数据预测</h3>
+                <p>时序数据预测是交通流量预测的基础，早期主要依赖ARIMA等统计方法，后来发展到LSTM、GRU等深度学习方法，能够有效捕捉数据中的时序依赖关系。</p>
+            </div>
+            
+            <div class="card" style="margin-top: 1.5rem;">
+                <h3><i class="fas fa-project-diagram"></i>动态邻接矩阵方法</h3>
+                <p>动态邻接矩阵方法旨在自适应地学习节点之间的连接关系，而非依赖固定的拓扑结构，能够更好地捕捉数据中隐含的空间依赖关系。</p>
+            </div>
+
+            <div class="card" style="margin-top: 1.5rem;">
+                <h3><i class="fas fa-network-wired"></i>图神经网络</h3>
+                <p>图神经网络（GNN）及其变体如GCN、GAT等，能够有效处理图结构数据，通过消息传递机制聚合邻域信息，在交通预测等任务中展现出良好性能。</p>
+            </div>
+
+            <div class="card" style="margin-top: 1.5rem;">
+                <h3><i class="fas fa-eye"></i>注意力机制</h3>
+                <p>注意力机制能够让模型自适应地关注重要的特征和节点，在时空图网络中可以帮助模型区分不同节点和时间步的重要性，提升预测性能。</p>
+            </div>
+        </section>
+
+        <section id="overview">
+            <h2 class="section-title"><i class="fas fa-sitemap"></i>方法概述</h2>
+            
+            <div class="image-container" id="img-ppt1">
+                <img src="images/research/transport_ppt1.png" alt="方法概述1">
+            </div>
+            
+            <div class="image-container" id="img-ppt2">
+                <img src="images/research/transport_ppt2.png" alt="方法概述2">
+            </div>
+        </section>
+
+        <section id="results">
+            <h2 class="section-title"><i class="fas fa-chart-bar"></i>实验结果</h2>
+            
+            <div class="card">
+                <h3><i class="fas fa-tasks"></i>实验设置</h3>
+                <p>
+                    实验中所有模型的训练次数均为60 epoch，学习率为0.001，均采用Adam优化器，输入数据的总长度为60个时间片，其中包含24个周数据时间片，12个日数据时间片，24个时数据时间片；采用框架为Pytorch 1.8.1版本，Python 3.7版本，CUDA驱动11.1版本，GPU硬件为NVIDIA 2060 6GB单GPU显卡。
+                </p>
+            </div>
+
+            <h3 style="color: var(--primary); margin-top: 2.5rem; margin-bottom: 1rem; font-size: 1.5rem;">
+                <i class="fas fa-chart-line"></i>实验结果
+            </h3>
+            <table class="results-table">
+                <thead>
+                    <tr>
+                        <th rowspan="2">方法</th>
+                        <th colspan="2">PEMSD4</th>
+                        <th colspan="2">PEMSD8</th>
+                    </tr>
+                    <tr>
+                        <th>MAE</th>
+                        <th>RMSE</th>
+                        <th>MAE</th>
+                        <th>RMSE</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>HA*</td>
+                        <td>43.15</td>
+                        <td>49.52</td>
+                        <td>35.04</td>
+                        <td>40.05</td>
+                    </tr>
+                    <tr>
+                        <td>ARIMA*</td>
+                        <td>45.14</td>
+                        <td>51.24</td>
+                        <td>33.60</td>
+                        <td>38.34</td>
+                    </tr>
+                    <tr>
+                        <td>GRU</td>
+                        <td>26.66</td>
+                        <td>40.21</td>
+                        <td>21.78</td>
+                        <td>33.24</td>
+                    </tr>
+                    <tr>
+                        <td>LSTM</td>
+                        <td>26.24</td>
+                        <td>39.86</td>
+                        <td>20.89</td>
+                        <td>31.94</td>
+                    </tr>
+                    <tr>
+                        <td>GCRN</td>
+                        <td>23.64</td>
+                        <td>35.56</td>
+                        <td>19.21</td>
+                        <td>28.62</td>
+                    </tr>
+                    <tr>
+                        <td>Gated-STGCN</td>
+                        <td>24.06</td>
+                        <td>36.07</td>
+                        <td>18.79</td>
+                        <td>28.08</td>
+                    </tr>
+                    <tr>
+                        <td>ASTGCN</td>
+                        <td>21.37</td>
+                        <td>33.23</td>
+                        <td>18.05</td>
+                        <td>26.85</td>
+                    </tr>
+                    <tr>
+                        <td>DGCN</td>
+                        <td>20.78</td>
+                        <td>32.35</td>
+                        <td>16.28</td>
+                        <td>24.71</td>
+                    </tr>
+                    <tr>
+                        <td><span class="highlight">DRGCN（ ours ）</span></td>
+                        <td><span class="highlight">20.47</span></td>
+                        <td><span class="highlight">32.14</span></td>
+                        <td><span class="highlight">15.41</span></td>
+                        <td><span class="highlight">23.91</span></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="card" style="margin-top: 2.5rem;">
+                <h3><i class="fas fa-chart-line"></i>结果分析</h3>
+                <ul style="color: var(--text-muted); margin-left: 1.5rem; line-height: 2;">
+                    <li><strong>动态关联建模：</strong>相较于DGCN和ASTGCN，本文提出的通过动态自学习方法对路网节点进行特征关联度建模，从两个节点特征的实际增减变化分析其潜在关联性，更有利于网络迭代得到期望的时空依赖。</li>
+                    <li><strong>隐空间信息保留：</strong>DRGCN迫使隐空间信息尽可能保留于节点自身在网络中的权值，仅将节点自相关性作为可学习知识进行特征捕获，将全局邻接矩阵的计算划分为局部特征相似性计算，综合了时间维度与空间维度的整体特征捕获能力。</li>
+                    <li><strong>精准特征聚合：</strong>具有较高时空特征提取能力的DGCN和ASTGCN通过批量梯度下降优化的方法，不足以精准地表达数据之间的不同程度的关联性，没有着重于节点自身携带的权值信息，在后续时空卷积过程中不能够更好地筛选特征以达到精准聚合目的。</li>
+                    <li><strong>邻接矩阵定义：</strong>基线方法中的邻接矩阵的取值严重依赖于初始化的好坏，并不符合邻接矩阵（或拉普拉斯矩阵）的精确定义。</li>
+                    <li><strong>结构化分析建模：</strong>一般来说，交通流量预测模型需要对交通路网在时间与空间维度进行结构化的分析建模，在图深度学习中，结构化信息即为路网拓扑邻接矩阵，邻接矩阵能够在宏观层面表达路网的交通行为模式。</li>
+                    <li><strong>重要节点识别：</strong>由于DRGCN的邻接矩阵能够描述节点关联性的量化特征，因此它具有识别所有节点中部分重要节点的良好能力，因而在整体性能方面优于其他方法。</li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="features">
+            <h2 class="section-title"><i class="fas fa-star"></i>核心特性</h2>
+            
+            <div class="features-grid" style="grid-template-columns: repeat(3, 1fr);">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <h4>动态邻接矩阵</h4>
+                    <p>自适应学习路网节点关联度，不依赖固定拓扑初始化</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h4>时空联合建模</h4>
+                    <p>融合周/日/时多时间粒度特征，捕获复杂时空依赖关系</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h4>隐空间信息保留</h4>
+                    <p>节点自相关性作为可学习知识，精准特征聚合与筛选</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-search"></i>
+                    </div>
+                    <h4>重要节点识别</h4>
+                    <p>量化描述节点关联性，自动识别路网关键节点与区域</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h4>高精度预测</h4>
+                    <p>PEMSD4/8数据集上MAE/RMSE指标优于ASTGCN、DGCN等方法</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-layer-group"></i>
+                    </div>
+                    <h4>局部特征计算</h4>
+                    <p>全局邻接矩阵划分为局部相似性计算，提升模型可扩展性</p>
+                </div>
+            </div>
+
+            <div class="card" style="margin-top: 3rem;">
+                <h3><i class="fas fa-rocket"></i>应用前景</h3>
+                <p style="margin-bottom: 1rem;">
+                    本系统可广泛应用于以下场景：
+                </p>
+                <ul style="color: var(--text-muted); margin-left: 1.5rem; line-height: 2;">
+                    <li><strong>智能交通系统</strong>：为城市交通管理提供实时流量预测与预警能力</li>
+                    <li><strong>交通信号控制</strong>：辅助管理部门优化信号灯配时，提升路网通行效率</li>
+                    <li><strong>出行导航服务</strong>：为导航APP提供未来路况预测，支持动态路径规划</li>
+                    <li><strong>公共交通调度</strong>：为公交、地铁等运力配置提供数据驱动的决策依据</li>
+                    <li><strong>智慧城市建设</strong>：支撑城市交通大脑构建，助力智慧出行生态系统</li>
+                </ul>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <p>基于邻域图卷积的城域交通出行规划系统</p>
+        <p>Neighborhood Graph Convolution based Urban Traffic Route Planning System</p>
+        <p class="author-footer">
+            <i class="fas fa-user-graduate"></i>
+            叶晓艺
+        </p>
+        <p style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.7;">
+            © 2026 All Rights Reserved
+        </p>
+    </footer>
+
+    <script>
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('section').forEach(section => {
+            observer.observe(section);
+        });
+
+        // 滚动到指定元素，考虑导航栏高度
+        function scrollToSection(elementId) {
+            const element = document.getElementById(elementId);
+            const navHeight = document.getElementById('navbar').offsetHeight || 60;
+            const elementPosition = element.getBoundingClientRect().top + window.pageYOffset;
+            const offsetPosition = elementPosition - navHeight - 20;
+            
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const targetId = link.getAttribute('href').substring(1);
+                scrollToSection(targetId);
+            });
+        });
+
+        let lastScrollY = window.scrollY;
+        const navbar = document.getElementById('navbar');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > window.innerHeight) {
+                navbar.style.boxShadow = '0 4px 25px rgba(30, 58, 95, 0.2)';
+            } else {
+                navbar.style.boxShadow = '0 2px 20px rgba(30, 58, 95, 0.12)';
+            }
+            lastScrollY = window.scrollY;
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => {
+                document.querySelector('section').classList.add('visible');
+            }, 500);
+        });
+    </script>
+</body>
+</html>
