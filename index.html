@@ -728,6 +728,7 @@
 
         section {
             margin-bottom: 80px;
+            scroll-margin-top: 100px;
         }
 
         #campus {
@@ -2418,7 +2419,12 @@
                 e.preventDefault();
                 const target = document.querySelector(link.getAttribute('href'));
                 if (target) {
-                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    const navHeight = document.querySelector('nav').offsetHeight;
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
+                    window.scrollTo({
+                        top: targetPosition,
+                        behavior: 'smooth'
+                    });
                 }
             });
         });
@@ -2427,7 +2433,12 @@
         document.getElementById('scrollDownBtn').addEventListener('click', () => {
             const target = document.getElementById('education');
             if (target) {
-                target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                const navHeight = document.querySelector('nav').offsetHeight;
+                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
             }
         });
 
@@ -2447,9 +2458,10 @@
 
         window.addEventListener('scroll', () => {
             let current = '';
+            const navHeight = document.querySelector('nav').offsetHeight;
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
-                if (window.pageYOffset >= sectionTop - 200) {
+                if (window.pageYOffset >= sectionTop - navHeight - 50) {
                     current = section.getAttribute('id');
                 }
             });
