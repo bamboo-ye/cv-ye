@@ -1563,7 +1563,7 @@
                     { name: 'Kafka Task Topic', itemStyle: { color: '#ffeaa7' } },
                     { name: '算法消费者', itemStyle: { color: '#55efc4' } },
                     { name: '动态降级', itemStyle: { color: '#fd79a8' } },
-                    { name: 'Kafka Result Topic', itemStyle: { color: '#81ecec' } },
+                    { name: 'Result', itemStyle: { color: '#81ecec' } },
                     { name: '结果推送', itemStyle: { color: '#f5576c' } }
                 ],
                 links: [
@@ -1571,8 +1571,8 @@
                     { source: 'API Gateway', target: 'Kafka Task Topic', value: 100 },
                     { source: 'Kafka Task Topic', target: '算法消费者', value: 85 },
                     { source: '算法消费者', target: '动态降级', value: 85 },
-                    { source: '动态降级', target: 'Kafka Result Topic', value: 80 },
-                    { source: 'Kafka Result Topic', target: '结果推送', value: 80 }
+                    { source: '动态降级', target: 'Result', value: 80 },
+                    { source: 'Result', target: '结果推送', value: 80 }
                 ]
             }]
         };
