@@ -3,9 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>叶晓艺 - Golang服务端研发</title>
+    <title>叶晓艺 - AI 全栈开发</title>
+    <meta name="description" content="叶晓艺的在线简历：AI 全栈开发、Agent 工程与高并发系统实践。">
     <link rel="preload" href="images/profile/avatar.jpg" as="image">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700&amp;family=Inter:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
@@ -749,6 +750,213 @@
         h2 i {
             font-size: 1.6rem;
             color: var(--primary);
+        }
+
+        /* Latest Update */
+        .latest-card {
+            position: relative;
+            overflow: hidden;
+            padding: 36px;
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            border-radius: 24px;
+            background:
+                radial-gradient(circle at 90% 10%, rgba(236, 72, 153, 0.12), transparent 34%),
+                linear-gradient(145deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.94));
+            box-shadow: 0 18px 60px rgba(99, 102, 241, 0.14);
+        }
+
+        .latest-card::before {
+            content: '';
+            position: absolute;
+            inset: 0 auto 0 0;
+            width: 5px;
+            background: linear-gradient(180deg, var(--primary), var(--secondary));
+        }
+
+        .latest-topline {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            margin-bottom: 22px;
+        }
+
+        .latest-kicker,
+        .latest-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 7px 12px;
+            border-radius: 999px;
+            font-size: 0.82rem;
+            font-weight: 700;
+        }
+
+        .latest-kicker {
+            color: var(--primary-dark);
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .latest-status {
+            color: #047857;
+            background: rgba(16, 185, 129, 0.1);
+        }
+
+        .latest-status::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 0 6px rgba(16, 185, 129, 0.12);
+            animation: statusPulse 1.8s ease-in-out infinite;
+        }
+
+        @keyframes statusPulse {
+            50% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); }
+        }
+
+        .latest-layout {
+            display: grid;
+            grid-template-columns: minmax(0, 1.55fr) minmax(260px, 0.85fr);
+            gap: 32px;
+            align-items: start;
+        }
+
+        .latest-card h3 {
+            margin-bottom: 10px;
+            font-size: clamp(1.65rem, 3vw, 2.25rem);
+            line-height: 1.25;
+        }
+
+        .latest-role {
+            margin-bottom: 16px;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .latest-lead {
+            color: var(--text-secondary);
+            line-height: 1.85;
+        }
+
+        .latest-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .latest-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            min-height: 44px;
+            padding: 10px 18px;
+            border-radius: 12px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .latest-button.primary {
+            color: white;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.24);
+        }
+
+        .latest-button.secondary {
+            color: var(--primary-dark);
+            border: 1px solid rgba(99, 102, 241, 0.28);
+            background: rgba(255, 255, 255, 0.78);
+        }
+
+        .latest-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 28px rgba(99, 102, 241, 0.24);
+        }
+
+        .latest-flow {
+            padding: 22px;
+            border: 1px solid rgba(99, 102, 241, 0.16);
+            border-radius: 18px;
+            background: rgba(99, 102, 241, 0.055);
+        }
+
+        .latest-flow-label {
+            margin-bottom: 14px;
+            color: var(--text-muted);
+            font-size: 0.78rem;
+            font-weight: 700;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+        }
+
+        .latest-flow-step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 10px 0;
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+            font-weight: 600;
+        }
+
+        .latest-flow-step i {
+            width: 34px;
+            height: 34px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 34px;
+            border-radius: 10px;
+            color: var(--primary);
+            background: white;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.1);
+        }
+
+        .latest-highlights {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .latest-highlight {
+            padding: 16px;
+            border: 1px solid var(--border);
+            border-radius: 14px;
+            background: rgba(255, 255, 255, 0.74);
+            color: var(--text-secondary);
+            line-height: 1.65;
+        }
+
+        .latest-highlight strong {
+            display: block;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+
+        .latest-metrics {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .latest-metric {
+            padding: 14px 16px;
+            border-radius: 14px;
+            color: var(--text-secondary);
+            background: linear-gradient(135deg, rgba(99, 102, 241, 0.08), rgba(236, 72, 153, 0.07));
+            font-size: 0.87rem;
+        }
+
+        .latest-metric strong {
+            display: block;
+            color: var(--primary-dark);
+            font-size: 1.2rem;
         }
 
         .card {
@@ -1610,6 +1818,26 @@
                 padding: 40px 16px;
             }
 
+            .latest-card {
+                padding: 26px 22px;
+            }
+
+            .latest-layout,
+            .latest-highlights,
+            .latest-metrics {
+                grid-template-columns: 1fr;
+            }
+
+            .latest-topline {
+                align-items: flex-start;
+                flex-direction: column;
+            }
+
+            .latest-actions,
+            .latest-button {
+                width: 100%;
+            }
+
             .education-timeline {
                 padding-left: 40px;
             }
@@ -1769,12 +1997,12 @@
                         <span class="wave-hand">👋</span>
                         <h1>你好，我是叶晓艺</h1>
                     </div>
-                    <p class="title"><span class="highlight">Golang 服务端研发工程师</span>｜高并发系统设计与 AI 应用双栖</p>
+                    <p class="title"><span class="highlight">AI 全栈开发</span>｜Agent 工程 · 高并发系统 · 全栈交付</p>
                     <p class="tagline" style="margin-bottom: 6px; font-size: 1rem;">
                         云南大学（双一流/211）| 软件工程 | 本科
                     </p>
                     <p class="tagline" style="margin-bottom: 16px; font-size: 1rem;">
-                        香港城市大学（QS：63）| 人工智能（Generative AI）| 硕士
+                        香港城市大学（QS：52、U.S. News：47）| 人工智能（Generative AI）| 硕士
                     </p>
                 </div>
             </div>
@@ -1783,11 +2011,11 @@
             <div class="greeting-section">
                 <h2>⚡ 核心优势</h2>
                 <ul style="color: var(--text-secondary); margin-top: 12px; line-height: 1.9;">
-                    <li style="text-indent: 2em; list-style-position: inside;">精通 <span class="highlight">Golang</span>，熟练构建 <span class="highlight">Gin + GORM + Redis + Kafka + gRPC</span> 高并发微服务体系</li>
-                    <li style="text-indent: 2em; list-style-position: inside;">主导过 <span class="highlight">日均 10 万+ 消息</span> 的 IM 系统，端到端延迟 <span class="highlight">&lt;100ms</span>，可用性 <span class="highlight">99.9%</span></li>
-                    <li style="text-indent: 2em; list-style-position: inside;">具备 <span class="highlight">大模型应用开发</span>能力：<span class="highlight">Agent</span>、<span class="highlight">MCP</span>、<span class="highlight">Skills</span>、<span class="highlight">Vibe Coding</span>，熟悉 Transformer 底层机制</li>
-                    <li style="text-indent: 2em; list-style-position: inside;">全链路数据实战：CVPR 论文大数据展示舱从爬虫到 Web 展示独立交付，时效提升 <span class="highlight">20 倍</span></li>
-                    <li style="text-indent: 2em; list-style-position: inside;">多项国家级竞赛获奖（<span class="highlight">互联网+</span>、<span class="highlight">挑战杯省级银奖</span>），技术驱动产品落地</li>
+                    <li style="text-indent: 2em; list-style-position: inside;">从 0 到 1 独立交付 <span class="highlight">伴 AI 对话式个人 AI 工作台</span>，覆盖产品、前端、后端、Agent Worker、数据层、部署与评测</li>
+                    <li style="text-indent: 2em; list-style-position: inside;">熟悉 <span class="highlight">LangGraph、Agent Harness、MCP、Tool Use、Human-in-the-loop</span> 与上下文工程</li>
+                    <li style="text-indent: 2em; list-style-position: inside;">具备 <span class="highlight">Go + Python + TypeScript / Next.js</span> 全栈能力，能完成实时 API、异步任务与 AI 应用工程化落地</li>
+                    <li style="text-indent: 2em; list-style-position: inside;">通过 Checkpoint、租约、Revision Fencing 与 Outbox / Inbox，实现长任务暂停、接管、取消与断点续跑</li>
+                    <li style="text-indent: 2em; list-style-position: inside;">具备 Docker、CI/CD、OpenTelemetry、Langfuse、Prometheus / Grafana 与 Loki 的测试、观测和发布实践</li>
                 </ul>
                 
                 <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border);">
@@ -1795,7 +2023,7 @@
                         <div style="flex: 1; min-width: 250px;">
                             <h2 style="font-size: 1.4rem; margin-bottom: 8px; color: var(--text-primary);">📌 求职意向</h2>
                             <p style="color: var(--text-secondary); font-size: 1rem; text-indent: 2em;">
-                                <strong>Golang 服务端研发（Base 上海/杭州/深圳）</strong>
+                                <strong>AI 全栈开发</strong>
                             </p>
                         </div>
                         <div style="flex: 1; min-width: 250px;">
@@ -1809,7 +2037,7 @@
                         <p style="color: var(--text-muted); font-size: 0.95rem; font-style: italic; text-indent: 2em; margin: 0;">
                             我是谁、能做什么、为什么值得聊 —— 欢迎点击下方查看完整履历 👇
                         </p>
-                        <a href="rare/叶晓艺简历.pdf" target="_blank" class="hero-download-btn" style="white-space: nowrap;">
+                        <a href="rare/%E5%8F%B6%E6%99%93%E8%89%BA%E7%AE%80%E5%8E%86.pdf" target="_blank" rel="noopener noreferrer" class="hero-download-btn" style="white-space: nowrap;">
                             <i class="fas fa-file-download"></i> 下载简历
                         </a>
                     </div>
@@ -1827,6 +2055,7 @@
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
+            <a href="#latest" class="nav-link">最新动态</a>
             <a href="#education" class="nav-link">教育背景</a>
             <a href="#skills" class="nav-link">专业技能</a>
             <a href="#experience" class="nav-link">实习经历</a>
@@ -1839,6 +2068,69 @@
 
     <!-- Main Content -->
     <div class="container">
+        <!-- Latest Update Section -->
+        <section id="latest">
+            <h2><i class="fas fa-robot"></i>最新动态</h2>
+
+            <article class="latest-card">
+                <div class="latest-topline">
+                    <span class="latest-kicker"><i class="fas fa-bolt"></i> 2026.07 - 至今</span>
+                    <span class="latest-status">在线体验已开放</span>
+                </div>
+
+                <div class="latest-layout">
+                    <div>
+                        <h3>伴 AI · 对话式个人 AI 工作台</h3>
+                        <p class="latest-role">AI 全栈开发 / Project Owner</p>
+                        <p class="latest-lead">
+                            面向角色陪伴、生活助手与工作助手场景，构建可暂停、可恢复、可审计的个人 AI 工作台。系统支持文档 RAG、Office 创作、复杂任务规划、工具审批与多模型协作；我独立完成产品、前端、后端、Agent Worker、数据层、部署和评测体系的 0 到 1 设计与实现。
+                        </p>
+                        <div class="latest-actions">
+                            <a href="https://kentucky-permitted-thumbnail-grams.trycloudflare.com/" target="_blank" rel="noopener noreferrer" class="latest-button primary" aria-label="在线体验伴 AI 项目">
+                                <i class="fas fa-arrow-up-right-from-square"></i> 立即体验伴 AI
+                            </a>
+                            <a href="https://github.com/bamboo-ye/ai-companion" target="_blank" rel="noopener noreferrer" class="latest-button secondary" aria-label="查看伴 AI GitHub 仓库">
+                                <i class="fab fa-github"></i> 查看 GitHub
+                            </a>
+                        </div>
+                    </div>
+
+                    <div class="latest-flow" aria-label="伴 AI 核心执行链路">
+                        <div class="latest-flow-label">Agent Workflow</div>
+                        <div class="latest-flow-step"><i class="fas fa-route"></i><span>Intent Router · 意图识别</span></div>
+                        <div class="latest-flow-step"><i class="fas fa-list-check"></i><span>Planner · 任务图规划</span></div>
+                        <div class="latest-flow-step"><i class="fas fa-code-branch"></i><span>Composer · 并行执行</span></div>
+                        <div class="latest-flow-step"><i class="fas fa-shield-halved"></i><span>Harness · 审批与恢复</span></div>
+                        <div class="latest-flow-step"><i class="fas fa-screwdriver-wrench"></i><span>Tool Gateway · 工具治理</span></div>
+                    </div>
+                </div>
+
+                <div class="latest-highlights">
+                    <div class="latest-highlight"><strong>大文件分片处理</strong>分页与语义分片结合分片级 Checkpoint，支持长文档任务失败后只重试异常分片。</div>
+                    <div class="latest-highlight"><strong>三层并行架构</strong>任务级、分片级、工具级有界并发，结合依赖感知调度与固定合并顺序。</div>
+                    <div class="latest-highlight"><strong>任务恢复与幂等</strong>PostgreSQL 权威状态配合租约、Fencing、幂等键及 Outbox / Inbox。</div>
+                    <div class="latest-highlight"><strong>检索与上下文工程</strong>Qdrant 稠密 / 稀疏混合检索与 RRF 融合，支持页码引用和长期记忆。</div>
+                </div>
+
+                <div class="latest-metrics">
+                    <div class="latest-metric"><strong>1.000</strong>中英文 RAG 五项基线指标</div>
+                    <div class="latest-metric"><strong>-80%</strong>5 个叙事批次并发耗时</div>
+                    <div class="latest-metric"><strong>-75%</strong>16 页 PDF 并发处理耗时</div>
+                </div>
+
+                <div class="project-tags" style="margin-top: 22px; justify-content: flex-start;">
+                    <span class="project-tag">Go</span>
+                    <span class="project-tag">Python</span>
+                    <span class="project-tag">LangGraph</span>
+                    <span class="project-tag">Next.js</span>
+                    <span class="project-tag">PostgreSQL</span>
+                    <span class="project-tag">Redis</span>
+                    <span class="project-tag">Qdrant</span>
+                    <span class="project-tag">Kafka</span>
+                </div>
+            </article>
+        </section>
+
         <!-- Education Section -->
         <section id="education">
             <h2><i class="fas fa-graduation-cap"></i>教育背景</h2>
@@ -1853,18 +2145,19 @@
                                 <h3>
                                     <i class="fas fa-university"></i>香港城市大学
                                     <span class="edu-tags-inline">
-                                        <span class="edu-tag-small">QS世界排名：63</span>
+                                        <span class="edu-tag-small">QS：52</span>
+                                        <span class="edu-tag-small">U.S. News：47</span>
                                     </span>
                                 </h3>
                                 <p style="color: var(--text-secondary); font-size: 0.95rem; margin: 0;"><span class="highlight">人工智能</span> · 硕士 · 计算机学院</p>
                             </div>
                             <div class="edu-header-right">
-                                <p class="edu-date">2026.08 - 2027.06</p>
+                                <p class="edu-date">2026.08 - 2027.10</p>
                                 <i class="fas fa-chevron-down edu-toggle"></i>
                             </div>
                         </div>
                         <div class="edu-details" id="edu-details-0">
-                            <p>深造学习</p>
+                            <p>人工智能（Generative AI）全日制硕士，计算机学院。</p>
                         </div>
                     </div>
                 </div>
@@ -1882,7 +2175,7 @@
                                         <span class="edu-tag-small">211</span>
                                     </span>
                                 </h3>
-                                <p style="color: var(--text-secondary); font-size: 0.95rem; margin: 0;"><span class="highlight">软件工程</span> · 硕士 · 国家示范性软件学院（因职业规划调整主动退学）</p>
+                                <p style="color: var(--text-secondary); font-size: 0.95rem; margin: 0;"><span class="highlight">软件工程</span> · 全日制硕士 · 国家示范性软件学院</p>
                             </div>
                             <div class="edu-header-right">
                                 <p class="edu-date">2022.08 - 2024.06</p>
@@ -1911,7 +2204,7 @@
                                         <span class="edu-tag-small">211</span>
                                     </span>
                                 </h3>
-                                <p style="color: var(--text-secondary); font-size: 0.95rem; margin: 0;"><span class="highlight">软件工程</span> · 本科 · 国家示范性软件学院</p>
+                                <p style="color: var(--text-secondary); font-size: 0.95rem; margin: 0;"><span class="highlight">软件工程</span> · 全日制本科 · 国家示范性软件学院</p>
                             </div>
                             <div class="edu-header-right">
                                 <p class="edu-date">2018.08 - 2022.06</p>
@@ -1935,51 +2228,23 @@
             
             <div class="card">
                 <div style="margin-bottom: 20px;">
-                    <h4 style="margin-bottom: 8px; color: var(--text-primary); font-weight: 700;"><i class="fas fa-laptop-code"></i> 编程语言</h4>
-                    <p style="color: var(--text-secondary); line-height: 1.7; text-indent: 2em;">精通 <span class="highlight">Golang</span>，熟悉 Python、C/C++。</p>
+                    <h4 style="margin-bottom: 8px; color: var(--text-primary); font-weight: 700;"><i class="fas fa-brain"></i> Agent 工程</h4>
+                    <p style="color: var(--text-secondary); line-height: 1.7; text-indent: 2em;"><span class="highlight">LangGraph</span>、Agent Harness、MCP、Skill / Tool Use、Human-in-the-loop、Checkpoint 与上下文工程。</p>
                 </div>
 
                 <div style="margin-bottom: 20px;">
-                    <h4 style="margin-bottom: 8px; color: var(--text-primary); font-weight: 700;"><i class="fas fa-server"></i> 后端开发</h4>
-                    <p style="color: var(--text-secondary); line-height: 1.7; text-indent: 2em;">熟练掌握 <span class="highlight">Gin</span>、<span class="highlight">GORM</span> 等框架，具备构建高并发、高性能 RESTful API 及 <span class="highlight">微服务</span> 的经验。</p>
+                    <h4 style="margin-bottom: 8px; color: var(--text-primary); font-weight: 700;"><i class="fas fa-laptop-code"></i> 全栈开发</h4>
+                    <p style="color: var(--text-secondary); line-height: 1.7; text-indent: 2em;"><span class="highlight">Go、Python、TypeScript / Next.js</span>；Gin、GORM、RESTful API、gRPC、SSE / WebSocket。</p>
                 </div>
 
                 <div style="margin-bottom: 20px;">
-                    <h4 style="margin-bottom: 8px; color: var(--text-primary); font-weight: 700;"><i class="fas fa-database"></i> 数据库</h4>
-                    <p style="color: var(--text-secondary); line-height: 1.7; margin-bottom: 8px; text-indent: 2em;"><strong>关系型：</strong>熟悉 <span class="highlight">Mysql</span> 等数据库的 <span class="highlight">高可用架构设计</span>、<span class="highlight">索引优化</span>。具备从零设计高并发、低延迟数据存储方案的能力。</p>
-                    <p style="color: var(--text-secondary); line-height: 1.7; text-indent: 2em;"><strong>非关系型：</strong>熟悉 <span class="highlight">Redis</span> 等，擅长通过 Redis 集群架构与性能调优解决高并发瓶颈，保障数据可靠性。</p>
-                </div>
-
-                <div style="margin-bottom: 20px;">
-                    <h4 style="margin-bottom: 8px; color: var(--text-primary); font-weight: 700;"><i class="fas fa-cubes"></i> 中间件与架构</h4>
-                    <p style="color: var(--text-secondary); line-height: 1.7; text-indent: 2em;">熟悉 <span class="highlight">gRPC</span>、<span class="highlight">Kafka</span>、WebSocket，具备基于 <span class="highlight">消息队列的异步解耦</span>和高可用系统设计经验。</p>
-                </div>
-
-                <div style="margin-bottom: 20px;">
-                    <h4 style="margin-bottom: 8px; color: var(--text-primary); font-weight: 700;"><i class="fas fa-cloud"></i> 云计算与运维</h4>
-                    <p style="color: var(--text-secondary); line-height: 1.7; text-indent: 2em;">了解 Kubernetes 容器编排及 Docker 容器化部署。</p>
+                    <h4 style="margin-bottom: 8px; color: var(--text-primary); font-weight: 700;"><i class="fas fa-database"></i> 数据与中间件</h4>
+                    <p style="color: var(--text-secondary); line-height: 1.7; text-indent: 2em;">PostgreSQL / MySQL、Redis、Qdrant、Kafka；熟悉索引、租约、幂等、<span class="highlight">Outbox / Inbox</span> 与任务恢复。</p>
                 </div>
 
                 <div style="padding-top: 16px; border-top: 1px solid var(--border);">
-                    <h4 style="margin-bottom: 12px; color: var(--primary); font-weight: 700;"><i class="fas fa-brain"></i> 人工智能/数据科学</h4>
-                    <p style="color: var(--text-secondary); line-height: 1.7; margin-bottom: 8px; text-indent: 2em;"><strong>大模型开发：</strong><span class="highlight">能够熟练开发针对大模型的 Agent、MCP、Skills 等工具，并高效运用大模型完成 Vibe Coding</span>。</p>
-                    <p style="color: var(--text-secondary); line-height: 1.7; margin-bottom: 8px; text-indent: 2em;"><strong>框架与工具：</strong>熟练使用 PyTorch 进行模型开发与训练，精通 Pandas、NumPy 进行数据分析和挖掘。</p>
-                    <p style="color: var(--text-secondary); line-height: 1.7; margin-bottom: 8px; text-indent: 2em;"><strong>算法领域：</strong>熟悉 <span class="highlight">Transformer</span> 等架构，掌握 <span class="highlight">Attention</span> 机制等 <span class="highlight">生成式AI</span> 底层细节，具备图神经网络、知识蒸馏、时空图预测等深度学习项目的实践经验。</p>
-                    <p style="color: var(--text-secondary); line-height: 1.7; text-indent: 2em;"><strong>模型全流程：</strong>熟悉从数据预处理、模型设计、训练优化到部署上线的完整流程。</p>
-                </div>
-
-                <div style="padding-top: 16px; border-top: 1px solid var(--border);">
-                    <h4 style="margin-bottom: 12px; color: var(--text-primary); font-weight: 700;"><i class="fas fa-globe"></i> 其他技能</h4>
-                    <div style="display: flex; gap: 16px; flex-wrap: wrap; margin-left: 2em;">
-                        <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); padding: 12px 20px; border-radius: 12px; border: 1px solid rgba(102, 126, 234, 0.2);">
-                            <strong style="color: var(--primary);">CET4</strong>
-                            <span style="color: var(--text-secondary); margin-left: 8px;">504分</span>
-                        </div>
-                        <div style="background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1)); padding: 12px 20px; border-radius: 12px; border: 1px solid rgba(102, 126, 234, 0.2);">
-                            <strong style="color: var(--primary);">CET6</strong>
-                            <span style="color: var(--text-secondary); margin-left: 8px;">473分</span>
-                        </div>
-                    </div>
+                    <h4 style="margin-bottom: 8px; color: var(--text-primary); font-weight: 700;"><i class="fas fa-gears"></i> 工程化</h4>
+                    <p style="color: var(--text-secondary); line-height: 1.7; text-indent: 2em;">Docker、CI/CD、OpenTelemetry、Langfuse、Prometheus / Grafana、Loki；具备测试与发布门禁实践。</p>
                 </div>
             </div>
         </section>
@@ -1996,16 +2261,17 @@
                         <div style="display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 8px;">
                             <div style="display: flex; align-items: center; gap: 12px; flex: 1;">
                                 <i class="fas fa-flask" style="color: var(--primary);"></i>
-                                <h3 style="margin: 0;">CVPR近年论文大数据展示舱（软件著作权）</h3>
+                                <h3 style="margin: 0;">CVPR 论文大数据展示舱（软件著作权）</h3>
                             </div>
                             <div style="display: flex; align-items: center; gap: 16px; white-space: nowrap;">
+                                <a href="https://github.com/bamboo-ye/display_pod" target="_blank" rel="noopener noreferrer" class="project-button" style="margin-top: 0; padding: 6px 16px; font-size: 0.85rem;">GitHub</a>
                                 <a href="./project_intro.html" class="project-button" style="margin-top: 0; padding: 6px 16px; font-size: 0.85rem;">了解更多</a>
                             </div>
                         </div>
                         <p class="subtitle">云南省软件工程重点实验室 · 全栈开发</p>
                         <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
                             <span style="color: var(--text-muted);">云南 昆明</span>
-                            <span style="color: var(--text-muted);">2021.8-2022.3</span>
+                            <span style="color: var(--text-muted);">2021.08 - 2022.03</span>
                         </div>
                         <p style="color: var(--text-secondary); margin-bottom: 16px; line-height: 1.7; text-indent: 2em;">主要负责 CVPR 论文数据挖掘与 Web 展示项目全流程开发，作为全栈工程师聚焦解决学术数据实时处理与高效展示的核心需求，构建 "爬虫 - Kafka-Flink - 存储 - Web" 全链路架构，最终交付准实时更新的学术领域分析平台。</p>
                         <ul style="list-style: none; padding-left: 0;">
@@ -2017,7 +2283,7 @@
                             </li>
                         </ul>
                         <p style="color: var(--primary); font-weight: 600; margin-top: 16px; text-indent: 2em;">
-                            <strong>项目成果：</strong>全链路数据准确率超过 90%，相比传统批处理模式，数据更新时效提升超过20倍，平台服务多个实验室，帮助学术用户 "追踪领域动态" 的时间从 2 天缩短至 10 分钟。
+                            <strong>数据与指标：</strong>采集论文 7,391 篇、作者数据 12,068 条；全链路准确率 &gt;90%、更新时效提升 20 倍、端到端延迟 &lt;30 秒，领域动态追踪由 2 天缩短至 10 分钟，并服务多个实验室。
                         </p>
                     </div>
                 </div>
@@ -2044,13 +2310,14 @@
                             </div>
                         </div>
                         <div style="display: flex; align-items: center; gap: 16px; white-space: nowrap;">
+                            <a href="https://github.com/bamboo-ye/emoji" target="_blank" rel="noopener noreferrer" class="project-button" style="margin-top: 0; padding: 6px 16px; font-size: 0.85rem;">GitHub</a>
                             <a href="./emoji_project.html" class="project-button" style="margin-top: 0; padding: 6px 16px; font-size: 0.85rem;">了解更多</a>
-                            <span style="color: var(--text-muted); font-size: 0.9rem;">2020.1-2024.6</span>
+                            <span style="color: var(--text-muted); font-size: 0.9rem;">2020.01 - 2024.06</span>
                         </div>
                     </div>
-                    <p style="text-indent: 2em;">主要负责表情包合成平台后端架构设计与落地，针对算法服务耗时高、资源有限（易因突发流量过载不可用）、用户离线无法接收结果的核心痛点，主导突破高可用与消息可靠性难题，主导设计 "Kafka 消息队列 + 动态降级" 方案，基于 Redis Cluster 设计实现混合推送架构，最终实现系统稳定支撑全业务场景。</p>
+                    <p style="text-indent: 2em;">负责后端架构设计与落地，主导生产消费解耦、算法集群按负载调整消费速率、动态降级及在线 / 离线混合推送。通过实时监控队列积压量动态调整降级策略；在线用户经 Redis Pub/Sub 实时投递，离线结果写入缓存并在重连后自动补拉。</p>
                     <p style="color: var(--primary); font-weight: 600; margin-top: 16px; text-indent: 2em;">
-                        项目成果：系统高峰期可用性达 99%+，用户从提交请求到接收结果的端到端延迟从原 2.5 秒降至 500ms 内，离线用户消息接收平均等待时间从 5 分钟缩短至 2 秒。
+                        数据与指标：端到端延迟由 2.5 秒降至 500ms 内（-80%），离线消息等待由 5 分钟降至 2 秒（-99%）。
                     </p>
                     <div class="project-tags" style="margin-top: 20px;">
                         <span class="project-tag">Golang</span>
@@ -2066,22 +2333,24 @@
                             <div class="project-icon" style="margin-bottom: 0;">
                                 <i class="fas fa-comments"></i>
                             </div>
-                            <h3 style="margin: 0;">GoChat—基于Golang的聊天系统</h3>
+                            <h3 style="margin: 0;">GoChat · 高并发即时通信与 AI 对话系统</h3>
                         </div>
                         <div style="display: flex; align-items: center; gap: 16px; white-space: nowrap;">
+                            <a href="https://github.com/bamboo-ye/goChat" target="_blank" rel="noopener noreferrer" class="project-button" style="margin-top: 0; padding: 6px 16px; font-size: 0.85rem;">GitHub</a>
                             <a href="./gochat_project.html" class="project-button" style="margin-top: 0; padding: 6px 16px; font-size: 0.85rem;">了解更多</a>
-                            <span style="color: var(--text-muted); font-size: 0.9rem;">2024.11-2025.11</span>
+                            <span style="color: var(--text-muted); font-size: 0.9rem;">2024.07 - 2025.11</span>
                         </div>
                     </div>
-                    <p style="text-indent: 2em;">主要负责 GoChat 聊天系统后端架构设计与开发，基于 Golang 技术栈构建实时通信核心服务，结合 Redis 与 MySQL 支撑高并发场景，后续接入大模型 API 主导 AI 聊天功能迭代，打造稳定可用的即时通信平台。</p>
+                    <p style="text-indent: 2em;">负责 Go 后端与存储架构、实时通信、AI 上下文 / 记忆策略，以及索引、并发、超时和额度治理。设计“近期消息滑动窗口 + 日期衰减 + RAG 长期记忆”混合方案，实现高效、低成本的上下文管理。</p>
                     <p style="color: var(--primary); font-weight: 600; margin-top: 16px; text-indent: 2em;">
-                        项目成果：系统日均处理 10 万 + 消息，送达率 100%，服务可用性 99.9%；AI 功能上线后用户日活提升 25%，被 3 家企业采用，验证了架构扩展性与 Golang 在高并发场景的优势。
+                        数据与指标：日均 10 万+消息，服务可用性 99.9%。
                     </p>
                     <div class="project-tags" style="margin-top: 20px;">
                         <span class="project-tag">Golang</span>
                         <span class="project-tag">WebSocket</span>
                         <span class="project-tag">Redis</span>
                         <span class="project-tag">MySQL</span>
+                        <span class="project-tag">RAG</span>
                     </div>
                 </div>
 
@@ -2102,8 +2371,8 @@
                         <span style="color: var(--text-muted); font-size: 0.9rem; white-space: nowrap;">2019.11-2020.6</span>
                     </div>
                     <div style="display: flex; gap: 16px; margin: 16px 0; flex-wrap: wrap;">
-                        <img src="images/projects/qinyin_photo1.jpg" style="max-width: 100%; height: auto; border-radius: 12px; max-height: 200px; object-fit: cover;">
-                        <img src="images/projects/qinyin_photo2.jpg" style="max-width: 100%; height: auto; border-radius: 12px; max-height: 200px; object-fit: cover;">
+                        <img src="images/projects/qinyin_photo1.jpg" alt="清音便携式智能钢琴辅导系统展示图一" style="max-width: 100%; height: auto; border-radius: 12px; max-height: 200px; object-fit: cover;">
+                        <img src="images/projects/qinyin_photo2.jpg" alt="清音便携式智能钢琴辅导系统展示图二" style="max-width: 100%; height: auto; border-radius: 12px; max-height: 200px; object-fit: cover;">
                     </div>
                     <p style="text-indent: 2em;">项目简介：致力于解决钢琴学习困难的问题，将曲谱中的节奏、时长、音色、强度等信息用提示灯组件直观地展现出来。</p>
                     <p style="margin-top: 12px; text-indent: 2em;">个人工作：参与并完成了清音教师设备端的设计及实现。将 Midi 音频格式转化为硬件控制参数，使用 Arduino 开发板实现多线程并发电平控制，利用 WS2812B 灯带控制单个灯或者多个灯一起闪烁，满足快速提醒演奏者按下琴键的要求。</p>
@@ -2328,10 +2597,10 @@
             <div class="footer-grid">
                 <div class="footer-section">
                     <h3><i class="fas fa-user-circle"></i> 关于我</h3>
-                    <p>我是叶晓艺，一名Golang服务端研发工程师，专注于高并发系统设计和AI应用开发。</p>
+                    <p>我是叶晓艺，一名 AI 全栈开发者，专注于 Agent 工程、可恢复长任务与高并发系统设计。</p>
                     <p style="margin-top: 8px; color: var(--text-muted); font-size: 0.9rem;">📍 中国 | 🎓 人工智能硕士</p>
                     <div style="margin-top: 16px;">
-                        <a href="rare/叶晓艺简历.pdf" target="_blank" class="cta-btn primary">
+                        <a href="rare/%E5%8F%B6%E6%99%93%E8%89%BA%E7%AE%80%E5%8E%86.pdf" target="_blank" rel="noopener noreferrer" class="cta-btn primary">
                             <i class="fas fa-file-download"></i> 下载简历
                         </a>
                     </div>
@@ -2340,6 +2609,7 @@
                 <div class="footer-section">
                     <h3><i class="fas fa-map-marked-alt"></i> 快速导航</h3>
                     <div class="footer-links">
+                        <a href="#latest">最新动态</a>
                         <a href="#education">教育背景</a>
                         <a href="#skills">专业技能</a>
                         <a href="#experience">实习经历</a>
@@ -2354,17 +2624,18 @@
                     <div class="tech-tags">
                         <span>Golang</span>
                         <span>Python</span>
+                        <span>TypeScript</span>
+                        <span>Next.js</span>
                         <span>Redis</span>
                         <span>Kafka</span>
                         <span>gRPC</span>
-                        <span>MySQL</span>
+                        <span>PostgreSQL</span>
+                        <span>Qdrant</span>
                         <span>Docker</span>
-                        <span>Kubernetes</span>
-                        <span>Transformer</span>
-                        <span class="highlighted">Vibe Coding</span>
-                        <span class="highlighted">Agent</span>
+                        <span>LangGraph</span>
+                        <span class="highlighted">Agent Harness</span>
                         <span class="highlighted">MCP</span>
-                        <span class="highlighted">Skills</span>
+                        <span class="highlighted">Tool Use</span>
                     </div>
                 </div>
 
@@ -2432,7 +2703,7 @@
 
         // Scroll Down Button
         document.getElementById('scrollDownBtn').addEventListener('click', () => {
-            const target = document.getElementById('education');
+            const target = document.getElementById('latest');
             if (target) {
                 const navHeight = document.querySelector('nav').offsetHeight;
                 const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
