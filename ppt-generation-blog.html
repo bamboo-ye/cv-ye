@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="一名 AI 全栈开发者如何用 Vibe Coding，把 PPT 生成从一次性 Demo 做成可恢复、可验收、可长期演进的产品流水线。">
+    <meta name="author" content="Ye Zhuxuan">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="用 Vibe Coding 把 PPT 生成做成可靠产品">
+    <meta property="og:description" content="从附件恢复、大文件处理、Harness、结构化表格到多模态渲染与自动验收的完整工程复盘。">
+    <title>用 Vibe Coding 把 PPT 生成做成可靠产品 | 叶竹暄</title>
+    <link rel="stylesheet" href="blog.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="brand-link" href="index.html#latest"><span class="brand-mark">Y</span><span>叶竹暄 · 开发博客</span></a>
+            <nav class="header-nav" aria-label="博客导航">
+                <a href="ppt-parallel-blog.html">并行化专题</a>
+                <a href="index.html#latest">返回主页</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <span class="eyebrow">Vibe Coding · PPT Engineering</span>
+            <h1>从“能生成”到“能交付”：<em>PPT 生成的可靠性工程</em></h1>
+            <p class="hero-lead">这不是一篇提示词技巧清单，而是一次持续数周的工程复盘：我如何沿着真实用户的失败结果，把附件、长文档、表格、多模态、渲染和验收逐步收进一条可治理的生产流水线。</p>
+            <div class="hero-meta">
+                <span>作者：叶竹暄</span>
+                <span>2026 年 9 月</span>
+                <span>约 18 分钟阅读</span>
+                <span>AI Agent · Office Automation · Vibe Coding</span>
+            </div>
+        </section>
+
+        <div class="reading-grid">
+            <aside class="toc" aria-label="文章目录">
+                <p class="toc-title">文章目录</p>
+                <ol>
+                    <li><a href="#chapter-1">01 · Demo 为什么会失败</a></li>
+                    <li><a href="#chapter-2">02 · 附件与恢复</a></li>
+                    <li><a href="#chapter-3">03 · 大文件与中间表示</a></li>
+                    <li><a href="#chapter-4">04 · Harness 与能力组合</a></li>
+                    <li><a href="#chapter-5">05 · 表格语义合并</a></li>
+                    <li><a href="#chapter-6">06 · 多模态来源约束</a></li>
+                    <li><a href="#chapter-7">07 · 渲染与排版</a></li>
+                    <li><a href="#chapter-8">08 · 自动验收闭环</a></li>
+                </ol>
+                <a class="toc-next" href="ppt-parallel-blog.html">继续阅读：并行化专题 →</a>
+            </aside>
+
+            <article class="article">
+                <p>最早的版本只需要做到一件事：给模型一段内容，让它返回若干页幻灯片，再把 JSON 交给渲染器。Demo 看起来很好，但一旦换成真实任务——上传一份长 PDF，要求整理所有课程、翻译成中文并以表格展示——系统就会暴露完全不同的问题。</p>
+
+                <div class="callout">
+                    <div class="callout-label">贯穿整个系列的原则</div>
+                    <p><strong>模型负责理解意图和生成候选内容；确定性代码负责守边界、保身份、做合并和验证。</strong>可靠性不来自某个“更聪明”的模型，而来自两者之间清楚且可观测的分工。</p>
+                </div>
+
+                <div class="flow" aria-label="PPT 生成执行链路">
+                    <div class="flow-step"><span>01 / PLAN</span>意图识别与任务规划</div>
+                    <div class="flow-step"><span>02 / FREEZE</span>Harness 冻结交付契约</div>
+                    <div class="flow-step"><span>03 / COMPOSE</span>按能力生成候选内容</div>
+                    <div class="flow-step"><span>04 / RENDER</span>确定性渲染与降级</div>
+                    <div class="flow-step"><span>05 / VERIFY</span>结构和视觉双重验收</div>
+                </div>
+
+                <section id="chapter-1" class="article-section">
+                    <span class="section-number">CHAPTER 01</span>
+                    <h2>失败先于架构：Demo 为什么会崩</h2>
+                    <p>我一开始也犯过典型错误：把输出不好归结为 Prompt 不够具体。于是继续添加规则——必须中文、课程代码不能放错列、同一课程的多段时间要合并、文字不能重叠。规则越来越长，单个样本偶尔变好，换一份文件却又坏掉。</p>
+                    <p>真正的问题是链路没有明确“不允许丢失什么”。附件引用只存在于当前消息；切块按字符而不是按实体；每个分片独立生成最终页面；渲染失败时直接删内容；质量检查只看 JSON 能不能解析。模型不是唯一变量，状态、结构、合并和渲染都在悄悄改变结果。</p>
+                    <h3>从症状反推系统不变量</h3>
+                    <ul>
+                        <li>用户确认后，原附件仍必须可寻址、可校验、可恢复。</li>
+                        <li>大文件拆分后，逻辑实体不能被物理分页切断。</li>
+                        <li>并行分支的完成顺序不能改变最终内容顺序。</li>
+                        <li>内容放不下时必须显式降级，不能静默删除。</li>
+                        <li>最终交付不仅要“生成成功”，还要通过结构与视觉验收。</li>
+                    </ul>
+                    <p>这些不变量最终形成 Planner、Harness、能力子工具、确定性 Join、Renderer 和 Quality Gate 的分层。提示词仍然重要，但它终于只承担自己擅长的部分。</p>
+                </section>
+
+                <section id="chapter-2" class="article-section">
+                    <span class="section-number">CHAPTER 02</span>
+                    <h2>附件不是聊天上下文：把“确认”理解成继续执行</h2>
+                    <p>最让用户困惑的失败是：文件刚刚上传，Agent 却在下一轮要求再次上传。原因通常不是模型没看见，而是文件在系统中只有 UI 消息的一种身份，没有成为任务状态的一部分。</p>
+                    <p>我把附件拆成三层身份：消息层的展示信息、任务层的稳定引用，以及工具层的可读取对象。任务状态保存附件 ID、来源消息、文件名、类型、大小和内容摘要；下一轮“确认”“继续”“合并成表格”会被识别为当前任务的续接，而不是一条全新的无附件请求。</p>
+                    <pre><code>AttachmentRef {
+  attachment_id
+  source_message_id
+  display_name
+  media_type
+  byte_size
+  content_digest
+}</code></pre>
+                    <p>重试恢复的也不只是字节。它还要恢复用户能识别的文件名、原始顺序和已完成节点。执行幂等键由任务、附件摘要、节点类型和工具版本共同决定；同一次点击重试不会创建两份 PPT，也不会重复支付已完成分片的模型费用。</p>
+                </section>
+
+                <section id="chapter-3" class="article-section">
+                    <span class="section-number">CHAPTER 03</span>
+                    <h2>大文件不是摘要题：结构化 IR 与递归分片</h2>
+                    <p>“文件过大”经常诱导模型自动摘要，但用户要求的是完整整理。两者的优化目标正好相反：摘要追求压缩，字段整理追求覆盖。我先定义完成条件，再决定如何切块。</p>
+                    <p>PDF 解析结果被提升为带页码、块类型、坐标、表格单元格和媒体引用的文档中间表示（IR）。第一次分片后如果某一批仍超过预算，就继续按标题、表格边界和逻辑实体递归拆分，直到每个工作单元进入可控上下文；每轮都带显式轮次上限、Token 预算和未处理队列。</p>
+                    <div class="chapter-grid">
+                        <div class="chapter-card"><small>STRUCTURE</small><h3>按逻辑实体切分</h3><p>课程代码、名称、时间等属于同一实体的字段不会因为跨行或跨页而被拆散。</p></div>
+                        <div class="chapter-card"><small>FAN-OUT</small><h3>有界并发处理</h3><p>只并行输入输出已冻结的同级任务，并为每个分支预留预算和截止时间。</p></div>
+                        <div class="chapter-card"><small>FAN-IN</small><h3>纯函数式合并</h3><p>按稳定批次序号和实体键恢复顺序，去重、校验来源覆盖并计算最终页数。</p></div>
+                        <div class="chapter-card"><small>CACHE</small><h3>版本化结果复用</h3><p>视觉或渲染失败后只补缺失步骤，不重新生成已经正确的正文。</p></div>
+                    </div>
+                    <p>合并必须是纯函数：相同分支结果无论完成顺序如何，都得到同一份输出。这条约束后来也成为并行化、精确重试和可重复验收的基础。</p>
+                </section>
+
+                <section id="chapter-4" class="article-section">
+                    <span class="section-number">CHAPTER 04</span>
+                    <h2>让 Harness 管质量，而不是机械套门禁</h2>
+                    <p>我们曾经为课程表任务添加非常具体的门禁：固定中间格式、禁止 Section 编号进入课程代码列。它能修复一个样本，却会让普通叙事型 PPT 也背上无关约束。问题的根源是把“任务能力”与“主 PPT 工具”耦合在了一起。</p>
+                    <p>新的流程先由 Planner 判断用户是否有字段整理、表格合并、翻译、来源复用或插图意图，再由 Harness 把这些意图投影成不可放松的任务契约。主 PPT 工具只负责编排；结构化表格、视觉素材和布局翻译成为最小化、可单独测试的私有子能力。</p>
+                    <pre><code>plan.capabilities = [
+  "structured_table",
+  "zh_cn_localization",
+  "source_visual_reuse"
+]
+
+harness.freeze(
+  required_fields = ["course_code", "course_name", "schedule"],
+  completeness = "all_entities",
+  locale = "zh-CN"
+)</code></pre>
+                    <p>门禁跟着能力走：只有结构化表格任务才检查字段类型、实体覆盖和单元格聚合；需要插图时才启用来源证据与视觉放置规则。普通 PPT 保持轻量，复杂任务又能获得足够强的约束。</p>
+                </section>
+
+                <section id="chapter-5" class="article-section">
+                    <span class="section-number">CHAPTER 05</span>
+                    <h2>表格型 PPT：从物理行恢复逻辑实体</h2>
+                    <p>课程表最棘手的 bug 不是“字段没提出来”，而是同一课程的不同行时间没有进入同一个单元格。PDF 中每一行只是视觉排版单元，不一定对应业务实体；后续行可能省略课程代码和名称，只留下另一段上课时间。</p>
+                    <p>修复分成两个步骤。字段映射只判断某个单元格是什么类型，不决定它属于谁；实体合并再根据稳定主键、空白延续、几何邻近、表头范围和页间上下文判断归属。聚合阶段对时间做规范化和去重，并保留源页映射，而不是简单拼接字符串。</p>
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>物理行</th><th>代码</th><th>课程</th><th>时间</th><th>逻辑实体</th></tr></thead>
+                            <tbody>
+                                <tr><td>Row 18</td><td>PED1101</td><td>篮球基础</td><td>周二 10:00–11:50</td><td rowspan="2"><strong>PED1101</strong><br>篮球基础<br>周二 10:00–11:50<br>周四 14:00–15:50</td></tr>
+                                <tr><td>Row 19</td><td>（空）</td><td>（空）</td><td>周四 14:00–15:50</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>本地化也按字段类型进行：自然语言课程名可以翻译，课程代码、日期数字和专业缩写默认保留；完成后再做简繁统一、不可显示符号替换与术语一致性检查。这样“翻译成中文”不会误伤身份字段。</p>
+                </section>
+
+                <section id="chapter-6" class="article-section">
+                    <span class="section-number">CHAPTER 06</span>
+                    <h2>多模态 PPT：可信原图优先，生成图必须有依据</h2>
+                    <p>为 PPT 增加多模态能力后，我先处理的不是“生成更多漂亮图片”，而是来源一致性。原 PDF 中的图表、照片和示意图自带事实依据，应优先提取并保留与附近文字、页码和版面区域的关联。</p>
+                    <p>只有在原文没有合适视觉素材、且图片能帮助解释主题时，系统才创建生成请求。请求包含主题、用途、版式槽位和禁止表达，生成结果还要经过相关性、重复性、分辨率与版权风险检查。装饰性插图不能挤掉核心文字或表格。</p>
+                    <div class="callout">
+                        <div class="callout-label">降级顺序</div>
+                        <p>复用可信原图 → 生成有主题证据的辅助图 → 使用确定性图形与图标 → 保留纯文字版式。任何视觉分支失败，都不应造成正文缺失或空白页。</p>
+                    </div>
+                    <p>“保留原位置”也不是机械复制坐标。面对翻译后文字长度变化，系统先保留图文关系和阅读顺序，再在安全范围内调整尺寸；只有复刻型任务才把绝对位置作为最高优先级。</p>
+                </section>
+
+                <section id="chapter-7" class="article-section">
+                    <span class="section-number">CHAPTER 07</span>
+                    <h2>排版是渲染问题：不要让保守降级变成删除</h2>
+                    <p>文本框没有越界，不代表文字没有溢出。字体度量、行距、项目符号缩进和缺字回退都会改变真实占用空间。我们最终把版式验收放到渲染之后：生成 PPTX，渲染成逐页图片，再检测文本裁切、重叠、空页、异常小字号和缺失字形。</p>
+                    <p>当字体过小无法可靠识别时，“留空”是最坏的降级。新的策略以不缺内容为先：优先扩展文本框或拆页，其次缩短非关键措辞，再降低字号；仍无法安全放置时，保留原始页面图像并标记为视觉回退，而不是删除无法处理的区域。</p>
+                    <h3>项目符号为什么会单独占一行</h3>
+                    <p>如果把圆点和文字作为两个段落写入 PPT，行高或自动换行变化后，圆点就会悬在上一行。正确方式是使用原生段落级项目符号属性，让符号、缩进和文字共享同一段落模型，同时对字体回退后的首行基线做渲染检查。</p>
+                    <ul>
+                        <li>不依赖不可预测的自动缩放作为唯一防线。</li>
+                        <li>完整性与可读性冲突时，先拆页，再缩字。</li>
+                        <li>对字体和符号做跨平台可用性探测。</li>
+                        <li>检测视觉空白，也检查它是否来自内容丢失。</li>
+                    </ul>
+                </section>
+
+                <section id="chapter-8" class="article-section">
+                    <span class="section-number">CHAPTER 08</span>
+                    <h2>把“再试一次”变成自动验收闭环</h2>
+                    <p>Vibe Coding 真正有价值的地方，不是让我更快地产生改动，而是让我能用很短的周期完成“观察—假设—实现—重放—验收”。每次失败都从用户看到的结果开始：到底缺了哪一页、哪个字段错位、哪一种字形不可见，再回到日志定位最早发生偏差的节点。</p>
+                    <p>原因必须写成可证伪假设。比如“附件没有持久化到任务状态”，就应该能通过恢复后的附件 ID 断言验证；“并发导致课程乱序”，就应该能通过人为打乱分支完成顺序的测试验证。先写不变量测试，再保留原始样本做端到端回放。</p>
+                    <div class="chapter-grid">
+                        <div class="chapter-card"><small>OBSERVE</small><h3>从成品倒查</h3><p>同时读取 Agent 日志、中间 IR、PPT 结构和逐页渲染图。</p></div>
+                        <div class="chapter-card"><small>HYPOTHESIZE</small><h3>形成可证伪解释</h3><p>指出偏差第一次出现的位置，而不是在最后一层堆补丁。</p></div>
+                        <div class="chapter-card"><small>PATCH</small><h3>完成最小修复</h3><p>能力专属逻辑保持隔离，版本化所有会改变结果的契约。</p></div>
+                        <div class="chapter-card"><small>REPLAY</small><h3>原任务自动重放</h3><p>重试、渲染、视觉检查和结果评估形成有界闭环。</p></div>
+                    </div>
+                    <p>最终我更愿意把 Vibe Coding 理解为一种“高带宽的工程协作方式”：直觉和模型帮助快速寻找方向，契约、测试、预算、日志和质量门则负责约束每一次变化。没有后半部分，速度只会让系统更快地积累偶然性。</p>
+
+                    <div class="next-article">
+                        <small>专题续篇</small>
+                        <h2>并行不是开几个线程</h2>
+                        <p>当大文件流程稳定后，延迟成为下一个瓶颈。下一篇会拆解 fan-out/fan-in 的并行边界、预算与失败结算，并给出仓库内确定性测试能够支持的实际效果。</p>
+                        <a href="ppt-parallel-blog.html">阅读并行化设计与效果测试 →</a>
+                    </div>
+                </section>
+            </article>
+        </div>
+    </main>
+
+    <footer class="site-footer">© 2026 叶竹暄 · 内容来自“伴 AI”PPT 生成链路的真实开发与回归实践</footer>
+</body>
+</html>

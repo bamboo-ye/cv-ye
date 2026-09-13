@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="PPT 生成链路如何设计有界 fan-out/fan-in：并行边界、状态冻结、费用结算、缓存与确定性效果测试。">
+    <meta name="author" content="Ye Zhuxuan">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="并行不是开几个线程：PPT 生成 fan-out/fan-in 的设计与效果测试">
+    <meta property="og:description" content="用可运行测试证明并发真的发生、结果仍然等价、失败费用仍能结算。">
+    <title>并行不是开几个线程 | 叶竹暄</title>
+    <link rel="stylesheet" href="blog.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-inner">
+            <a class="brand-link" href="index.html#latest"><span class="brand-mark">Y</span><span>叶竹暄 · 开发博客</span></a>
+            <nav class="header-nav" aria-label="博客导航">
+                <a href="ppt-generation-blog.html">PPT 工程系列</a>
+                <a href="index.html#latest">返回主页</a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <span class="eyebrow">Parallelism · Design &amp; Evidence</span>
+            <h1>并行不是开几个线程：<em>PPT 生成 fan-out/fan-in</em> 的设计与效果测试</h1>
+            <p class="hero-lead">性能优化会同时改变状态合并、费用核算、失败语义和可观测性。这篇专题记录我如何确定并行边界，以及用什么证据证明它真的更快、又没有牺牲正确性。</p>
+            <div class="hero-meta">
+                <span>作者：叶竹暄</span>
+                <span>2026 年 9 月</span>
+                <span>约 12 分钟阅读</span>
+                <span>Fan-out/Fan-in · Deterministic Join · Evaluation</span>
+            </div>
+        </section>
+
+        <div class="reading-grid">
+            <aside class="toc" aria-label="文章目录">
+                <p class="toc-title">文章目录</p>
+                <ol>
+                    <li><a href="#boundary">01 · 先判断是否独立</a></li>
+                    <li><a href="#freeze">02 · 并行前冻结状态</a></li>
+                    <li><a href="#bounded">03 · 为什么有界并发</a></li>
+                    <li><a href="#join">04 · 确定性 Join</a></li>
+                    <li><a href="#failure">05 · 失败结算与缓存</a></li>
+                    <li><a href="#evaluation">06 · 效果测试</a></li>
+                    <li><a href="#production">07 · 生产观测</a></li>
+                </ol>
+                <a class="toc-next" href="ppt-generation-blog.html">← 返回 PPT 工程系列</a>
+            </aside>
+
+            <article class="article">
+                <p>大文件 PPT 流程稳定之后，最明显的问题变成了慢。一份长 PDF 会被拆成多个叙事分片或逻辑实体批次，每个批次都需要 Composer；如果还要翻译页面、生成插图，所有调用串行执行时，用户会在每一个独立延迟上依次等待。</p>
+
+                <div class="metric-grid" aria-label="并行化关键结果">
+                    <div class="metric"><strong>≥20%</strong><span>5 个叙事批次的受控耗时缩短</span></div>
+                    <div class="metric"><strong>≥25%</strong><span>16 页 PDF 翻译的受控耗时缩短</span></div>
+                    <div class="metric"><strong>5 / 5</strong><span>精确重试时分支缓存命中</span></div>
+                </div>
+
+                <p>第一反应很自然：把调用放进线程池。但在一个带预算、重试、来源和结构化契约的 Agent 里，并行从来不只是执行方式。它会同时改变共享状态、结果顺序、错误传播和账单统计。我的目标因此不是“尽量多地并发”，而是建立一个能够证明语义等价的并行骨架。</p>
+
+                <section id="boundary" class="article-section">
+                    <span class="section-number">CHAPTER 01</span>
+                    <h2>先判断工作是否真的独立</h2>
+                    <p>PPT 链路中可以并行的不是“所有耗时步骤”，而是输入和输出边界已经冻结的同级任务。我使用一个很朴素的判断标准：<strong>如果两个任务交换完成顺序后，确定性 Join 仍能得到完全相同的结果，它们才具备并行资格。</strong></p>
+                    <div class="chapter-grid">
+                        <div class="chapter-card"><small>SAFE TO PARALLELIZE</small><h3>可以并行</h3><p>完成字段映射后的实体批次；来源范围已确定的叙事分片；互不重叠的翻译页批次；主题已冻结的独立图片请求。</p></div>
+                        <div class="chapter-card"><small>KEEP SERIAL</small><h3>保持串行</h3><p>Planner 到 Harness 的契约投影；文档结构识别；fan-in 后去重与覆盖校验；单一 PPTX 的最终渲染和制品门禁。</p></div>
+                    </div>
+                    <p>这个边界防止“并发放大前置错误”。如果结构识别错了，提前并行十个 Composer 只会更快地产生十份结构一致的坏结果。</p>
+                </section>
+
+                <section id="freeze" class="article-section">
+                    <span class="section-number">CHAPTER 02</span>
+                    <h2>并行化前，先冻结五样东西</h2>
+                    <ol>
+                        <li><strong>任务契约：</strong>语言、完整性、受众与能力集合。</li>
+                        <li><strong>分支输入：</strong>批次 ID、源页、实体键与结构化 IR。</li>
+                        <li><strong>生成配置：</strong>Composer Schema、模型和 Prompt 版本。</li>
+                        <li><strong>资源配额：</strong>调用次数、Token、成本和截止时间份额。</li>
+                        <li><strong>合并协议：</strong>Join 顺序、去重键、冲突和失败规则。</li>
+                    </ol>
+                    <p>分支只能返回候选参数和本分支观测，不能修改共享的 <code>rows</code>、<code>brief</code> 或剩余预算。多个线程直接向全局数组追加数据时，完成顺序就会成为输出顺序；从同一个“剩余成本”变量扣款，则会产生预算竞态。</p>
+                    <pre><code>frozen_run = freeze(contract, source_ir, model_version)
+branches = enumerate(build_batches(frozen_run))
+
+results = bounded_map(
+    branches,
+    concurrency = 3,
+    fn = compose_isolated_branch,
+)
+
+artifact = deterministic_join(
+    sort(results, key = branch.sequence),
+    contract = frozen_run.contract,
+)</code></pre>
+                    <p>因此这个节点更接近 MapReduce，而不是共享状态线程。所有非确定性都被限制在分支内部，Join 只接受结构化候选并重新验证。</p>
+                </section>
+
+                <section id="bounded" class="article-section">
+                    <span class="section-number">CHAPTER 03</span>
+                    <h2>为什么默认并发是 3，而不是越大越好</h2>
+                    <p>Composer fan-out 默认并发为 3，并硬限制在 4 以内；PDF 翻译默认并发为 2；图片生成有独立的并发和总张数上限。这不是线程池能力限制，而是外部模型调用还有更严格的约束。</p>
+                    <ul>
+                        <li>每个在途请求都要预留完成 Token 和最坏成本。</li>
+                        <li>上游供应商有速率限制和长尾延迟。</li>
+                        <li>契约错误发生时，并发越高，已发出的无效请求越多。</li>
+                        <li>一个用户任务不能占满 Worker 的全部外部调用配额。</li>
+                    </ul>
+                    <pre><code>T_serial   ≈ Σ latency(branch_i)
+
+T_parallel ≈ max(load(lane_1) ... load(lane_C))
+             + prepare_overhead
+             + join_overhead</code></pre>
+                    <p>真实加速上限受批次数、最长分支、串行阶段和供应商限流共同约束。把并发从 3 提到 30 不会让 Planner、解析和渲染消失，只会把风险集中到一个更短的时间窗口。</p>
+                </section>
+
+                <section id="join" class="article-section">
+                    <span class="section-number">CHAPTER 04</span>
+                    <h2>两种 Composer，共用骨架但不混淆契约</h2>
+                    <p>结构化 PPT 按逻辑实体批次 fan-out。每个分支只处理一组完整实体，返回带实体 ID 的行；Join 根据批次序号和实体键恢复源顺序，并验证是否覆盖全部实体。</p>
+                    <p>叙事型 PPT 按来源分片 fan-out，返回章节而不是表格行。相邻小分片先在 Token 和源字符限制内合并，避免为了并行制造过多小请求。单个分支不负责满足最终页数，Join 收齐全部章节后才重新计算 <code>slide_count</code>。</p>
+                    <div class="flow" aria-label="并行执行流程">
+                        <div class="flow-step"><span>FREEZE</span>冻结契约与源 IR</div>
+                        <div class="flow-step"><span>ELIGIBILITY</span>验证分支独立性</div>
+                        <div class="flow-step"><span>FAN-OUT</span>带序号并行执行</div>
+                        <div class="flow-step"><span>FAN-IN</span>按源序确定性 Join</div>
+                        <div class="flow-step"><span>QUALITY</span>覆盖与制品门禁</div>
+                    </div>
+                    <p>共享骨架减少了恢复逻辑的分叉，但分支契约仍然不同。表格分支必须给出实体行；叙事分支必须给出有事实依据的章节。为了代码复用强行统一输出，最终只会把语义差异重新推给模型。</p>
+                </section>
+
+                <section id="failure" class="article-section">
+                    <span class="section-number">CHAPTER 05</span>
+                    <h2>失败要结算，重试不能重复付费</h2>
+                    <p>假设三个分支并行执行，其中第二个返回 503。最危险的做法是立即抛异常并丢弃另外两个线程：成功分支可能已经产生费用却没有记录，下一次重试还会再次调用它们。</p>
+                    <p>现在的策略是停止调度尚未开始的任务，让已经 admitted 的分支完成或失败，收集每个分支的模型事件、Token 和成本，再把运行标记为可恢复失败。成功结果进入版本化缓存；重试只补缺失分支。</p>
+                    <p>缓存键包含源内容摘要、任务契约、工具 Schema、模型配置和会话范围；写入使用私有临时文件与原子替换，避免另一个线程读取到半份结果。第一次执行 5 个叙事批次时调用 Composer 5 次，精确重试时 5 个分支全部命中缓存，Composer 总调用数不再增长。</p>
+                    <div class="callout">
+                        <div class="callout-label">契约型失败的特殊处理</div>
+                        <p>网络超时可以重试；同一 Schema 下连续出现结构化契约违约时，处理范围级熔断会阻止后续批次继续调用同一模型。更高并发不应更快地产生同一种坏结果。</p>
+                    </div>
+                </section>
+
+                <section id="evaluation" class="article-section">
+                    <span class="section-number">CHAPTER 06</span>
+                    <h2>怎样证明并发真实发生，而且结果没变</h2>
+                    <p>只断言“最后成功”没有意义，因为完全串行的代码同样能通过。我使用四层确定性断言：</p>
+                    <ol>
+                        <li><strong>并发事实：</strong>Fake provider 记录进入与退出时的 <code>active</code>，用 <code>peak_active</code> 证明请求确实重叠。</li>
+                        <li><strong>受控延迟效果：</strong>对每个分支注入固定 sleep，在相同输入上比较并发 1 与目标并发的 wall time。</li>
+                        <li><strong>语义等价：</strong>验证实体顺序、源页、章节覆盖、最终页数和质量报告完全一致。</li>
+                        <li><strong>失败与费用结算：</strong>任一分支失败时，已发出分支的 usage 事件不能丢失。</li>
+                    </ol>
+
+                    <div class="table-wrap">
+                        <table>
+                            <thead><tr><th>场景</th><th>规模 / 并发</th><th>测试支持的效果</th><th>同时验证</th></tr></thead>
+                            <tbody>
+                                <tr><td>叙事 Composer</td><td>5 批 / 3</td><td>并行耗时 &lt; 串行 80%，即至少缩短 20%</td><td>页 1–5 覆盖、章节顺序、页数重算</td></tr>
+                                <tr><td>结构化 Composer</td><td>3 批 / 3</td><td>并行耗时 &lt; 串行 85%</td><td>实体仍按源序合并、覆盖完整</td></tr>
+                                <tr><td>PDF 布局翻译</td><td>16 页、4 批 / 2</td><td>并行耗时 &lt; 串行 75%，即至少缩短 25%</td><td>16 页完整、费用与轮次正确</td></tr>
+                                <tr><td>PPT 图片生成</td><td>2 张 / 2</td><td><code>peak_active == 2</code></td><td>次数、放置数量与报告一致</td></tr>
+                                <tr><td>精确重试缓存</td><td>5 个叙事批次</td><td>第二次 5 / 5 命中</td><td>Composer 调用总数不增加</td></tr>
+                                <tr><td>并行失败</td><td>2 分支、1 失败</td><td>主流程按契约失败</td><td>每个已发出分支 usage 均结算</td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <p>2026-09-12 的本地关键回归结果为：</p>
+                    <pre><code>6 passed, 5 warnings in 1.86s</code></pre>
+                    <p>这里没有写“性能提升 3 倍”，因为这些测试不能支持这个结论。它们能证明的是：受限并发确实发生；在固定延迟下 wall time 显著低于串行；输出顺序、覆盖与费用结算没有为了速度而牺牲。</p>
+                </section>
+
+                <section id="production" class="article-section">
+                    <span class="section-number">CHAPTER 07</span>
+                    <h2>上线后，观察的是系统而不是线程数</h2>
+                    <p>每个并行节点会记录 <code>parallel_mode</code>、并发数、批次数、实际处理数、wall latency、provider latency、缓存命中、分支失败和本次 Agent Run 的总费用。</p>
+                    <ul>
+                        <li>provider latency 高而 wall latency 没下降：分支可能没有真正重叠，或串行准备阶段占比过高。</li>
+                        <li>wall latency 下降但失败率和费用上升：并发过高，或分片过碎。</li>
+                        <li>重试缓存命中率异常低：先检查缓存键是否包含不稳定字段，而不是直接延长 TTL。</li>
+                        <li>长尾仍然明显：优先观察最慢分支和上游限流，不要只提高线程数。</li>
+                    </ul>
+                    <p>表面上，这次改造只是把多个模型调用同时发出。真正的工程变化是：它迫使我明确哪些状态属于分支、哪些规则属于 Join、哪些预算需要预留、哪些失败必须结算，以及什么叫“并行后仍然等价”。</p>
+                    <div class="callout">
+                        <div class="callout-label">我的并行化检查表</div>
+                        <p>任务真的独立吗？输出如何稳定排序？失败后钱算在哪里？重试会不会重复执行？测试如何证明它确实更快且结果没变？五个问题都有可运行的答案，并行才是能力，而不是新的随机性来源。</p>
+                    </div>
+
+                    <div class="next-article">
+                        <small>完整工程复盘</small>
+                        <h2>回到 PPT 可靠性工程系列</h2>
+                        <p>继续阅读附件恢复、大文件 IR、Harness、结构化表格、多模态、排版和自动验收如何组成一条完整的交付链路。</p>
+                        <a href="ppt-generation-blog.html">阅读 PPT 工程系列 →</a>
+                    </div>
+                </section>
+            </article>
+        </div>
+    </main>
+
+    <footer class="site-footer">© 2026 叶竹暄 · 实验结论仅覆盖仓库内固定延迟的确定性回归测试</footer>
+</body>
+</html>
