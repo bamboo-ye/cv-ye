@@ -928,18 +928,37 @@
         }
 
         .latest-highlight {
+            position: relative;
             padding: 16px;
             border: 1px solid var(--border);
             border-radius: 14px;
             background: rgba(255, 255, 255, 0.74);
             color: var(--text-secondary);
             line-height: 1.65;
+            transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .latest-highlight:hover {
+            transform: translateY(-2px);
+            border-color: rgba(99, 102, 241, 0.28);
+            box-shadow: 0 10px 28px rgba(99, 102, 241, 0.09);
+        }
+
+        .latest-highlight-label {
+            display: block;
+            margin-bottom: 7px;
+            color: var(--primary);
+            font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', monospace;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.08em;
         }
 
         .latest-highlight strong {
             display: block;
             margin-bottom: 4px;
             color: var(--text-primary);
+            font-size: 1.02rem;
         }
 
         .latest-metrics {
@@ -2087,7 +2106,7 @@
                         <h3>伴 AI · 对话式个人 AI 工作台</h3>
                         <p class="latest-role">AI 全栈开发 / Project Owner</p>
                         <p class="latest-lead">
-                            面向角色陪伴、生活助手与工作助手场景，构建可暂停、可恢复、可审计的个人 AI 工作台。系统支持文档 RAG、Office 创作、复杂任务规划、工具审批与多模型协作；我独立完成产品、前端、后端、Agent Worker、数据层、部署和评测体系的 0 到 1 设计与实现。
+                            面向角色陪伴、生活助手与工作助手场景，从 0 到 1 构建可暂停、可恢复、可审计的个人 AI 工作台。系统坚持“模型决定语义，代码决定权力”：通过 Route-first 多 Agent 编排、任务契约与质量门、LangGraph 持久恢复、幂等工具协议，以及面向长文档与 Office 制品的确定性流水线，把一次性模型调用升级为可治理的可靠交付。
                         </p>
                         <div class="latest-actions">
                             <a href="https://kentucky-permitted-thumbnail-grams.trycloudflare.com/" target="_blank" rel="noopener noreferrer" class="latest-button primary" aria-label="在线体验伴 AI 项目">
@@ -2104,27 +2123,53 @@
                         </div>
                     </div>
 
-                    <div class="latest-flow" aria-label="伴 AI 核心执行链路">
-                        <div class="latest-flow-label">Agent Workflow</div>
-                        <div class="latest-flow-step"><i class="fas fa-route"></i><span>Intent Router · 意图识别</span></div>
-                        <div class="latest-flow-step"><i class="fas fa-list-check"></i><span>Planner · 任务图规划</span></div>
-                        <div class="latest-flow-step"><i class="fas fa-code-branch"></i><span>Composer · 并行执行</span></div>
-                        <div class="latest-flow-step"><i class="fas fa-shield-halved"></i><span>Harness · 审批与恢复</span></div>
-                        <div class="latest-flow-step"><i class="fas fa-screwdriver-wrench"></i><span>Tool Gateway · 工具治理</span></div>
+                    <div class="latest-flow" aria-label="伴 AI 受治理的执行链路">
+                        <div class="latest-flow-label">Governed Agent Loop</div>
+                        <div class="latest-flow-step"><i class="fas fa-route"></i><span>Route-first · 三种执行模式</span></div>
+                        <div class="latest-flow-step"><i class="fas fa-list-check"></i><span>Planner · 复杂任务按需规划</span></div>
+                        <div class="latest-flow-step"><i class="fas fa-code-branch"></i><span>Composer · 结构化与并行生成</span></div>
+                        <div class="latest-flow-step"><i class="fas fa-shield-halved"></i><span>Quality Gate · 执行与制品验收</span></div>
+                        <div class="latest-flow-step"><i class="fas fa-screwdriver-wrench"></i><span>Tool Gateway · 审批、幂等与恢复</span></div>
                     </div>
                 </div>
 
                 <div class="latest-highlights">
-                    <div class="latest-highlight"><strong>大文件分片处理</strong>分页与语义分片结合分片级 Checkpoint，支持长文档任务失败后只重试异常分片。</div>
-                    <div class="latest-highlight"><strong>三层并行架构</strong>任务级、分片级、工具级有界并发，结合依赖感知调度与固定合并顺序。</div>
-                    <div class="latest-highlight"><strong>任务恢复与幂等</strong>PostgreSQL 权威状态配合租约、Fencing、幂等键及 Outbox / Inbox。</div>
-                    <div class="latest-highlight"><strong>检索与上下文工程</strong>Qdrant 稠密 / 稀疏混合检索与 RRF 融合，支持页码引用和长期记忆。</div>
+                    <div class="latest-highlight">
+                        <span class="latest-highlight-label">01 / ORCHESTRATION</span>
+                        <strong>Route-first 多 Agent 分工</strong>
+                        先区分 direct、single_action 与 agentic，只让复杂任务承担规划成本；Supervisor、Planner、Composer、Assessor 与 Repairer 各自使用最小上下文、权限和预算。
+                    </div>
+                    <div class="latest-highlight">
+                        <span class="latest-highlight-label">02 / QUALITY</span>
+                        <strong>任务契约驱动的质量闭环</strong>
+                        从原始请求冻结语言、完整性、来源和制品类型；执行前校验参数，生成后验收响应与文件，并以离线评测和在线灰度阻断版本退化。
+                    </div>
+                    <div class="latest-highlight">
+                        <span class="latest-highlight-label">03 / RECOVERY</span>
+                        <strong>恢复同一个 Run，而非重新执行</strong>
+                        LangGraph Checkpoint 与 Agent Run 一一绑定；审批、异步工具和节点失败均从原位置恢复，图版本、模型与工具指纹变化时安全停止。
+                    </div>
+                    <div class="latest-highlight">
+                        <span class="latest-highlight-label">04 / IDEMPOTENCY</span>
+                        <strong>端到端幂等与副作用治理</strong>
+                        PostgreSQL 权威状态结合租约、Revision Fencing、Outbox / Inbox 与稳定行动键；写工具采用 prepare / commit，副作用不明时进入核对而非盲目重试。
+                    </div>
+                    <div class="latest-highlight">
+                        <span class="latest-highlight-label">05 / OFFICE PIPELINE</span>
+                        <strong>长文档与 Office 可靠交付</strong>
+                        用结构化 Source IR、递归分片和逻辑实体合并保住全量信息；字段级本地化、原图复用、渲染后视觉检查共同解决表格错位、空页和内容缺失。
+                    </div>
+                    <div class="latest-highlight">
+                        <span class="latest-highlight-label">06 / PARALLELISM</span>
+                        <strong>有界并行与确定性合并</strong>
+                        只并行输入输出已冻结的同级分支，按稳定序号 fan-in；并发上限、预算预留、Usage 结算与版本化缓存保证提速不改变结果语义。
+                    </div>
                 </div>
 
                 <div class="latest-metrics">
-                    <div class="latest-metric"><strong>1.000</strong>中英文 RAG 五项基线指标</div>
-                    <div class="latest-metric"><strong>≥20%</strong>5 个叙事批次受控耗时缩短</div>
-                    <div class="latest-metric"><strong>≥25%</strong>16 页 PDF 受控耗时缩短</div>
+                    <div class="latest-metric"><strong>3 种</strong>Route-first 执行模式，简单请求绕过 Planner</div>
+                    <div class="latest-metric"><strong>6 / 6</strong>并行关键回归用例通过，覆盖正确性与费用结算</div>
+                    <div class="latest-metric"><strong>≥20% / ≥25%</strong>受控测试中 Composer / PDF 翻译耗时缩短</div>
                 </div>
 
                 <div class="project-tags" style="margin-top: 22px; justify-content: flex-start;">
