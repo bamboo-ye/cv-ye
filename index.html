@@ -995,6 +995,18 @@
             font-size: 1.2rem;
         }
 
+        .latest-verification {
+            margin-top: 14px;
+            color: var(--text-secondary);
+            font-size: 0.88rem;
+            line-height: 1.8;
+        }
+
+        .research-date {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
         .card {
             background: var(--card-bg);
             border-radius: 16px;
@@ -2048,10 +2060,10 @@
                 <h2>⚡ 核心优势</h2>
                 <ul style="color: var(--text-secondary); margin-top: 12px; line-height: 1.9;">
                     <li style="text-indent: 2em; list-style-position: inside;">从 0 到 1 独立交付 <span class="highlight">伴 AI 对话式个人 AI 工作台</span>，覆盖产品、前端、后端、Agent Worker、数据层、部署与评测</li>
-                    <li style="text-indent: 2em; list-style-position: inside;">熟悉 <span class="highlight">LangGraph、Agent Harness、MCP、Tool Use、Human-in-the-loop</span> 与上下文工程</li>
+                    <li style="text-indent: 2em; list-style-position: inside;">以 <span class="highlight">LangGraph、Agent Harness、MCP、Tool Use、Human-in-the-loop</span> 实现按需规划、任务契约与工具治理</li>
                     <li style="text-indent: 2em; list-style-position: inside;">具备 <span class="highlight">Go + Python + TypeScript / Next.js</span> 全栈能力，能完成实时 API、异步任务与 AI 应用工程化落地</li>
-                    <li style="text-indent: 2em; list-style-position: inside;">通过 Checkpoint、租约、Revision Fencing 与 Outbox / Inbox，实现长任务暂停、接管、取消与断点续跑</li>
-                    <li style="text-indent: 2em; list-style-position: inside;">具备 Docker、CI/CD、OpenTelemetry、Langfuse、Prometheus / Grafana 与 Loki 的测试、观测和发布实践</li>
+                    <li style="text-indent: 2em; list-style-position: inside;">结合 <span class="highlight">Source IR、确定性合并、有界并行与内容寻址缓存</span>，保障大文件全量覆盖与长任务断点恢复</li>
+                    <li style="text-indent: 2em; list-style-position: inside;">实现 <span class="highlight">Agent Studio、不可变版本与灰度回滚</span>，配合 OpenTelemetry、Prometheus、Loki 及可选 Langfuse 关联耗时、用量、成本与错误</li>
                 </ul>
                 
                 <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border);">
@@ -2073,7 +2085,7 @@
                         <p style="color: var(--text-muted); font-size: 0.95rem; font-style: italic; text-indent: 2em; margin: 0;">
                             我是谁、能做什么、为什么值得聊 —— 欢迎点击下方查看完整履历 👇
                         </p>
-                        <a href="rare/%E5%8F%B6%E6%99%93%E8%89%BA%E7%AE%80%E5%8E%86.pdf" target="_blank" rel="noopener noreferrer" class="hero-download-btn" style="white-space: nowrap;">
+                        <a href="rare/%E5%8F%B6%E6%99%93%E8%89%BA%E7%AE%80%E5%8E%86.pdf?v=20260920" target="_blank" rel="noopener noreferrer" class="hero-download-btn" style="white-space: nowrap;">
                             <i class="fas fa-file-download"></i> 下载简历
                         </a>
                     </div>
@@ -2119,7 +2131,7 @@
                         <h3>伴 AI · 对话式个人 AI 工作台</h3>
                         <p class="latest-role">AI 全栈开发 / Project Owner</p>
                         <p class="latest-lead">
-                            面向角色陪伴、生活助手与工作助手场景，构建支持文档 RAG、长期记忆、Office 创作、复杂任务规划、工具审批与多模型协作的个人 AI 工作台。我独立完成产品、前端、后端、Agent Worker、数据层、部署和评测体系的 0 到 1 设计与实现，并通过可恢复执行、任务契约和确定性质量门，让系统从“能够调用模型”走向可治理、可审计的可靠交付。
+                            独立设计并实现覆盖角色陪伴、生活助手、知识问答与办公创作的 AI 工作台。针对复杂请求难以执行、大文件超出上下文窗口、串行调用耗时长及任务失败后重复执行等问题，构建可规划、可并行、可恢复的 Agent 系统，兼顾内容完整性、执行效率与调用成本。
                         </p>
                         <div class="latest-actions">
                             <a href="https://kentucky-permitted-thumbnail-grams.trycloudflare.com/" target="_blank" rel="noopener noreferrer" class="latest-button primary" aria-label="在线体验伴 AI 项目">
@@ -2134,13 +2146,14 @@
                         </div>
                     </div>
 
-                    <div class="latest-flow" aria-label="伴 AI 受治理的执行链路">
-                        <div class="latest-flow-label">Governed Agent Loop</div>
-                        <div class="latest-flow-step"><i class="fas fa-route"></i><span>Route-first · 三种执行模式</span></div>
-                        <div class="latest-flow-step"><i class="fas fa-list-check"></i><span>Planner · 复杂任务按需规划</span></div>
-                        <div class="latest-flow-step"><i class="fas fa-code-branch"></i><span>Composer · 结构化与并行生成</span></div>
-                        <div class="latest-flow-step"><i class="fas fa-shield-halved"></i><span>Quality Gate · 执行与制品验收</span></div>
-                        <div class="latest-flow-step"><i class="fas fa-screwdriver-wrench"></i><span>Tool Gateway · 审批、幂等与恢复</span></div>
+                    <div class="latest-flow" aria-label="伴 AI 产品与执行链路">
+                        <div class="latest-flow-label">Product &amp; Agent Workflow</div>
+                        <div class="latest-flow-step"><i class="fas fa-comments"></i><span>Next.js · 对话与附件上传</span></div>
+                        <div class="latest-flow-step"><i class="fas fa-server"></i><span>Go · 鉴权、上下文与任务持久化</span></div>
+                        <div class="latest-flow-step"><i class="fas fa-route"></i><span>LangGraph · 路由、规划与参数生成</span></div>
+                        <div class="latest-flow-step"><i class="fas fa-screwdriver-wrench"></i><span>工具网关 · 执行与知识检索</span></div>
+                        <div class="latest-flow-step"><i class="fas fa-file-circle-check"></i><span>分片处理 · 合并与质量校验</span></div>
+                        <div class="latest-flow-step"><i class="fas fa-file-arrow-down"></i><span>流式进度 · 任务详情与文件下载</span></div>
                     </div>
                 </div>
 
@@ -2149,51 +2162,51 @@
                     <div class="latest-highlight">
                         <span class="latest-highlight-label">01 / PRODUCT OWNERSHIP</span>
                         <strong>从 0 到 1 独立全栈交付</strong>
-                        独立覆盖产品设计、Next.js 前端、Go 服务、Python Agent Worker、数据与消息层、部署及评测，打通陪伴、生活与工作三类真实使用场景。
+                        独立设计并实现角色陪伴、生活助手、知识问答与办公创作，贯通 Next.js 对话与附件入口、Go 服务、LangGraph Agent、Qdrant / Wiki 检索，以及进度展示和交付物下载。
                     </div>
                     <div class="latest-highlight">
                         <span class="latest-highlight-label">02 / AGENT ORCHESTRATION</span>
-                        <strong>按需规划的多 Agent 编排</strong>
-                        Route-first 区分 direct、single_action 与 agentic；Supervisor、Planner、Composer、Assessor 和 Repairer 按职责使用最小上下文、权限与预算。
+                        <strong>意图识别与任务规划</strong>
+                        设计“直接回答—单工具调用—多步 Agent”三级执行模式，简单请求跳过 Planner，复杂任务结合上下文与附件拆解计划。Harness 将语言、全量覆盖、指定字段及输出形式固化为任务契约，按能力投影工具 Schema，约束参数并检查完成条件。
                     </div>
                     <div class="latest-highlight">
-                        <span class="latest-highlight-label">03 / RAG &amp; CONTEXT</span>
-                        <strong>检索与长期上下文工程</strong>
-                        基于 Qdrant 实现稠密 / 稀疏混合检索与 RRF 融合，结合页码引用、近期对话窗口和长期记忆，在检索质量、成本与上下文长度间取得平衡。
+                        <span class="latest-highlight-label">03 / DOCUMENT INTEGRITY</span>
+                        <strong>大文件分片与确定性合并</strong>
+                        建立覆盖 20MB 上传上限的全量提取链路，以连续游标和 Chunk 区间并集校验覆盖率。Source IR 保留页码、表格、行列与来源 ID，按 Token / 字符双重上限切分；结合字段映射、跨行实体恢复、顺序合并、去重与缺失检查，避免截断、乱序及跨附件数据混用。
                     </div>
                     <div class="latest-highlight">
-                        <span class="latest-highlight-label">04 / TOOL GOVERNANCE</span>
-                        <strong>工具治理与 Human-in-the-loop</strong>
-                        Go Tool Gateway 统一执行身份、权限、Schema、风险和预算校验；写操作使用 prepare / commit 与确认令牌，副作用状态不明时进入核对而非盲目重试。
+                        <span class="latest-highlight-label">04 / BOUNDED PARALLELISM</span>
+                        <strong>分片与工具并行</strong>
+                        构建 Go 多 Run 调度、持久 Python 进程池、LangGraph fan-out / fan-in 三层并行，结合有界队列、重复信号合并与进程复用控制资源消耗。文档分片、PDF 翻译批次及图片请求分别有界并行，分发前预分配调用、Token 与成本预算，失败时保留成功结果并结算已发生用量。
                     </div>
                     <div class="latest-highlight">
                         <span class="latest-highlight-label">05 / RECOVERY &amp; IDEMPOTENCY</span>
-                        <strong>可恢复长任务与端到端幂等</strong>
-                        LangGraph Checkpoint 与 Agent Run 一一绑定；PostgreSQL 权威状态结合租约、Revision Fencing、稳定行动键及 Outbox / Inbox，支持暂停、接管、取消与断点续跑。
+                        <strong>断点恢复与幂等执行</strong>
+                        以 PostgreSQL 和 Checkpointer 持久化任务状态，结合 SKIP LOCKED、租约接管、Revision Fencing 及 Outbox / Inbox 支撑挂起、唤醒、取消和恢复。内容寻址缓存复用已完成分片，仅重试失败或缺失批次；工具网关统一鉴权，高风险操作经人工确认后恢复原 Run。
                     </div>
                     <div class="latest-highlight">
-                        <span class="latest-highlight-label">06 / OFFICE PIPELINE</span>
-                        <strong>长文档与 Office 可靠交付</strong>
-                        以结构化 Source IR、递归分片和逻辑实体合并保住全量信息；字段级本地化、原图复用与渲染后视觉检查共同解决表格错位、空页和内容缺失。
+                        <span class="latest-highlight-label">06 / RAG &amp; CONTEXT</span>
+                        <strong>上下文工程与知识检索</strong>
+                        统一近期会话、结构化摘要、长期记忆和 Wiki 证据，按节点分配上下文预算，支持带来源的摘要、记忆纠正与有效期管理。Qdrant 稠密 / 稀疏检索结合 RRF 融合与可配置重排，提供引用溯源和证据不足提示；文档更新、删除或撤销共享后同步失效相关检索与缓存。
                     </div>
                     <div class="latest-highlight">
-                        <span class="latest-highlight-label">07 / PARALLELISM</span>
-                        <strong>三层有界并行与精准重试</strong>
-                        任务级、分片级和工具级并发结合依赖感知调度、稳定序号 fan-in、预算预留与版本化缓存；失败后只补异常分支，并完整结算 Usage。
+                        <span class="latest-highlight-label">07 / MULTIMODAL QUALITY</span>
+                        <strong>多模态生成与质量控制</strong>
+                        实现 PDF 版面翻译及 PPT 叙事、表格、视觉能力组合，优先复用与主题来源页匹配的原图，按需生成补充图片。通过来源覆盖、字段证据、语言一致性、内容容量和布局检查控制交付质量，配合有界修复与模型回退处理结构化输出错误。
                     </div>
                     <div class="latest-highlight">
-                        <span class="latest-highlight-label">08 / EVALUATION &amp; OPS</span>
-                        <strong>质量评测、可观测与发布闭环</strong>
-                        任务契约贯穿参数、响应和制品验收，配合离线评测与在线灰度；使用 Docker、CI/CD、OpenTelemetry、Langfuse、Prometheus / Grafana 和 Loki 支撑部署与诊断。
+                        <span class="latest-highlight-label">08 / GOVERNANCE &amp; OBSERVABILITY</span>
+                        <strong>Agent 治理与全链路观测</strong>
+                        实现可视化 Agent Studio、节点调试及 Agent / Prompt / 模型配置的不可变版本管理，Run 固定版本快照，支持评测、稳定分流、灰度停流和回滚。接入 OpenTelemetry、Prometheus、Loki 及可选 Langfuse，关联节点耗时、模型用量、成本与错误，并提供角色权限、额度配置和审计能力。
                     </div>
                 </div>
 
                 <div class="latest-metrics">
-                    <div class="latest-metric"><strong>1.000</strong>中英文 RAG 五项基线指标</div>
-                    <div class="latest-metric"><strong>6 / 6</strong>并行关键回归用例通过</div>
-                    <div class="latest-metric"><strong>≥20%</strong>5 个叙事批次受控耗时缩短</div>
-                    <div class="latest-metric"><strong>≥25%</strong>16 页 PDF 受控耗时缩短</div>
+                    <div class="latest-metric"><strong>≥20%</strong>5 个叙事分片并发处理耗时降低</div>
+                    <div class="latest-metric"><strong>≥25%</strong>16 页 PDF 分批翻译耗时降低</div>
+                    <div class="latest-metric"><strong>5 / 5</strong>精确重试时已完成分支命中缓存</div>
                 </div>
+                <p class="latest-verification">验证条件：固定延迟模拟模型的受控测试，并发耗时与串行处理对比。精确重试时，5 个已完成 Composer 分支全部命中缓存，未增加模型调用，同时保持来源覆盖、输出顺序与用量结算一致。</p>
 
                 <div class="project-tags" style="margin-top: 22px; justify-content: flex-start;">
                     <span class="project-tag">Go</span>
@@ -2226,7 +2239,7 @@
                                         <span class="edu-tag-small">U.S. News：47</span>
                                     </span>
                                 </h3>
-                                <p style="color: var(--text-secondary); font-size: 0.95rem; margin: 0;"><span class="highlight">人工智能</span> · 硕士 · 计算机学院</p>
+                                <p style="color: var(--text-secondary); font-size: 0.95rem; margin: 0;"><span class="highlight">人工智能（Generative AI）</span> · 全日制硕士 · 计算机学院</p>
                             </div>
                             <div class="edu-header-right">
                                 <p class="edu-date">2026.08 - 2027.10</p>
@@ -2480,6 +2493,7 @@
                             <a href="./hypergraph_project.html" class="project-button" style="margin-top: 0; padding: 6px 16px; font-size: 0.85rem;">了解更多</a>
                         </div>
                     </div>
+                    <p class="research-date">2023.02 - 2023.12</p>
                     <ul style="color: var(--text-secondary); margin-top: 16px; margin-left: 20px; line-height: 1.7;">
                         <li style="text-indent: 2em; list-style-position: inside;"><strong>异构超图建模：</strong>引入超图来捕获全局高阶的结构信息，挖掘了超图和异构图的潜在关联，提出了一种通用的将异构图建模成多级超图的方法，并针对此提出了相应的信息聚合策略（异构超图卷积）。</li>
                         <li style="text-indent: 2em; list-style-position: inside;"><strong>embedding 以及信息聚合策略：</strong>提出了一种通用的 embedding 以及信息聚合策略，将本地低阶的表示信息与全局高阶的结构信息进行对比协同挖掘节点特征。</li>
@@ -2503,10 +2517,12 @@
                             <a href="./molecule_project.html" class="project-button" style="margin-top: 0; padding: 6px 16px; font-size: 0.85rem;">了解更多</a>
                         </div>
                     </div>
+                    <p class="research-date">2024.02 - 2025.04</p>
                     <ul style="color: var(--text-secondary); margin-top: 16px; margin-left: 20px; line-height: 1.7;">
                         <li style="text-indent: 2em; list-style-position: inside;"><strong>异构原子-基序图：</strong>结合化学领域知识并充分利用新增的基序模态信息，提出一种新的基于原分子结构与分子基序分解的分子表示——异构原子-基序图。</li>
                         <li style="text-indent: 2em; list-style-position: inside;"><strong>异构原子-基序图卷积：</strong>受基序整体以及分子内部原子之间的相互作用启发，在异构原子-基序图基础上设计一种更符合分子内部作用机制的信息传递策略（异构原子-基序图卷积），解决分子表征领域由分子的复杂性引发的特征提取不充分等问题，并提高分子表征算法的泛化能力。</li>
                     </ul>
+                    <p style="color: var(--primary); font-weight: 600; margin-top: 16px;"><strong>模型对比与结果：</strong>准确率达到 0.960 (0.012)，优于 SOTA 模型结果 0.940 (0.019)，提高了模型的准确率和稳定性。</p>
                     <div class="project-tags" style="margin-top: 20px;">
                         <span class="project-tag">分子表征</span>
                         <span class="project-tag">图卷积</span>
@@ -2526,7 +2542,9 @@
                             <a href="./transport_project.html" class="project-button" style="margin-top: 0; padding: 6px 16px; font-size: 0.85rem;">了解更多</a>
                         </div>
                     </div>
-                    <p style="margin-top: 16px; text-indent: 2em;">提出了一种新的深度学习算法，该算法对历史的路网对象观测数据进行分析，采用拓扑图分析技术将路网抽象为典型的时空图，此后融合了基于邻域图卷积模块对行车流量与行人流量进行预测。</p>
+                    <p class="research-date">2021.09 - 2022.06</p>
+                    <p style="margin-top: 16px; text-indent: 2em;">分析历史路网观测数据，将路网抽象为时空图，统一表达空间邻接关系与交通状态的时间演化。提出注意力融合邻域图卷积算法，聚合相邻路网状态、动态调整节点连接关系，联合预测行车流量与行人流量。</p>
+                    <p style="color: var(--primary); font-weight: 600; margin-top: 16px;"><strong>模型对比与结果：</strong>PEMSD4/8 数据集上的 MAE / RMSE 分别为 20.47 / 32.14、15.41 / 23.91，优于 ASTGCN、DGCN 等方法。</p>
                     <div class="project-tags" style="margin-top: 20px;">
                         <span class="project-tag">时空图</span>
                         <span class="project-tag">图卷积</span>
@@ -2539,9 +2557,10 @@
                         <div class="project-icon" style="margin-bottom: 0;">
                             <i class="fas fa-leaf"></i>
                         </div>
-                        <h3>一种基于 U-Net 模型的结构化病虫害诊断方法</h3>
+                        <h3>U-Net 结构化病虫害诊断</h3>
                     </div>
-                    <p style="margin-top: 16px; text-indent: 2em;">收集部分农业数据集，并对其进行了预处理与数据清洗。提出了一种基于 U-Net 的深度学习模型实现了农作物虫害识别，最终的实验结果超越了目前所有的农作物虫害识别模型，在测试集上的正确率达到了 100%。</p>
+                    <p class="research-date">2021.02 - 2021.08</p>
+                    <p style="margin-top: 16px; text-indent: 2em;">收集农业数据集并完成预处理与数据清洗，为结构化病虫害诊断构建统一、可训练的数据基础。提出基于 U-Net 的深度学习模型实现农作物病虫害识别；实验结果优于现有病虫害识别模型，准确率近 100%。</p>
                     <div class="project-tags" style="margin-top: 20px;">
                         <span class="project-tag">U-Net</span>
                         <span class="project-tag">图像识别</span>
@@ -2561,7 +2580,8 @@
                             <a href="./music_project.html" class="project-button" style="margin-top: 0; padding: 6px 16px; font-size: 0.85rem;">了解更多</a>
                         </div>
                     </div>
-                    <p style="margin-top: 16px; text-indent: 2em;">从原本 MAESTRO 数据集中的 MIDI 文件中分别提取出节拍和音高作为模型输入和输出，并对其进行随机切片，将数据划分为训练集、验证集和测试集三部分。基于 RNN、LSTM、transformer 等主流模型架构使用 pytorch 搭建模型，使用时长为 159.2 小时的 1139 条序列数据进行训练并用 126 条序列数据进行模型验证，对不同模型进行对比实验选择效果最好的作为生成模型，实现最终效果比基线提高了 27.15%。</p>
+                    <p class="research-date">2025.12 - 2026.06</p>
+                    <p style="margin-top: 16px; text-indent: 2em;">从 MAESTRO MIDI 文件中提取节拍和音高作为模型输入与输出，通过随机切片构建训练集、验证集和测试集。基于 PyTorch 搭建 RNN、LSTM、Transformer 三类模型，使用 159.2 小时、1,139 条序列训练并以 126 条序列验证；通过对比实验选择最优生成模型，最终效果较基线提升 27.15%。</p>
                     <div class="project-tags" style="margin-top: 20px;">
                         <span class="project-tag">PyTorch</span>
                         <span class="project-tag">Transformer</span>
@@ -2677,7 +2697,7 @@
                     <p>我是叶晓艺，一名 AI 全栈开发者，专注于 Agent 工程、可恢复长任务与高并发系统设计。</p>
                     <p style="margin-top: 8px; color: var(--text-muted); font-size: 0.9rem;">📍 中国 | 🎓 人工智能硕士</p>
                     <div style="margin-top: 16px;">
-                        <a href="rare/%E5%8F%B6%E6%99%93%E8%89%BA%E7%AE%80%E5%8E%86.pdf" target="_blank" rel="noopener noreferrer" class="cta-btn primary">
+                        <a href="rare/%E5%8F%B6%E6%99%93%E8%89%BA%E7%AE%80%E5%8E%86.pdf?v=20260920" target="_blank" rel="noopener noreferrer" class="cta-btn primary">
                             <i class="fas fa-file-download"></i> 下载简历
                         </a>
                     </div>
