@@ -339,9 +339,29 @@
         }
 
         .hero-greeting {
+            display: flex;
+            align-items: center;
+            gap: 8px;
             margin-bottom: 6px;
             color: var(--text-secondary);
             font-size: 1rem;
+        }
+
+        .wave-hand {
+            display: inline-block;
+            flex-shrink: 0;
+            font-size: 1.4em;
+            transform-origin: 70% 70%;
+            animation: handWave 1.2s ease-in-out infinite;
+        }
+
+        @keyframes handWave {
+            0%, 100% { transform: rotate(0deg); }
+            16% { transform: rotate(15deg); }
+            33% { transform: rotate(-10deg); }
+            50% { transform: rotate(15deg); }
+            66% { transform: rotate(-5deg); }
+            83% { transform: rotate(10deg); }
         }
 
         .hero-name {
@@ -1999,7 +2019,8 @@
         }
 
         @media (prefers-reduced-motion: reduce) {
-            .bg-decorations * {
+            .bg-decorations *,
+            .wave-hand {
                 animation: none !important;
             }
 
@@ -2091,7 +2112,7 @@
                         <img src="images/profile/avatar.jpg" alt="叶晓艺照片" width="100" height="124" fetchpriority="high" loading="eager" decoding="async">
                     </div>
                     <div>
-                        <p class="hero-greeting">你好，我是</p>
+                        <p class="hero-greeting"><span class="wave-hand" aria-hidden="true">👋</span>你好，我是</p>
                         <h1 class="hero-name" id="hero-name">叶晓艺</h1>
                     </div>
                 </div>
