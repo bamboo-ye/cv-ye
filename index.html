@@ -289,229 +289,274 @@
         .particle.large { width: 8px; height: 8px; animation: particleFloat 25s ease-in-out infinite; }
 
         /* Header / Hero Section */
-        header {
+        .resume-hero {
             position: relative;
             z-index: 10;
-            padding: 60px 20px 40px;
-            text-align: center;
-            min-height: 100vh;
-            display: flex;
+            display: grid;
             align-items: center;
-            justify-content: center;
+            min-height: calc(100svh - 76px);
+            padding: 48px 28px;
+            background: linear-gradient(120deg, rgba(248, 250, 252, 0.94), rgba(248, 250, 252, 0.65));
         }
 
         .hero-content {
-            max-width: 900px;
+            display: grid;
+            grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+            align-items: center;
+            gap: clamp(32px, 4vw, 64px);
+            width: 100%;
+            max-width: 1160px;
             margin: 0 auto;
         }
 
-        .hero-flex {
-            display: flex;
-            gap: 40px;
-            align-items: flex-start;
-            text-align: left;
-            padding-top: 20px;
+        .hero-intro,
+        .hero-strengths {
+            min-width: 0;
         }
 
-        .avatar {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            flex-shrink: 0;
+        .hero-identity {
             display: flex;
             align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            box-shadow: 0 20px 40px var(--shadow);
-            animation: avatarPulse 3s ease-in-out infinite, avatarShake 4s ease-in-out infinite;
-            border: 4px solid white;
-            margin-top: 10px;
+            gap: 24px;
+            margin-bottom: 24px;
         }
 
-        .avatar img {
+        .hero-portrait {
+            flex: 0 0 auto;
+            width: 100px;
+            height: 124px;
+            overflow: hidden;
+            border: 4px solid white;
+            border-radius: 24px;
+            box-shadow: 0 10px 30px rgba(79, 70, 229, 0.12);
+        }
+
+        .hero-portrait img {
+            display: block;
             width: 100%;
             height: 100%;
             object-fit: cover;
         }
 
-        .hero-text {
-            flex: 1;
-        }
-
-        .greeting-section {
-            background: var(--card-bg);
-            border-radius: 16px;
-            padding: 24px;
-            margin-top: 20px;
-            box-shadow: 0 4px 20px var(--shadow);
-            border: 1px solid var(--border);
-            text-align: left;
-        }
-
-        .greeting-section h2 {
-            font-size: 1.4rem;
-            margin-bottom: 12px;
-            color: var(--text-primary);
-        }
-
-        .greeting-section p {
+        .hero-greeting {
+            margin-bottom: 6px;
             color: var(--text-secondary);
-            line-height: 1.7;
-            margin-bottom: 10px;
-            font-size: 0.95rem;
+            font-size: 1rem;
         }
 
-        @keyframes avatarPulse {
-            0%, 100% {
-                box-shadow: 0 20px 40px var(--shadow);
-            }
-            50% {
-                box-shadow: 0 25px 50px rgba(99, 102, 241, 0.2);
-            }
-        }
-
-        @keyframes heartbeat {
-            0%, 100% {
-                transform: scale(1);
-            }
-            14% {
-                transform: scale(1.05);
-            }
-            28% {
-                transform: scale(1);
-            }
-            42% {
-                transform: scale(1.05);
-            }
-            70% {
-                transform: scale(1);
-            }
-        }
-
-        @keyframes shimmer {
-            0% {
-                background-position: -200% center;
-            }
-            100% {
-                background-position: 200% center;
-            }
-        }
-
-        @keyframes avatarShake {
-            0%, 100% {
-                transform: rotate(-2deg);
-            }
-            25% {
-                transform: rotate(2deg);
-            }
-            50% {
-                transform: rotate(-2deg);
-            }
-            75% {
-                transform: rotate(2deg);
-            }
-        }
-
-        /* Hero section animations */
-        .hero-header {
-            display: flex;
-            align-items: baseline;
-            gap: 10px;
-            margin-bottom: 8px;
-        }
-
-        .hero-header h1 {
-            animation: slideInLeft 1s ease-out forwards;
-            opacity: 0;
+        .hero-name {
+            display: block;
             margin: 0;
+            color: var(--text-primary);
+            font-size: clamp(2.5rem, 4vw, 3.4rem);
+            line-height: 1.2;
+            letter-spacing: -0.035em;
+            background: none;
+            -webkit-text-fill-color: currentColor;
         }
 
-        .wave-hand {
-            display: inline-block;
-            animation: handWave 1.2s ease-in-out infinite;
-            transform-origin: 70% 70%;
-            font-size: 2.2rem;
+        .hero-name::after {
+            display: none;
         }
 
-        @keyframes handWave {
-            0% { transform: rotate(0deg); }
-            16% { transform: rotate(15deg); }
-            33% { transform: rotate(-10deg); }
-            50% { transform: rotate(15deg); }
-            66% { transform: rotate(-5deg); }
-            83% { transform: rotate(10deg); }
-            100% { transform: rotate(0deg); }
+        .hero-role {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 12px;
+            margin-bottom: 10px;
         }
 
-        .hero-download-btn {
+        .hero-role span {
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+
+        .hero-role strong {
+            color: var(--primary-dark);
+            font-size: clamp(1.6rem, 2.5vw, 2rem);
+            line-height: 1.4;
+            font-weight: 700;
+        }
+
+        .hero-focus {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px 18px;
+            margin-bottom: 24px;
+            color: var(--text-secondary);
+            font-size: 0.92rem;
+        }
+
+        .hero-education {
+            display: grid;
+            gap: 12px;
+            padding: 18px 0;
+            border-top: 1px solid rgba(99, 102, 241, 0.14);
+            border-bottom: 1px solid rgba(99, 102, 241, 0.14);
+        }
+
+        .hero-school {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: baseline;
+            gap: 3px 10px;
+        }
+
+        .hero-school strong {
+            font-size: 0.94rem;
+            font-weight: 600;
+        }
+
+        .hero-school span {
+            color: var(--text-secondary);
+            font-size: 0.78rem;
+        }
+
+        .hero-education p {
+            margin-top: 3px;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        .hero-contact {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px 20px;
+            margin: 16px 0 20px;
+        }
+
+        .hero-contact a {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 10px 24px;
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
+            min-height: 40px;
+            max-width: 100%;
+            color: var(--text-secondary);
+            font-size: 0.87rem;
             text-decoration: none;
-            border-radius: 24px;
+            overflow-wrap: anywhere;
+        }
+
+        .hero-contact a:hover {
+            color: var(--primary-dark);
+        }
+
+        .hero-contact i {
+            color: var(--primary);
+            flex-shrink: 0;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .hero-button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            min-height: 48px;
+            padding: 12px 22px;
+            border: 1px solid rgba(99, 102, 241, 0.25);
+            border-radius: 12px;
+            font-size: 0.94rem;
             font-weight: 600;
-            transition: all 0.3s ease;
-            white-space: nowrap;
+            text-decoration: none;
+            transition: background 0.2s ease, box-shadow 0.2s ease;
         }
 
-        .hero-download-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 20px rgba(99, 102, 241, 0.3);
+        .hero-button.primary {
+            border-color: var(--primary-dark);
+            background: var(--primary-dark);
+            color: white;
+            box-shadow: 0 6px 18px rgba(79, 70, 229, 0.18);
         }
 
-        .hero-text .title {
-            animation: slideInRight 0.9s ease-out 0.3s forwards;
-            opacity: 0;
+        .hero-button.secondary {
+            color: var(--primary-dark);
+            background: rgba(255, 255, 255, 0.8);
         }
 
-        .hero-text .tagline {
-            animation: slideInUp 0.8s ease-out 0.6s forwards;
-            opacity: 0;
+        .hero-button:hover {
+            box-shadow: 0 8px 24px rgba(79, 70, 229, 0.2);
         }
 
-        .hero-text .tagline:nth-of-type(2) {
-            animation-delay: 0.8s;
+        .resume-hero a:focus-visible {
+            outline: 3px solid var(--primary);
+            outline-offset: 4px;
         }
 
-        .greeting-section {
-            animation: slideInUp 0.9s ease-out 1s forwards;
-            opacity: 0;
+        .hero-strengths {
+            padding: 26px 28px 12px;
+            background: rgba(255, 255, 255, 0.94);
+            border: 1px solid rgba(99, 102, 241, 0.16);
+            border-radius: 24px;
+            box-shadow: 0 16px 48px rgba(30, 41, 59, 0.06);
         }
 
-        @keyframes slideInLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-60px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        .hero-strengths-heading {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 6px;
         }
 
-        @keyframes slideInRight {
-            from {
-                opacity: 0;
-                transform: translateX(60px);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
+        .hero-strengths-heading h2 {
+            margin: 0;
+            font-size: 1.15rem;
+            font-weight: 700;
         }
 
-        @keyframes slideInUp {
-            from {
-                opacity: 0;
-                transform: translateY(40px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
+        .hero-strengths-heading span {
+            color: var(--text-secondary);
+            font-size: 0.72rem;
+            letter-spacing: 0.1em;
+        }
+
+        .hero-strength-list {
+            list-style: none;
+        }
+
+        .hero-strength-list li {
+            display: grid;
+            grid-template-columns: 28px minmax(0, 1fr);
+            gap: 12px;
+            padding: 13px 0;
+        }
+
+        .hero-strength-list li + li {
+            border-top: 1px solid var(--border);
+        }
+
+        .hero-strength-number {
+            padding-top: 3px;
+            color: var(--primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.76rem;
+            font-weight: 600;
+        }
+
+        .hero-strength-list h3 {
+            margin-bottom: 4px;
+            color: var(--text-primary);
+            font-size: 0.93rem;
+            line-height: 1.5;
+        }
+
+        .hero-strength-list p {
+            color: var(--text-secondary);
+            font-size: 0.84rem;
+            line-height: 1.75;
+            overflow-wrap: anywhere;
+        }
+
+        @keyframes shimmer {
+            0% { background-position: -200% center; }
+            100% { background-position: 200% center; }
         }
 
         /* Enhanced button styles */
@@ -639,51 +684,6 @@
             font-size: 1.1rem;
         }
 
-        .scroll-down-btn {
-            position: absolute;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 8px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .scroll-down-btn i {
-            font-size: 2rem;
-            color: var(--primary);
-            animation: scrollBounce 2s ease-in-out infinite;
-        }
-
-        .scroll-down-text {
-            font-size: 0.85rem;
-            color: var(--text-muted);
-            font-weight: 500;
-            letter-spacing: 0.1rem;
-            text-transform: uppercase;
-        }
-
-        .scroll-down-btn:hover {
-            transform: translateX(-50%) scale(1.1);
-        }
-
-        .scroll-down-btn:hover i {
-            color: var(--secondary);
-        }
-
-        @keyframes scrollBounce {
-            0%, 100% {
-                transform: translateY(0);
-                opacity: 1;
-            }
-            50% {
-                transform: translateY(10px);
-                opacity: 0.7;
-            }
-        }
 
         /* Navigation */
         nav {
@@ -1815,36 +1815,25 @@
         }
 
         /* Responsive */
-        @media (max-width: 768px) {
-            .hero-flex {
-                flex-direction: column;
+        @media (max-width: 980px) {
+            .resume-hero {
+                min-height: auto;
+                padding: 40px 24px;
+            }
+
+            .hero-content {
+                grid-template-columns: minmax(0, 1fr);
+                max-width: 720px;
+                gap: 32px;
+            }
+
+            .hero-education {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
                 gap: 20px;
-                text-align: center;
             }
+        }
 
-            .hero-text {
-                text-align: center;
-            }
-
-            .hero-text h1 {
-                font-size: 1.8rem;
-            }
-
-            .greeting-section > div:last-child > div:last-child {
-                flex-direction: column;
-                align-items: center;
-                text-align: center;
-            }
-
-            .greeting-section > div:last-child > div:last-child p {
-                text-indent: 0;
-            }
-
-            .hero-download-btn {
-                padding: 12px 28px;
-                font-size: 1rem;
-            }
-
+        @media (max-width: 768px) {
             .contact-info {
                 justify-content: center !important;
             }
@@ -1855,11 +1844,6 @@
 
             h2 {
                 font-size: 1.5rem;
-            }
-
-            .avatar {
-                width: 150px;
-                height: 150px;
             }
 
             .container {
@@ -1924,10 +1908,6 @@
                 padding: 6px 10px;
             }
 
-            .greeting-section {
-                padding: 20px;
-            }
-
             .edu-header {
                 flex-direction: column;
                 gap: 12px;
@@ -1960,6 +1940,71 @@
 
             .project-grid {
                 grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 520px) {
+            .resume-hero {
+                padding: 28px 20px 32px;
+            }
+
+            .hero-identity {
+                gap: 20px;
+                margin-bottom: 22px;
+            }
+
+            .hero-portrait {
+                width: 80px;
+                height: 100px;
+                border-radius: 20px;
+            }
+
+            .hero-education {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 12px;
+            }
+
+            .hero-contact {
+                gap: 0 16px;
+                margin: 12px 0 16px;
+            }
+
+            .hero-actions {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+            }
+
+            .hero-button {
+                gap: 7px;
+                padding: 12px 8px;
+                font-size: 0.85rem;
+            }
+
+            .hero-strengths {
+                padding: 22px 18px 8px;
+                border-radius: 20px;
+            }
+
+            .hero-strength-list li {
+                grid-template-columns: 22px minmax(0, 1fr);
+                gap: 8px;
+                padding: 16px 0;
+            }
+
+            .hero-strengths-heading span {
+                font-size: 0.64rem;
+                letter-spacing: 0.04em;
+            }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .bg-decorations * {
+                animation: none !important;
+            }
+
+            .hero-button {
+                transition: none;
             }
         }
 
@@ -2034,68 +2079,78 @@
     </div>
 
     <!-- Header -->
-    <header>
+    <header class="resume-hero" aria-labelledby="hero-name">
         <div class="hero-content">
-            <div class="hero-flex">
-                <div class="avatar">
-                    <img src="images/profile/avatar.jpg" alt="叶晓艺照片" fetchpriority="high" loading="eager" decoding="async">
-                </div>
-                <div class="hero-text">
-                    <div class="hero-header">
-                        <span class="wave-hand">👋</span>
-                        <h1>你好，我是叶晓艺</h1>
+            <div class="hero-intro">
+                <div class="hero-identity">
+                    <div class="hero-portrait">
+                        <img src="images/profile/avatar.jpg" alt="叶晓艺照片" width="100" height="124" fetchpriority="high" loading="eager" decoding="async">
                     </div>
-                    <p class="title"><span class="highlight">AI 全栈开发</span>｜Agent 工程 · 高并发系统 · 全栈交付</p>
-                    <p class="tagline" style="margin-bottom: 6px; font-size: 1rem;">
-                        云南大学（双一流/211）| 软件工程 | 本科
-                    </p>
-                    <p class="tagline" style="margin-bottom: 16px; font-size: 1rem;">
-                        香港城市大学（QS：52、U.S. News：47）| 人工智能（Generative AI）| 硕士
-                    </p>
+                    <div>
+                        <p class="hero-greeting">你好，我是</p>
+                        <h1 class="hero-name" id="hero-name">叶晓艺</h1>
+                    </div>
+                </div>
+
+                <p class="hero-role"><span>求职意向</span><strong>AI 全栈开发</strong></p>
+                <div class="hero-focus" aria-label="专业方向">
+                    <span>Agent 工程</span>
+                    <span>高并发系统</span>
+                    <span>全栈交付</span>
+                </div>
+
+                <div class="hero-education" aria-label="教育背景摘要">
+                    <div>
+                        <div class="hero-school"><strong>香港城市大学</strong><span>QS：52 · U.S. News：47</span></div>
+                        <p>人工智能（Generative AI） · 硕士</p>
+                    </div>
+                    <div>
+                        <div class="hero-school"><strong>云南大学</strong><span>双一流 / 211</span></div>
+                        <p>软件工程 · 本科</p>
+                    </div>
+                </div>
+
+                <div class="hero-contact" aria-label="联系方式">
+                    <a href="mailto:13003139690@163.com"><i class="fas fa-envelope" aria-hidden="true"></i><span>13003139690@163.com</span></a>
+                    <a href="tel:13003139690"><i class="fas fa-phone" aria-hidden="true"></i><span>13003139690</span></a>
+                </div>
+                <div class="hero-actions">
+                    <a href="rare/%E5%8F%B6%E6%99%93%E8%89%BA%E7%AE%80%E5%8E%86.pdf?v=20260920" target="_blank" rel="noopener noreferrer" class="hero-button primary">
+                        <i class="fas fa-file-download" aria-hidden="true"></i> 下载简历
+                    </a>
+                    <a href="#latest" class="hero-button secondary" id="scrollDownBtn">
+                        查看伴 AI 项目 <i class="fas fa-arrow-down" aria-hidden="true"></i>
+                    </a>
                 </div>
             </div>
 
-            <!-- Greeting Section -->
-            <div class="greeting-section">
-                <h2>⚡ 核心优势</h2>
-                <ul style="color: var(--text-secondary); margin-top: 12px; line-height: 1.9;">
-                    <li style="text-indent: 2em; list-style-position: inside;"><span class="highlight">独立全栈交付：</span>以 Go、Python、TypeScript / Next.js 从 0 到 1 实现“伴 AI”，贯通对话交互、后端服务、Agent 执行与文件交付。</li>
-                    <li style="text-indent: 2em; list-style-position: inside;"><span class="highlight">可恢复 Agent 工程：</span>基于 LangGraph 与 Harness 实现按需规划、任务契约和工具审批，结合状态持久化与幂等机制，支持长任务暂停、接管和断点续跑。</li>
-                    <li style="text-indent: 2em; list-style-position: inside;"><span class="highlight">文档与知识处理：</span>建立覆盖 20MB 上传上限的全量分片处理链路，将混合 RAG、长期记忆与 PDF / PPT 创作结合，兼顾内容完整性、引用溯源和交付质量。</li>
-                    <li style="text-indent: 2em; list-style-position: inside;"><span class="highlight">高并发与性能优化：</span>GoChat 支撑日均 10 万+消息、99.9% 服务可用性；在趣斗图中通过队列解耦、动态降级与混合推送，将端到端延迟从 2.5 秒降至 500ms 内。</li>
-                    <li style="text-indent: 2em; list-style-position: inside;"><span class="highlight">质量与发布治理：</span>具备测试、评测和发布门禁实践，实现 Agent 版本快照、灰度回滚与全链路观测，将执行耗时、模型用量、成本和错误纳入验证与诊断。</li>
-                </ul>
-                
-                <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border);">
-                    <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: flex-start; margin-bottom: 16px;">
-                        <div style="flex: 1; min-width: 250px;">
-                            <h2 style="font-size: 1.4rem; margin-bottom: 8px; color: var(--text-primary);">📌 求职意向</h2>
-                            <p style="color: var(--text-secondary); font-size: 1rem; text-indent: 2em;">
-                                <strong>AI 全栈开发</strong>
-                            </p>
-                        </div>
-                        <div style="flex: 1; min-width: 250px;">
-                            <h2 style="font-size: 1.4rem; margin-bottom: 8px; color: var(--text-primary);">📫 即刻可聊</h2>
-                            <p style="color: var(--text-secondary); font-size: 1rem; text-indent: 2em; margin-bottom: 12px;">
-                                <a href="mailto:13003139690@163.com" style="color: var(--primary); text-decoration: none;">13003139690@163.com</a>｜<a href="tel:13003139690" style="color: var(--primary); text-decoration: none;">13003139690</a>
-                            </p>
-                        </div>
-                    </div>
-                    <div style="display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-top: 16px;">
-                        <p style="color: var(--text-muted); font-size: 0.95rem; font-style: italic; text-indent: 2em; margin: 0;">
-                            我是谁、能做什么、为什么值得聊 —— 欢迎点击下方查看完整履历 👇
-                        </p>
-                        <a href="rare/%E5%8F%B6%E6%99%93%E8%89%BA%E7%AE%80%E5%8E%86.pdf?v=20260920" target="_blank" rel="noopener noreferrer" class="hero-download-btn" style="white-space: nowrap;">
-                            <i class="fas fa-file-download"></i> 下载简历
-                        </a>
-                    </div>
+            <div class="hero-strengths" aria-labelledby="hero-strengths-title">
+                <div class="hero-strengths-heading">
+                    <h2 id="hero-strengths-title">核心优势</h2>
+                    <span aria-hidden="true">CORE STRENGTHS</span>
                 </div>
-            </div>
-
-            <!-- Scroll Down Button -->
-            <div class="scroll-down-btn" id="scrollDownBtn">
-                <i class="fas fa-chevron-down"></i>
-                <div class="scroll-down-text">探索更多</div>
+                <ol class="hero-strength-list">
+                    <li>
+                        <span class="hero-strength-number" aria-hidden="true">01</span>
+                        <div><h3>独立全栈交付</h3><p>以 Go、Python、TypeScript / Next.js 从 0 到 1 实现“伴 AI”，贯通对话交互、后端服务、Agent 执行与文件交付。</p></div>
+                    </li>
+                    <li>
+                        <span class="hero-strength-number" aria-hidden="true">02</span>
+                        <div><h3>可恢复 Agent 工程</h3><p>基于 LangGraph 与 Harness 实现按需规划、任务契约和工具审批，结合状态持久化与幂等机制，支持长任务暂停、接管和断点续跑。</p></div>
+                    </li>
+                    <li>
+                        <span class="hero-strength-number" aria-hidden="true">03</span>
+                        <div><h3>文档与知识处理</h3><p>建立覆盖 20MB 上传上限的全量分片处理链路，将混合 RAG、长期记忆与 PDF / PPT 创作结合，兼顾内容完整性、引用溯源和交付质量。</p></div>
+                    </li>
+                    <li>
+                        <span class="hero-strength-number" aria-hidden="true">04</span>
+                        <div><h3>高并发与性能优化</h3><p>GoChat 支撑日均 10 万+消息、99.9% 服务可用性；在趣斗图中通过队列解耦、动态降级与混合推送，将端到端延迟从 2.5 秒降至 500ms 内。</p></div>
+                    </li>
+                    <li>
+                        <span class="hero-strength-number" aria-hidden="true">05</span>
+                        <div><h3>质量与发布治理</h3><p>具备测试、评测和发布门禁实践，实现 Agent 版本快照、灰度回滚与全链路观测，将执行耗时、模型用量、成本和错误纳入验证与诊断。</p></div>
+                    </li>
+                </ol>
             </div>
         </div>
     </header>
@@ -2791,14 +2846,15 @@
         });
 
         // Scroll Down Button
-        document.getElementById('scrollDownBtn').addEventListener('click', () => {
+        document.getElementById('scrollDownBtn').addEventListener('click', (event) => {
+            event.preventDefault();
             const target = document.getElementById('latest');
             if (target) {
                 const navHeight = document.querySelector('nav').offsetHeight;
                 const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
                 window.scrollTo({
                     top: targetPosition,
-                    behavior: 'smooth'
+                    behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
                 });
             }
         });
@@ -2855,28 +2911,6 @@
             });
         });
 
-        // Add hover effect to hero content
-        const avatar = document.querySelector('.avatar');
-        if (avatar) {
-            avatar.addEventListener('mouseenter', () => {
-                avatar.style.transform = 'scale(1.05) rotate(5deg)';
-            });
-            avatar.addEventListener('mouseleave', () => {
-                avatar.style.transform = 'scale(1) rotate(0deg)';
-            });
-        }
-
-        // Add typing effect simulation
-        const titleElements = document.querySelectorAll('.greeting-section h2');
-        titleElements.forEach(el => {
-            el.addEventListener('mouseenter', () => {
-                el.style.transform = 'translateX(10px)';
-                el.style.transition = 'transform 0.3s ease';
-            });
-            el.addEventListener('mouseleave', () => {
-                el.style.transform = 'translateX(0)';
-            });
-        });
 
         // Add micro-interaction to project cards
         const projectCards = document.querySelectorAll('.project-card, .card');
