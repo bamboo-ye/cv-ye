@@ -2074,8 +2074,11 @@
             font-weight: 600;
         }
     </style>
+    <link rel="stylesheet" href="resume-enhancements.css?v=20260921">
+    <script src="resume-enhancements.js?v=20260921" defer></script>
 </head>
 <body>
+    <div class="reading-progress" aria-hidden="true"></div>
     <!-- Background Decorations -->
     <div class="bg-decorations">
         <div class="bg-aurora"></div>
@@ -2105,6 +2108,21 @@
 
     <!-- Header -->
     <header class="resume-hero" aria-labelledby="hero-name">
+        <svg class="hero-orbits" viewBox="0 0 1160 620" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+            <defs>
+                <linearGradient id="hero-orbit-ink" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#6366f1" stop-opacity="0.15"/>
+                    <stop offset="50%" stop-color="#ec4899" stop-opacity="0.6"/>
+                    <stop offset="100%" stop-color="#4ecdc4" stop-opacity="0.2"/>
+                </linearGradient>
+            </defs>
+            <path d="M-80 430 C180 90 400 620 650 330 S980 40 1240 210"/>
+            <path d="M-80 500 C230 190 460 700 720 390 S980 120 1240 280"/>
+            <path class="orbit-trace" d="M-80 430 C180 90 400 620 650 330 S980 40 1240 210"/>
+        </svg>
+        <button class="motion-toggle" type="button" role="switch" aria-checked="true" aria-label="页面动态效果" hidden>
+            <i class="fas fa-wand-magic-sparkles" aria-hidden="true"></i><span>动效开启</span>
+        </button>
         <div class="hero-content">
             <div class="hero-intro">
                 <div class="hero-identity">
@@ -2123,6 +2141,7 @@
                     <span>高并发系统</span>
                     <span>全栈交付</span>
                 </div>
+                <p class="hero-caption">把想法写成产品，把复杂任务交给可靠的 Agent。</p>
 
                 <div class="hero-education" aria-label="教育背景摘要">
                     <div>
@@ -2235,6 +2254,39 @@
                         <div class="latest-flow-step"><i class="fas fa-screwdriver-wrench"></i><span>工具网关 · 执行与知识检索</span></div>
                         <div class="latest-flow-step"><i class="fas fa-file-circle-check"></i><span>分片处理 · 合并与质量校验</span></div>
                         <div class="latest-flow-step"><i class="fas fa-file-arrow-down"></i><span>流式进度 · 任务详情与文件下载</span></div>
+                    </div>
+                </div>
+
+                <div class="scene-showcase">
+                    <div class="scene-heading">
+                        <h4>四个场景，一套工作台</h4>
+                        <span>从陪伴到创作，探索伴 AI</span>
+                    </div>
+                    <div class="scene-tabs" aria-label="伴 AI 应用场景">
+                        <button class="scene-tab" id="scene-tab-companion" data-scene="scene-companion" type="button"><i class="fas fa-heart" aria-hidden="true"></i>角色陪伴</button>
+                        <button class="scene-tab" id="scene-tab-assistant" data-scene="scene-assistant" type="button"><i class="fas fa-compass" aria-hidden="true"></i>生活助手</button>
+                        <button class="scene-tab" id="scene-tab-knowledge" data-scene="scene-knowledge" type="button"><i class="fas fa-book-open" aria-hidden="true"></i>知识问答</button>
+                        <button class="scene-tab" id="scene-tab-creation" data-scene="scene-creation" type="button"><i class="fas fa-file-pen" aria-hidden="true"></i>办公创作</button>
+                    </div>
+                    <div class="scene-panel" id="scene-companion">
+                        <h5>让对话延续，而不是每次重新开始</h5>
+                        <p>结合近期会话、结构化摘要与长期记忆，延续对话上下文；支持记忆纠正与有效期管理。</p>
+                        <p class="scene-stack">LangGraph · 上下文工程 · 长期记忆</p>
+                    </div>
+                    <div class="scene-panel" id="scene-assistant">
+                        <h5>从需求理解到任务执行</h5>
+                        <p>根据请求复杂度选择直接回答、单工具调用或多步规划；需要高风险操作时先经人工确认，再恢复任务执行。</p>
+                        <p class="scene-stack">Harness · Tool Gateway · Human-in-the-loop</p>
+                    </div>
+                    <div class="scene-panel" id="scene-knowledge">
+                        <h5>回答有依据，来源可追溯</h5>
+                        <p>从文档与 Wiki 检索证据，通过稠密 / 稀疏检索与 RRF 融合组织回答，并展示引用或证据不足提示。</p>
+                        <p class="scene-stack">Qdrant · RRF · Wiki</p>
+                    </div>
+                    <div class="scene-panel" id="scene-creation">
+                        <h5>从附件到可下载的交付物</h5>
+                        <p>支持 PDF 版面翻译与 PPT 叙事、表格和视觉生成；通过分片处理、质量检查和流式进度展示，呈现执行过程并提供文件下载。</p>
+                        <p class="scene-stack">PDF · PPT · 有界并行</p>
                     </div>
                 </div>
 
@@ -2854,6 +2906,10 @@
             observer.observe(el);
         });
 
+        // Both the system preference and the page toggle apply to scripted scrolling.
+        const scrollBehavior = () => document.documentElement.dataset.motion === 'off' ||
+            window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
+
         // Smooth scroll for navigation
         document.querySelectorAll('.nav-link').forEach(link => {
             link.addEventListener('click', (e) => {
@@ -2864,7 +2920,7 @@
                     const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
                     window.scrollTo({
                         top: targetPosition,
-                        behavior: 'smooth'
+                        behavior: scrollBehavior()
                     });
                 }
             });
@@ -2879,7 +2935,7 @@
                 const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - navHeight;
                 window.scrollTo({
                     top: targetPosition,
-                    behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth'
+                    behavior: scrollBehavior()
                 });
             }
         });
@@ -2932,7 +2988,7 @@
         backToTopBtn.addEventListener('click', () => {
             window.scrollTo({
                 top: 0,
-                behavior: 'smooth'
+                behavior: scrollBehavior()
             });
         });
 
