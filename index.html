@@ -2059,11 +2059,11 @@
             <div class="greeting-section">
                 <h2>⚡ 核心优势</h2>
                 <ul style="color: var(--text-secondary); margin-top: 12px; line-height: 1.9;">
-                    <li style="text-indent: 2em; list-style-position: inside;">从 0 到 1 独立交付 <span class="highlight">伴 AI 对话式个人 AI 工作台</span>，覆盖产品、前端、后端、Agent Worker、数据层、部署与评测</li>
-                    <li style="text-indent: 2em; list-style-position: inside;">以 <span class="highlight">LangGraph、Agent Harness、MCP、Tool Use、Human-in-the-loop</span> 实现按需规划、任务契约与工具治理</li>
-                    <li style="text-indent: 2em; list-style-position: inside;">具备 <span class="highlight">Go + Python + TypeScript / Next.js</span> 全栈能力，能完成实时 API、异步任务与 AI 应用工程化落地</li>
-                    <li style="text-indent: 2em; list-style-position: inside;">结合 <span class="highlight">Source IR、确定性合并、有界并行与内容寻址缓存</span>，保障大文件全量覆盖与长任务断点恢复</li>
-                    <li style="text-indent: 2em; list-style-position: inside;">实现 <span class="highlight">Agent Studio、不可变版本与灰度回滚</span>，配合 OpenTelemetry、Prometheus、Loki 及可选 Langfuse 关联耗时、用量、成本与错误</li>
+                    <li style="text-indent: 2em; list-style-position: inside;"><span class="highlight">独立全栈交付：</span>以 Go、Python、TypeScript / Next.js 从 0 到 1 实现“伴 AI”，贯通对话交互、后端服务、Agent 执行与文件交付。</li>
+                    <li style="text-indent: 2em; list-style-position: inside;"><span class="highlight">可恢复 Agent 工程：</span>基于 LangGraph 与 Harness 实现按需规划、任务契约和工具审批，结合状态持久化与幂等机制，支持长任务暂停、接管和断点续跑。</li>
+                    <li style="text-indent: 2em; list-style-position: inside;"><span class="highlight">文档与知识处理：</span>建立覆盖 20MB 上传上限的全量分片处理链路，将混合 RAG、长期记忆与 PDF / PPT 创作结合，兼顾内容完整性、引用溯源和交付质量。</li>
+                    <li style="text-indent: 2em; list-style-position: inside;"><span class="highlight">高并发与性能优化：</span>GoChat 支撑日均 10 万+消息、99.9% 服务可用性；在趣斗图中通过队列解耦、动态降级与混合推送，将端到端延迟从 2.5 秒降至 500ms 内。</li>
+                    <li style="text-indent: 2em; list-style-position: inside;"><span class="highlight">质量与发布治理：</span>具备测试、评测和发布门禁实践，实现 Agent 版本快照、灰度回滚与全链路观测，将执行耗时、模型用量、成本和错误纳入验证与诊断。</li>
                 </ul>
                 
                 <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border);">
@@ -2131,8 +2131,9 @@
                         <h3>伴 AI · 对话式个人 AI 工作台</h3>
                         <p class="latest-role">AI 全栈开发 / Project Owner</p>
                         <p class="latest-lead">
-                            独立设计并实现覆盖角色陪伴、生活助手、知识问答与办公创作的 AI 工作台。针对复杂请求难以执行、大文件超出上下文窗口、串行调用耗时长及任务失败后重复执行等问题，构建可规划、可并行、可恢复的 Agent 系统，兼顾内容完整性、执行效率与调用成本。
+                            面向角色陪伴、生活助手、知识问答与办公创作，用户通过对话或附件上传发起任务，实时查看执行进度并下载结果文件。重点解决复杂请求难以执行、大文件超出上下文窗口，以及串行处理慢、失败后重复执行的问题。
                         </p>
+                        <p class="latest-lead" style="margin-top: 12px;"><strong>我的职责：</strong>作为 Project Owner，独立设计并实现 Next.js 前端、Go 服务、Python / LangGraph Agent、数据与检索层，构建可规划、可并行、可恢复的端到端 AI 工作台。</p>
                         <div class="latest-actions">
                             <a href="https://kentucky-permitted-thumbnail-grams.trycloudflare.com/" target="_blank" rel="noopener noreferrer" class="latest-button primary" aria-label="在线体验伴 AI 项目">
                                 <i class="fas fa-arrow-up-right-from-square"></i> 立即体验伴 AI
@@ -2147,7 +2148,7 @@
                     </div>
 
                     <div class="latest-flow" aria-label="伴 AI 产品与执行链路">
-                        <div class="latest-flow-label">Product &amp; Agent Workflow</div>
+                        <div class="latest-flow-label">从用户输入到结果交付</div>
                         <div class="latest-flow-step"><i class="fas fa-comments"></i><span>Next.js · 对话与附件上传</span></div>
                         <div class="latest-flow-step"><i class="fas fa-server"></i><span>Go · 鉴权、上下文与任务持久化</span></div>
                         <div class="latest-flow-step"><i class="fas fa-route"></i><span>LangGraph · 路由、规划与参数生成</span></div>
@@ -2157,50 +2158,41 @@
                     </div>
                 </div>
 
-                <div class="latest-section-heading">核心项目亮点 <span>PRODUCT · AGENT · ENGINEERING</span></div>
+                <div class="latest-section-heading">关键问题与实现 <span>AGENT · DATA · RELIABILITY</span></div>
                 <div class="latest-highlights">
                     <div class="latest-highlight">
-                        <span class="latest-highlight-label">01 / PRODUCT OWNERSHIP</span>
-                        <strong>从 0 到 1 独立全栈交付</strong>
-                        独立设计并实现角色陪伴、生活助手、知识问答与办公创作，贯通 Next.js 对话与附件入口、Go 服务、LangGraph Agent、Qdrant / Wiki 检索，以及进度展示和交付物下载。
+                        <span class="latest-highlight-label">01 / TASK EXECUTION</span>
+                        <strong>复杂任务按需规划，执行受约束</strong>
+                        按“直接回答、单工具、多步 Agent”路由请求，简单任务跳过 Planner；复杂任务结合上下文与附件拆解。Harness 将语言、字段、全量覆盖和输出形式固化为任务契约，通过工具 Schema、统一鉴权和人工审批约束执行。
                     </div>
                     <div class="latest-highlight">
-                        <span class="latest-highlight-label">02 / AGENT ORCHESTRATION</span>
-                        <strong>意图识别与任务规划</strong>
-                        设计“直接回答—单工具调用—多步 Agent”三级执行模式，简单请求跳过 Planner，复杂任务结合上下文与附件拆解计划。Harness 将语言、全量覆盖、指定字段及输出形式固化为任务契约，按能力投影工具 Schema，约束参数并检查完成条件。
+                        <span class="latest-highlight-label">02 / DOCUMENT INTEGRITY</span>
+                        <strong>长文档全量处理，合并可核验</strong>
+                        覆盖 20MB 上传上限，以 Source IR 保留页码、表格、行列及来源 ID，按 Token / 字符双重上限切分。通过连续游标与分片区间校验覆盖率，结合跨行实体恢复、来源顺序合并及缺失检查，避免截断、乱序和跨附件混用。
                     </div>
                     <div class="latest-highlight">
-                        <span class="latest-highlight-label">03 / DOCUMENT INTEGRITY</span>
-                        <strong>大文件分片与确定性合并</strong>
-                        建立覆盖 20MB 上传上限的全量提取链路，以连续游标和 Chunk 区间并集校验覆盖率。Source IR 保留页码、表格、行列与来源 ID，按 Token / 字符双重上限切分；结合字段映射、跨行实体恢复、顺序合并、去重与缺失检查，避免截断、乱序及跨附件数据混用。
+                        <span class="latest-highlight-label">03 / PARALLELISM &amp; RECOVERY</span>
+                        <strong>并行提速，失败只重试未完成部分</strong>
+                        以 Go 多 Run 调度、持久 Python 进程池和 LangGraph 构建三层有界并行，执行前预留调用与成本预算。通过 Checkpoint、租约、Revision Fencing 和 Outbox / Inbox 恢复长任务；内容寻址缓存复用成功分片，仅补失败或缺失批次，并结算已发生用量。
                     </div>
                     <div class="latest-highlight">
-                        <span class="latest-highlight-label">04 / BOUNDED PARALLELISM</span>
-                        <strong>分片与工具并行</strong>
-                        构建 Go 多 Run 调度、持久 Python 进程池、LangGraph fan-out / fan-in 三层并行，结合有界队列、重复信号合并与进程复用控制资源消耗。文档分片、PDF 翻译批次及图片请求分别有界并行，分发前预分配调用、Token 与成本预算，失败时保留成功结果并结算已发生用量。
+                        <span class="latest-highlight-label">04 / RAG &amp; MEMORY</span>
+                        <strong>回答有来源，长期记忆可管理</strong>
+                        融合近期会话、结构化摘要、长期记忆和 Wiki 证据，按节点控制上下文预算。Qdrant 稠密 / 稀疏检索结合 RRF 与可配置重排，提供引用和证据不足提示；支持记忆纠正、有效期管理，以及文档变更或撤销共享后的检索与缓存失效。
                     </div>
                     <div class="latest-highlight">
-                        <span class="latest-highlight-label">05 / RECOVERY &amp; IDEMPOTENCY</span>
-                        <strong>断点恢复与幂等执行</strong>
-                        以 PostgreSQL 和 Checkpointer 持久化任务状态，结合 SKIP LOCKED、租约接管、Revision Fencing 及 Outbox / Inbox 支撑挂起、唤醒、取消和恢复。内容寻址缓存复用已完成分片，仅重试失败或缺失批次；工具网关统一鉴权，高风险操作经人工确认后恢复原 Run。
+                        <span class="latest-highlight-label">05 / MULTIMODAL DELIVERY</span>
+                        <strong>PDF / PPT 生成与质量校验一体化</strong>
+                        实现 PDF 版面翻译及 PPT 叙事、表格和视觉生成，优先复用主题匹配的来源页原图，按需补充生成图片。围绕来源覆盖、字段证据、语言一致性、内容容量和布局检查交付物，以有界修复和模型回退处理结构化输出错误。
                     </div>
                     <div class="latest-highlight">
-                        <span class="latest-highlight-label">06 / RAG &amp; CONTEXT</span>
-                        <strong>上下文工程与知识检索</strong>
-                        统一近期会话、结构化摘要、长期记忆和 Wiki 证据，按节点分配上下文预算，支持带来源的摘要、记忆纠正与有效期管理。Qdrant 稠密 / 稀疏检索结合 RRF 融合与可配置重排，提供引用溯源和证据不足提示；文档更新、删除或撤销共享后同步失效相关检索与缓存。
-                    </div>
-                    <div class="latest-highlight">
-                        <span class="latest-highlight-label">07 / MULTIMODAL QUALITY</span>
-                        <strong>多模态生成与质量控制</strong>
-                        实现 PDF 版面翻译及 PPT 叙事、表格、视觉能力组合，优先复用与主题来源页匹配的原图，按需生成补充图片。通过来源覆盖、字段证据、语言一致性、内容容量和布局检查控制交付质量，配合有界修复与模型回退处理结构化输出错误。
-                    </div>
-                    <div class="latest-highlight">
-                        <span class="latest-highlight-label">08 / GOVERNANCE &amp; OBSERVABILITY</span>
-                        <strong>Agent 治理与全链路观测</strong>
-                        实现可视化 Agent Studio、节点调试及 Agent / Prompt / 模型配置的不可变版本管理，Run 固定版本快照，支持评测、稳定分流、灰度停流和回滚。接入 OpenTelemetry、Prometheus、Loki 及可选 Langfuse，关联节点耗时、模型用量、成本与错误，并提供角色权限、额度配置和审计能力。
+                        <span class="latest-highlight-label">06 / GOVERNANCE &amp; OBSERVABILITY</span>
+                        <strong>Agent 可调试、可发布、可观测</strong>
+                        通过 Agent Studio 调试节点，将 Agent、Prompt 和模型配置版本化，Run 固定快照，支持评测、稳定分流及灰度停流回滚。接入 OpenTelemetry、Prometheus、Loki 和可选 Langfuse，关联耗时、用量、成本与错误，并提供权限、额度和审计能力。
                     </div>
                 </div>
 
+                <div class="latest-section-heading">验证结果 <span>CONTROLLED TESTS</span></div>
                 <div class="latest-metrics">
                     <div class="latest-metric"><strong>≥20%</strong>5 个叙事分片并发处理耗时降低</div>
                     <div class="latest-metric"><strong>≥25%</strong>16 页 PDF 分批翻译耗时降低</div>
