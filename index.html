@@ -294,6 +294,7 @@
             z-index: 10;
             display: grid;
             align-items: center;
+            min-height: 100svh;
             padding: 28px 24px;
             background: transparent;
         }
@@ -563,6 +564,35 @@
             font-size: 0.875rem;
             line-height: 1.7;
             overflow-wrap: anywhere;
+        }
+
+        .hero-metrics {
+            grid-column: 1 / -1;
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .hero-metric {
+            padding: 14px 18px;
+            border: 1px solid rgba(99, 102, 241, 0.16);
+            border-radius: 16px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.8), rgba(99, 102, 241, 0.06));
+        }
+
+        .hero-metric strong {
+            display: block;
+            color: var(--primary-dark);
+            font-size: 1.25rem;
+            font-weight: 600;
+            line-height: 1.4;
+        }
+
+        .hero-metric p {
+            margin-top: 4px;
+            color: var(--text-secondary);
+            font-size: 0.8125rem;
+            line-height: 1.5;
         }
 
         @keyframes shimmer {
@@ -2026,6 +2056,23 @@
                 font-size: 0.6875rem;
                 letter-spacing: 0.04em;
             }
+
+            .hero-metrics {
+                grid-template-columns: minmax(0, 1fr);
+                gap: 10px;
+            }
+
+            .hero-metric {
+                display: flex;
+                flex-wrap: wrap;
+                align-items: baseline;
+                gap: 4px 12px;
+                padding: 12px 16px;
+            }
+
+            .hero-metric p {
+                margin: 0;
+            }
         }
 
         @media (prefers-reduced-motion: reduce) {
@@ -2186,6 +2233,21 @@
                         <div><h3>质量与发布治理</h3><p>具备测试、评测和发布门禁实践，实现 Agent 版本快照、灰度回滚与全链路观测，将执行耗时、模型用量、成本和错误纳入验证与诊断。</p></div>
                     </li>
                 </ol>
+            </div>
+
+            <div class="hero-metrics" role="group" aria-label="项目成果速览">
+                <div class="hero-metric">
+                    <strong>0 → 1</strong>
+                    <p>伴 AI · 独立全栈交付</p>
+                </div>
+                <div class="hero-metric">
+                    <strong>10 万+ / 日</strong>
+                    <p>GoChat · 日均消息处理规模</p>
+                </div>
+                <div class="hero-metric">
+                    <strong>2.5s → 500ms 内</strong>
+                    <p>趣斗图 · 端到端延迟优化</p>
+                </div>
             </div>
         </div>
     </header>
