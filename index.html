@@ -2322,15 +2322,10 @@
                         <strong>断点恢复与幂等执行，成功分支可复用</strong>
                         基于 PostgreSQL、LangGraph Checkpoint、任务租约与修订版本隔离实现持久化执行。异步任务启动后挂起等待，恢复时复用任务 ID 和成功分支，仅重试可恢复的失败步骤；结合内容寻址缓存、数据库优先调度及可选 Kafka Outbox / Inbox，减少重复调用与重复副作用。
                     </div>
-                    <div class="latest-highlight">
+                    <div class="latest-highlight" style="grid-column: 1 / -1;">
                         <span class="latest-highlight-label">07 / DELIVERY &amp; GOVERNANCE</span>
                         <strong>全栈交付闭环，工具权限与版本可治理</strong>
                         通过可信工具网关、MCP 白名单与人工审批控制写操作。支持 Agent / Prompt / 模型配置版本绑定、灰度发布及回滚，接入链路追踪、调用成本、用户配额与审计记录，并建立知识反馈复核、并行恢复及证据核验回归测试。
-                    </div>
-                    <div class="latest-highlight">
-                        <span class="latest-highlight-label">08 / HEALTH ASSISTANT</span>
-                        <strong>健康助手接入，按账户隔离记录</strong>
-                        将 Healthy Care 个人健康空间接入 Next.js 工作台，复用伴 AI 登录，由 Go 网关验证会话后将请求转发至独立健康服务。Python / LangGraph 负责对话与检查点，Go 服务负责记录和写入确认。健康数据按账户隔离，数据库、附件和备份使用独立存储，健康服务可单独启用。
                     </div>
                 </div>
 
