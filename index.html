@@ -2177,7 +2177,7 @@
                 <ol class="hero-strength-list">
                     <li>
                         <span class="hero-strength-number" aria-hidden="true">01</span>
-                        <div><h3>独立全栈交付</h3><p>独立完成“伴 AI”的 Next.js / Node.js 交互与 BFF、Go 服务、Python / LangGraph Agent 与 Worker，贯通流式对话、人工审批和工作台交付。</p></div>
+                        <div><h3>独立全栈交付</h3><p>独立开发“伴 AI”，以 Next.js、Go 与 Python / LangGraph 贯通流式交互、人工审批和工作台交付，接入独立部署的健康助手。</p></div>
                     </li>
                     <li>
                         <span class="hero-strength-number" aria-hidden="true">02</span>
@@ -2231,7 +2231,7 @@
                         <h3>伴 AI · 对话式个人 AI 工作台</h3>
                         <p class="latest-role">AI 全栈开发 · 独立设计与开发</p>
                         <p class="latest-lead">
-                            面向角色陪伴、生活助手、知识问答与办公创作，独立设计并开发对话式个人 AI 工作台。针对复杂请求执行不稳定、大文件超出上下文窗口、串行调用耗时及生成结果难以追溯和继续编辑等问题，构建可规划、可并行、可恢复的 Agent 系统。
+                            独立设计并开发对话式个人 AI 工作台，覆盖角色陪伴、生活助手、健康记录、知识问答与办公创作。针对复杂请求执行不稳定、大文件超出上下文窗口、串行调用耗时及生成结果难以追溯和继续编辑等问题，构建可规划、可并行、可恢复的 Agent 系统。
                         </p>
                         <p class="latest-lead" style="margin-top: 12px;"><strong>我的职责：</strong>以 Next.js / Node.js 承载 Web 交互与管理端同源 BFF，Go 负责鉴权、业务 API 与任务持久化，Python / LangGraph 完成意图识别、任务规划与工具编排；统一知识中心提供检索与来源核验，独立 Worker 处理文档，前端通过流式事件、审批交互及工作台完成交付。</p>
                         <div class="latest-actions">
@@ -2260,12 +2260,12 @@
 
                 <div class="scene-showcase">
                     <div class="scene-heading">
-                        <h4>四个场景，一套工作台</h4>
-                        <span>从陪伴到创作，探索伴 AI</span>
+                        <h4>伴 AI 应用场景</h4>
                     </div>
                     <div class="scene-tabs" aria-label="伴 AI 应用场景">
                         <button class="scene-tab" id="scene-tab-companion" data-scene="scene-companion" type="button"><i class="fas fa-heart" aria-hidden="true"></i>角色陪伴</button>
                         <button class="scene-tab" id="scene-tab-assistant" data-scene="scene-assistant" type="button"><i class="fas fa-compass" aria-hidden="true"></i>生活助手</button>
+                        <button class="scene-tab" id="scene-tab-health" data-scene="scene-health" type="button"><i class="fas fa-heart-pulse" aria-hidden="true"></i>健康助手</button>
                         <button class="scene-tab" id="scene-tab-knowledge" data-scene="scene-knowledge" type="button"><i class="fas fa-book-open" aria-hidden="true"></i>知识问答</button>
                         <button class="scene-tab" id="scene-tab-creation" data-scene="scene-creation" type="button"><i class="fas fa-file-pen" aria-hidden="true"></i>办公创作</button>
                     </div>
@@ -2278,6 +2278,11 @@
                         <h5>从需求理解到任务执行</h5>
                         <p>根据请求复杂度选择直接回答、单工具执行或依赖任务规划；独立任务并行、依赖任务有序推进，配合人工审批与断点恢复完成任务。</p>
                         <p class="scene-stack">依赖 DAG · Human-in-the-loop · Checkpoint</p>
+                    </div>
+                    <div class="scene-panel" id="scene-health">
+                        <h5>图文记录健康变化，核对后保存</h5>
+                        <p>通过图文对话生成记录草稿，经用户确认后保存病程、实际用药记录或随访提醒。用户可在「我的与隐私」导出或清除健康记录。健康助手由部署方按需启用。</p>
+                        <p class="scene-stack">图文交互 · 用户确认 · 健康数据管理</p>
                     </div>
                     <div class="scene-panel" id="scene-knowledge">
                         <h5>回答有依据，来源可追溯</h5>
@@ -2323,10 +2328,15 @@
                         <strong>断点恢复与幂等执行，成功分支可复用</strong>
                         基于 PostgreSQL、LangGraph Checkpoint、任务租约与修订版本隔离实现持久化执行。异步任务启动后挂起等待，恢复时复用任务 ID 和成功分支，仅重试可恢复的失败步骤；结合内容寻址缓存、数据库优先调度及可选 Kafka Outbox / Inbox，减少重复调用与重复副作用。
                     </div>
-                    <div class="latest-highlight" style="grid-column: 1 / -1;">
+                    <div class="latest-highlight">
                         <span class="latest-highlight-label">07 / DELIVERY &amp; GOVERNANCE</span>
                         <strong>全栈交付闭环，工具权限与版本可治理</strong>
                         通过可信工具网关、MCP 白名单与人工审批控制写操作。支持 Agent / Prompt / 模型配置版本绑定、灰度发布及回滚，接入链路追踪、调用成本、用户配额与审计记录，并建立知识反馈复核、并行恢复及证据核验回归测试。
+                    </div>
+                    <div class="latest-highlight">
+                        <span class="latest-highlight-label">08 / HEALTH ASSISTANT</span>
+                        <strong>健康助手接入，按账户隔离记录</strong>
+                        将 Healthy Care 个人健康空间接入 Next.js 工作台，复用伴 AI 登录，由 Go 网关验证会话后将请求转发至独立健康服务。Python / LangGraph 负责对话与检查点，Go 服务负责记录和写入确认。健康数据按账户隔离，数据库、附件和备份使用独立存储，健康服务可单独启用。
                     </div>
                 </div>
 
